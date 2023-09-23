@@ -10,7 +10,7 @@ services:
             - "8876:80"
         depends_on:
             - app
-        container_name: chat_larawire_getstream_nginx
+        container_name: chat_larawire_jetstream_nginx
 
     app:
         build:
@@ -21,7 +21,7 @@ services:
         depends_on:
             - db
             - redis
-        container_name: chat_larawire_getstream_app
+        container_name: chat_larawire_jetstream_app
         ports:
             - "8080:8080"
 
@@ -37,7 +37,7 @@ services:
         ports:
             - "33061:3306"
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-        container_name: chat_larawire_getstream_db
+        container_name: chat_larawire_jetstream_db
 
     redis:
         image: redis:7.0
@@ -46,7 +46,7 @@ services:
             REDIS_PORT: 6379
         ports:
             - "63790:6379"
-        container_name: chat_larawire_getsream_redis
+        container_name: chat_larawire_jetsream_redis
 
 
 
