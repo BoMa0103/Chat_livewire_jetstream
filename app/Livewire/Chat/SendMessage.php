@@ -4,7 +4,6 @@ namespace App\Livewire\Chat;
 
 use App\Events\MessageSent;
 use App\Models\Chat;
-use App\Models\Message;
 use App\Models\User;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
@@ -17,15 +16,15 @@ class SendMessage extends Component
     public $createdMessage;
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent'];
 
-    private function getMessagesService(): MessagesService
-    {
-        return app(MessagesService::class);
-    }
-
     public function updateSendMessage(Chat $chat, User $receiver)
     {
         $this->selectedChat = $chat;
         $this->receiverInstance = $receiver;
+    }
+
+    private function getMessagesService(): MessagesService
+    {
+        return app(MessagesService::class);
     }
 
     function sendMessage()
@@ -34,11 +33,7 @@ class SendMessage extends Component
             return null;
         }
 
-        $this->createdMessage = $this->getMessagesService()->createFromArray([
-            'chat_id' => $this->selectedChat->id,
-            'user_id' => auth()->id(),
-            'value' => $this->body,
-        ]);
+        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'value' => $this->body,]);
 
         $this->selectedChat->last_time_message = $this->createdMessage->created_at;
         $this->selectedChat->save();
@@ -52,13 +47,8 @@ class SendMessage extends Component
 
         $this->dispatch('scroll-bottom');
 
-        broadcast(event: new MessageSent(
-            auth()->user(),
-            $this->createdMessage,
-            $this->selectedChat,
-            $this->selectedChat->getReceiver()->id));
+        broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $this->selectedChat->getReceiver()->id));
     }
-
     public function render()
     {
         return view('livewire.chat.send-message');

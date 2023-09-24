@@ -3,7 +3,6 @@
 namespace App\Livewire\Chat;
 
 use App\Models\Chat;
-use App\Models\Message;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
 
@@ -15,24 +14,24 @@ class ChatboxChat extends Component
     public $messages_count;
     public $height;
 
+    public function getListeners()
+    {
+        $auth_id = auth()->user()->id;
+        return ["echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived', "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead', 'refresh' => '$refresh', 'chat', 'pushMessage', 'loadChatData', 'setMessages', 'loadMore', 'updateHeight', 'updatedHeightEvent'];
+    }
+
     private function getMessagesService(): MessagesService
     {
         return app(MessagesService::class);
     }
 
-    public function getListeners()
+    function broadcastedMessageRead($event)
     {
-        $auth_id = auth()->user()->id;
-        return [
-            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
-            "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'refresh' => '$refresh', 'chat', 'pushMessage', 'loadChatData', 'setMessages', 'loadMore', 'updateHeight', 'updatedHeightEvent'
-        ];
-    }
-
-    public function updateHeight($height)
-    {
-        $this->height = $height;
+        if ($this->selectedChat) {
+            if ((int)$this->selectedChat->id === (int)$event['chat_id']) {
+                $this->dispatch('markMessageAsRead');
+            }
+        }
     }
 
     function broadcastedMessageReceived($event)
@@ -45,7 +44,7 @@ class ChatboxChat extends Component
 
         if ($this->selectedChat) {
 
-            if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+            if ((int)$this->selectedChat->id === (int)$event['chat']['id']) {
 
                 $broadcastedMessage->read_status = 1;
                 $broadcastedMessage->save();
@@ -60,23 +59,28 @@ class ChatboxChat extends Component
         }
     }
 
+    public function pushMessage(int $messageId)
+    {
+        $newMessage = $this->getMessagesService()->find($messageId);
+
+        $this->messages->push($newMessage);
+
+        $this->dispatch('rowChatToBottom');
+    }
+
     public function updatedHeightEvent()
     {
         $this->dispatch('updatedHeight', $this->height);
     }
 
-    function broadcastedMessageRead($event)
-    {
-        if($this->selectedChat) {
-            if((int)$this->selectedChat->id === (int)$event['chat_id']) {
-                $this->dispatch('markMessageAsRead');
-            }
-        }
-    }
-
     public function chat()
     {
         $this->dispatch('refresh');
+    }
+
+    public function updateHeight($height)
+    {
+        $this->height = $height;
     }
 
     public function loadMore()
@@ -91,16 +95,8 @@ class ChatboxChat extends Component
         $this->dispatch('updatedHeightEvent');
     }
 
-    public function pushMessage(int $messageId)
+    public function loadChatData(Chat $chat)
     {
-        $newMessage = $this->getMessagesService()->find($messageId);
-
-        $this->messages->push($newMessage);
-
-        $this->dispatch('rowChatToBottom');
-    }
-
-    public function loadChatData(Chat $chat){
         $this->selectedChat = $chat;
     }
 

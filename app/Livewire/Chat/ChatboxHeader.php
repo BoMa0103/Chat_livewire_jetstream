@@ -10,12 +10,11 @@ class ChatboxHeader extends Component
 
     public function getListeners()
     {
-        return [
-            'refresh' => '$refresh', 'header',
-        ];
+        return ['refresh' => '$refresh', 'header',];
     }
 
-    public function header(){
+    public function header()
+    {
         $this->dispatch('refresh');
     }
 

@@ -23,19 +23,13 @@ class UserList extends Component
         $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->user()->id, $userId);
 
         if (!$checkedChat) {
-            $createdChat = $this->getChatsService()->createFromArray([
-                'user_id_first' => auth()->user()->id,
-                'user_id_second' => $userId,
-            ]);
+            $createdChat = $this->getChatsService()->createFromArray(['user_id_first' => auth()->user()->id, 'user_id_second' => $userId,]);
 
-            broadcast(event: new ChatCreate(
-                $createdChat->id,
-                $userId));
+            broadcast(event: new ChatCreate($createdChat->id, $userId));
 
             $this->dispatch('refreshChatList');
 
-            broadcast(event: new MarkAsOnline(
-                auth()->user()->id));
+            broadcast(event: new MarkAsOnline(auth()->user()->id));
         }
     }
 

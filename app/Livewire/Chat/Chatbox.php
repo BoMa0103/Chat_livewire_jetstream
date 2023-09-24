@@ -16,25 +16,20 @@ class Chatbox extends Component
     public $paginateVar = 20;
     public $messages_count;
 
+    public function getListeners()
+    {
+        $auth_id = auth()->user()->id;
+        return ["echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived', "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead', 'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',];
+    }
+
     private function getMessagesService(): MessagesService
     {
         return app(MessagesService::class);
     }
 
-    public function getListeners()
+    public function broadcastMessageRead()
     {
-        $auth_id = auth()->user()->id;
-        return [
-            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
-            "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',
-        ];
-    }
-
-    public function resetChat(){
-        $this->selectedChat = null;
-        $this->receiverInstance = null;
-        $this->dispatch('refresh');
+        broadcast(new MessageRead($this->selectedChat->id, $this->receiverInstance->id,));
     }
 
     function broadcastedMessageReceived($event)
@@ -45,7 +40,7 @@ class Chatbox extends Component
 
         if ($this->selectedChat) {
 
-            if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+            if ((int)$this->selectedChat->id === (int)$event['chat']['id']) {
 
                 $broadcastedMessage->read_status = 1;
                 $broadcastedMessage->save();
@@ -55,19 +50,11 @@ class Chatbox extends Component
                 $this->dispatch('broadcastMessageRead');
             }
 
-        }else {
+        } else {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
 
         $this->dispatch('refreshChatList');
-    }
-
-    public function broadcastMessageRead()
-    {
-        broadcast(new MessageRead(
-            $this->selectedChat->id,
-            $this->receiverInstance->id,
-        ));
     }
 
     public function pushMessage(int $messageId)
@@ -92,6 +79,13 @@ class Chatbox extends Component
         $this->dispatch('header');
 
         $this->dispatch('chatSelected');
+    }
+
+    public function resetChat()
+    {
+        $this->selectedChat = null;
+        $this->receiverInstance = null;
+        $this->dispatch('refresh');
     }
 
     public function render()
