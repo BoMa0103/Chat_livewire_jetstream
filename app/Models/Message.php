@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\Message
  *
  * @property int $id
- * @property string $value
+ * @property string $value // @todo rename to text|content|etc.
  * @property string $user
- * @property string $send_time
+ * @property string $send_time // @todo remname to sent_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
