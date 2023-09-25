@@ -94,6 +94,7 @@ class User extends Authenticatable
 
     public function chats(): HasMany
     {
+        // @todo use pivot
         $firstParticipantChats = $this->hasMany(Chat::class, 'user_id_first');
         $secondParticipantChats = $this->hasMany(Chat::class, 'user_id_second');
 

@@ -6,6 +6,7 @@ use App\Models\Message;
 
 class EloquentMessageRepository implements MessageRepository
 {
+    // @todo move to model
     private const UNREAD_STATUS = 0;
     private const READ_STATUS = 1;
 

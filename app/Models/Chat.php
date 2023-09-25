@@ -32,10 +32,12 @@ class Chat extends Model
     use HasFactory;
 
     protected $guarded = [];
+    // @todo same as
+    protected static $unguarded = true;
 
     public function getReceiver(): User
     {
-
+        // @todo use pivot, for many users
         if ($this->user_id_first === auth()->id()) {
 
             return User::firstWhere('id',$this->user_id_second);

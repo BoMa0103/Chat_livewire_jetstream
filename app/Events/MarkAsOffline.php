@@ -36,4 +36,5 @@ class MarkAsOffline implements ShouldBroadcast
             new Channel('online'),
         ];
     }
+
 }
