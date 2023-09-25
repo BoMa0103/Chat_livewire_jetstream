@@ -42,21 +42,22 @@ class ChatboxChat extends Component
 
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
-        if ($this->selectedChat) {
-
-            if ((int)$this->selectedChat->id === (int)$event['chat']['id']) {
-
-                $broadcastedMessage->read_status = 1;
-                $broadcastedMessage->save();
-
-                $this->pushMessage($broadcastedMessage->id);
-
-                $this->dispatch('broadcastMessageRead');
-            } else {
-                $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
-            }
-
+        if (!$this->selectedChat) {
+            return;
         }
+
+        if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+
+            $broadcastedMessage->read_status = 1;
+            $broadcastedMessage->save();
+
+            $this->pushMessage($broadcastedMessage->id);
+
+            $this->dispatch('broadcastMessageRead');
+        } else {
+            $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
+        }
+
     }
 
     public function pushMessage(int $messageId)

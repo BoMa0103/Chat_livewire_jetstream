@@ -91,11 +91,16 @@ class ChatList extends Component
 
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['user_id']);
 
-        if ($chat) {
-            broadcast(event: new ReceiveMarkAsOnline($event['user_id'], $user_id));
-
-            $this->dispatch('markChatCircleAsOnline', $chat->id);
+        if(!$chat){
+            return;
         }
+
+        broadcast(event: new ReceiveMarkAsOnline(
+            $event['user_id'],
+            $user_id,
+        ));
+
+        $this->dispatch('markChatCircleAsOnline', $chat->id);
     }
 
     public function markChatAsOffline($event)
@@ -111,7 +116,9 @@ class ChatList extends Component
 
     public function sendEventMarkChatAsOffline()
     {
-        broadcast(event: new MarkAsOffline($this->auth_id));
+        broadcast(event: new MarkAsOffline(
+            $this->auth_id,
+        ));
     }
 
     public function refreshChatList()

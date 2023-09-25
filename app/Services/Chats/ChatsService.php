@@ -9,8 +9,7 @@ class ChatsService
 {
     public function __construct(
         private readonly ChatRepository $chatRepository,
-    )
-    {
+    ) {
     }
 
     public function find(int $id): ?Chat
