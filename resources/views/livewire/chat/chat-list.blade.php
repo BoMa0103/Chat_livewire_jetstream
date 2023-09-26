@@ -49,7 +49,7 @@
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
                                 <p class="chat-name"> {{$this->getChatUserInstance($chat, $name='name')}} </p>
-                                <p class="chat-last-message" id="chat-last-message"> {{ $chat->messages->last() ? $chat->messages->last()->value : '' }} </p>
+                                <p class="chat-last-message" id="chat-last-message"> {{ $chat->messages->last() ? $chat->messages->last()->content : '' }} </p>
                             </div>
                             <p class="chat-last-message-data" id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
                             @php

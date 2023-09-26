@@ -31,8 +31,6 @@ class Chat extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-    // @todo same as
     protected static $unguarded = true;
 
     public function getReceiver(): User
@@ -46,8 +44,6 @@ class Chat extends Model
 
             return User::firstWhere('id',$this->user_id_first);
         }
-
-
     }
 
     public function user(): BelongsTo

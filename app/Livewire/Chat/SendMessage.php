@@ -33,7 +33,7 @@ class SendMessage extends Component
             return null;
         }
 
-        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'value' => $this->body,]);
+        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'content' => $this->body]);
 
         $this->selectedChat->last_time_message = $this->createdMessage->created_at;
         $this->selectedChat->save();

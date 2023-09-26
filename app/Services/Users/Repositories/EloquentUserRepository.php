@@ -10,4 +10,9 @@ class EloquentUserRepository implements UserRepository
     {
         return User::find($id);
     }
+
+    public function createFromArray(array $data): User
+    {
+        return User::create($data);
+    }
 }

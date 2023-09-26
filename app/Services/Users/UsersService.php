@@ -17,4 +17,9 @@ class UsersService
     {
         return $this->userRepository->find($id);
     }
+
+    public function createFromArray(array $data): User
+    {
+        return $this->userRepository->createFromArray($data);
+    }
 }

@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\Message
  *
  * @property int $id
- * @property string $value // @todo rename to text|content|etc.
+ * @property string $content
  * @property string $user
- * @property string $send_time // @todo remname to sent_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
@@ -34,7 +33,10 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    public const UNREAD_STATUS = 0;
+    public const READ_STATUS = 1;
+
+    protected static $unguarded = true;
 
     public function user(): BelongsTo
     {
