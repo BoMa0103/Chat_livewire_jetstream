@@ -5,6 +5,7 @@ namespace App\Livewire\Chat;
 use App\Models\Chat;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
+use Overtrue\LaravelEmoji\Emoji;
 
 class ChatboxChat extends Component
 {

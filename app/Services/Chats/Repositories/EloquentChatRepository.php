@@ -3,6 +3,7 @@
 namespace App\Services\Chats\Repositories;
 
 use App\Models\Chat;
+use App\Models\User;
 
 class EloquentChatRepository implements ChatRepository
 {
@@ -18,23 +19,24 @@ class EloquentChatRepository implements ChatRepository
 
     public function findChatBetweenTwoUsers(int $userIdFirst, int $userIdSecond): ?Chat
     {
-        return Chat::select('*')
-            ->where(function ($query) use ($userIdFirst, $userIdSecond) {
-                $query->where('user_id_first', '=', $userIdFirst)
-                    ->where('user_id_second', '=', $userIdSecond);
-            })
-            ->orWhere(function ($query) use ($userIdFirst, $userIdSecond) {
-                $query->where('user_id_first', '=', $userIdSecond)
-                    ->where('user_id_second', '=', $userIdFirst);
+        $user = User::find($userIdFirst);
+
+        return $user->chats()
+            ->whereHas('users', function ($query) use ($userIdSecond) {
+                $query->where('user_id', $userIdSecond);
             })
             ->first();
     }
 
     public function getChatsOrderByDesc(int $userId)
     {
-        return Chat::where('user_id_first', $userId)
-            ->orWhere('user_id_second', $userId)
-            ->orderBy('last_time_message', 'DESC')
-            ->get();
+        $user = User::find($userId);
+
+        return $user->chats()->orderByDesc('last_time_message')->get();
+    }
+
+    public function getChatReceivers(int $chatId, int $senderUserId)
+    {
+        return Chat::find($chatId)->users()->where('user_id', '!=', $senderUserId);
     }
 }

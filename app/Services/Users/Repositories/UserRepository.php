@@ -9,4 +9,6 @@ interface UserRepository
     public function find(int $id): ?User;
 
     public function createFromArray(array $data): User;
+
+    public function getUsersWithoutUserWithId(int $id);
 }

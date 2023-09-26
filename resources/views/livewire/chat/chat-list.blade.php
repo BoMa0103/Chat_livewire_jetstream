@@ -44,12 +44,12 @@
                     } @endphp" wire:key='{{$chat->id}}' wire:click="chatUserSelected({{$chat}}, {{$this->getChatUserInstance($chat, $name='id')}})">
                     <div>
                         <div class='chat-info' id="{{$chat->id}}">
-                            <img class="w-7 h-7 mr-6 rounded-full" src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
+                            <img class="w-7 h-7 mr-6 rounded-full avatar" src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
                                  alt="User image">
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
                                 <p class="chat-name"> {{$this->getChatUserInstance($chat, $name='name')}} </p>
-                                <p class="chat-last-message" id="chat-last-message"> {{ $chat->messages->last() ? $chat->messages->last()->content : '' }} </p>
+                                <p class="chat-last-message" id="chat-last-message"> {!! $chat->messages->last() ? $chat->messages->last()->content : '' !!} </p>
                             </div>
                             <p class="chat-last-message-data" id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
                             @php
@@ -82,9 +82,9 @@
 
         search.addEventListener('input', function () {
             if (search.value.trim() !== '') {
-            @this.dispatch('searchChats', {
-                chatName:search.value
-            });
+                @this.dispatch('searchChats', {
+                    chatName:search.value
+                });
             } else {
                 @this.dispatch('refreshChatList');
             }

@@ -6,14 +6,11 @@ use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
 use App\Models\Chat;
-use App\Models\Message;
-use App\Models\User;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use App\Events\ChatCreate;
 
 class ChatList extends Component
 {
@@ -53,18 +50,11 @@ class ChatList extends Component
 
         foreach ($chats as $chat) {
 
-            if ($chat->user_id_first === $this->auth_id) {
-                $chatNameTmp = $this->getUsersService()->find($chat->user_id_second)->name;
-                if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
-                    $this->chats [] = $chat;
-                }
-            } else {
-                $chatNameTmp = $this->getUsersService()->find($chat->user_id_first)->name;
-                if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
-                    $this->chats [] = $chat;
-                }
-            }
+            $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
 
+            if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
+                $this->chats [] = $chat;
+            }
         }
     }
 
@@ -149,11 +139,7 @@ class ChatList extends Component
     {
         $this->auth_id = auth()->id();
 
-        if ($chat->user_id_first == $this->auth_id) {
-            $this->receiverInstance = $this->getUsersService()->find($chat->user_id_second);
-        } else {
-            $this->receiverInstance = $this->getUsersService()->find($chat->user_id_first);
-        }
+        $this->receiverInstance = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first();
 
         if (isset($request)) {
             return $this->receiverInstance->$request;

@@ -5,8 +5,10 @@ namespace App\Livewire\Chat;
 use App\Events\MessageSent;
 use App\Models\Chat;
 use App\Models\User;
+use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
+use Overtrue\LaravelEmoji\Emoji;
 
 class SendMessage extends Component
 {
@@ -27,13 +29,18 @@ class SendMessage extends Component
         return app(MessagesService::class);
     }
 
+    private function getChatsService(): ChatsService
+    {
+        return app(ChatsService::class);
+    }
+
     function sendMessage()
     {
         if ($this->body == null) {
             return null;
         }
 
-        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'content' => $this->body]);
+        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'content' => Emoji::toImage($this->body)]);
 
         $this->selectedChat->last_time_message = $this->createdMessage->created_at;
         $this->selectedChat->save();
@@ -47,7 +54,9 @@ class SendMessage extends Component
 
         $this->dispatch('scroll-bottom');
 
-        broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $this->selectedChat->getReceiver()->id));
+        $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
+
+        broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiverId));
     }
     public function render()
     {

@@ -497,7 +497,7 @@
     height: 40px;
 }
 
-.chat-info img {
+.chat-info .avatar {
     margin-top: -5px;
     width: 40px;
     height: 40px;
@@ -601,7 +601,15 @@ input:focus {
     outline: none;
 }
 
+.joypixels {
+    width: 24px;
+    height: 24px;
+}
 
+.chat-info .joypixels {
+    width: 16px;
+    height: 16px;
+}
 
 
 

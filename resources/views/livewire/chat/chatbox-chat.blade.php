@@ -2,7 +2,7 @@
     @foreach($messages as $message)
         <div wire:key='{{$message->id}}' class="message {{auth()->id() == $message->user_id ? 'outgoing' : 'incoming'}}">
             <div class="message-content" id="message">
-                {{$message->content}}
+                {!! $message->content !!}
             </div>
             <div class="message-meta">
                 <div class="message-time" id="time"> {{$message->created_at->format('H:i')}} </div>

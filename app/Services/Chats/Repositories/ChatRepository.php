@@ -13,4 +13,6 @@ interface ChatRepository
     public function findChatBetweenTwoUsers(int $userIdFirst, int $userIdSecond): ?Chat;
 
     public function getChatsOrderByDesc(int $userId);
+
+    public function getChatReceivers(int $chatId, int $senderUserId);
 }

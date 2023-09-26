@@ -22,4 +22,9 @@ class UsersService
     {
         return $this->userRepository->createFromArray($data);
     }
+
+    public function getUsersWithoutUserWithId(int $id)
+    {
+        return $this->userRepository->getUsersWithoutUserWithId($id);
+    }
 }
