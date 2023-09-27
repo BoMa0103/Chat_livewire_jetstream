@@ -32,6 +32,7 @@
 }
 
 .chat_container {
+    position: relative;
     flex: 6;
     overflow: hidden;
     display: flex;
@@ -610,6 +611,45 @@ input:focus {
     width: 16px;
     height: 16px;
 }
+
+/* Стили для выпадающего списка */
+.emoji-dropdown {
+    display: inline-block;
+}
+
+.emoji-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.emoji-menu {
+    position: absolute;
+    bottom: 80px;
+    margin: 10px;
+    left: 0;
+    display: none;
+    box-shadow: 0 2px 4px #0003;
+    border-radius: 0.5em;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.emoji-item {
+    padding: 8px;
+    cursor: pointer;
+    display: inline-block; /* Отображать смайлики в ряд */
+}
+
+/*!* Показывать меню при наведении на .emoji-dropdown *!*/
+/*.emoji-dropdown:hover .emoji-menu {*/
+/*    display: block;*/
+/*}*/
+
+/*!* Скрыть меню, когда курсор убирается *!*/
+/*.emoji-dropdown:not(:hover) .emoji-menu {*/
+/*    display: none;*/
+/*}*/
 
 
 

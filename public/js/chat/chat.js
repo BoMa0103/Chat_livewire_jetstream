@@ -96,10 +96,8 @@ function notifyMe(json) {
 /* Events */
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    let chatMessages = document.getElementById('messages');
     let textArea = document.getElementById('text');
     let sendButton = document.getElementById('send');
-    let search = document.getElementById('default-search');
 
     textArea.addEventListener('input', function () {
         if (textArea.value.trim() !== '') {
