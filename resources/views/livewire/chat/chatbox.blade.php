@@ -1,8 +1,9 @@
 <div id="chat" class="chat">
 
     @if($selectedChat)
-        @livewire('chat.chatbox-header', ['receiverInstance' => $receiverInstance], key('chatbox-header-' . $receiverInstance->id))
-        @livewire('chat.chatbox-chat', ['messages' => $messages, 'selectedChat' => $selectedChat], key('chatbox-chat-' . $receiverInstance->id))
+        @livewire('chat.chatbox-header', ['selectedChat' => $selectedChat])
+        @livewire('chat.chatbox-chat', ['messages' => $messages, 'selectedChat' => $selectedChat])
+        @livewire('chat.user-list-for-conversation', ['selectedChat' => $selectedChat])
     @else
         @livewire('chat.no-chatbox')
     @endif

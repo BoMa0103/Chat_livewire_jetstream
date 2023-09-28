@@ -3,7 +3,10 @@
 namespace App\Livewire\Chat;
 
 use App\Models\Chat;
+use App\Models\Message;
 use App\Services\Messages\MessagesService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 use Overtrue\LaravelEmoji\Emoji;
 
@@ -18,7 +21,11 @@ class ChatboxChat extends Component
     public function getListeners()
     {
         $auth_id = auth()->user()->id;
-        return ["echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived', "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead', 'refresh' => '$refresh', 'chat', 'pushMessage', 'loadChatData', 'setMessages', 'loadMore', 'updateHeight', 'updatedHeightEvent'];
+        return [
+            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
+            "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
+            'refresh' => '$refresh', 'pushMessage', 'loadChatData', 'setMessages', 'loadMore', 'updateHeight', 'updatedHeightEvent', 'refreshChat'
+        ];
     }
 
     private function getMessagesService(): MessagesService
@@ -37,27 +44,31 @@ class ChatboxChat extends Component
 
     function broadcastedMessageReceived($event)
     {
-        $this->dispatch('refresh');
-
-        $this->dispatch('refreshChatList');
-
-        $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
-
-        if (!$this->selectedChat) {
+        if($event['user']['id'] === auth()->id()) {
             return;
         }
 
-        if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+        $this->dispatch('refresh');
 
-            $broadcastedMessage->read_status = 1;
-            $broadcastedMessage->save();
+        $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
-            $this->pushMessage($broadcastedMessage->id);
+        if ($this->selectedChat) {
 
-            $this->dispatch('broadcastMessageRead');
-        } else {
+            if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+
+                $broadcastedMessage->read_status = 1;
+                $broadcastedMessage->save();
+
+                $this->pushMessage($broadcastedMessage->id);
+
+                $this->dispatch('broadcastMessageRead');
+            }
+
+        }else {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
+
+        $this->dispatch('refreshChatList');
 
     }
 
@@ -75,9 +86,10 @@ class ChatboxChat extends Component
         $this->dispatch('updatedHeight', $this->height);
     }
 
-    public function chat()
+    public function refreshChat(Chat $selectedChat, int $messages_count, int $paginateVar)
     {
-        $this->dispatch('refresh');
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $messages_count, $paginateVar);
+        $this->selectedChat = $selectedChat;
     }
 
     public function updateHeight($height)
@@ -100,6 +112,7 @@ class ChatboxChat extends Component
     public function loadChatData(Chat $chat)
     {
         $this->selectedChat = $chat;
+//        dump($this->selectedChat->id);
     }
 
     public function mount()

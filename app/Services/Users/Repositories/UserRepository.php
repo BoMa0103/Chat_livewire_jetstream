@@ -11,4 +11,6 @@ interface UserRepository
     public function createFromArray(array $data): User;
 
     public function getUsersWithoutUserWithId(int $id);
+
+    public function getUsersAreNotInChat(int $chatId);
 }

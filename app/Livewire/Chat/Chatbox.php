@@ -5,21 +5,25 @@ namespace App\Livewire\Chat;
 use App\Events\MessageRead;
 use App\Models\Chat;
 use App\Models\User;
+use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
 
 class Chatbox extends Component
 {
     public $selectedChat;
-    public $receiverInstance;
     public $messages;
     public $paginateVar = 20;
     public $messages_count;
+    public $receivers;
 
     public function getListeners()
     {
         $auth_id = auth()->user()->id;
-        return ["echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived', "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead', 'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',];
+        return [
+            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
+            "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
+            'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',];
     }
 
     private function getMessagesService(): MessagesService
@@ -27,20 +31,24 @@ class Chatbox extends Component
         return app(MessagesService::class);
     }
 
-    public function broadcastMessageRead()
+    private function getChatsService(): ChatsService
     {
-        broadcast(new MessageRead($this->selectedChat->id, $this->receiverInstance->id,));
+        return app(ChatsService::class);
     }
 
     function broadcastedMessageReceived($event)
     {
+        if($event['user']['id'] === auth()->id()) {
+            return;
+        }
+
         $this->dispatch('refresh');
 
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
         if ($this->selectedChat) {
 
-            if ((int)$this->selectedChat->id === (int)$event['chat']['id']) {
+            if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
 
                 $broadcastedMessage->read_status = 1;
                 $broadcastedMessage->save();
@@ -50,11 +58,24 @@ class Chatbox extends Component
                 $this->dispatch('broadcastMessageRead');
             }
 
-        } else {
+        }else {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
 
         $this->dispatch('refreshChatList');
+    }
+
+    public function broadcastMessageRead()
+    {
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
     }
 
     public function pushMessage(int $messageId)
@@ -66,17 +87,20 @@ class Chatbox extends Component
         $this->dispatch('rowChatToBottom');
     }
 
-    public function loadChat(Chat $chat, User $receiver)
+    public function loadChat(Chat $chat)
     {
         $this->selectedChat = $chat;
-        $this->receiverInstance = $receiver;
+
+        $this->receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
 
         $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
 
         $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
 
-        $this->dispatch('chat');
-        $this->dispatch('header');
+        // don't send messages directly because they parse to array
+        $this->dispatch('refreshChat', $this->selectedChat, $this->messages_count, $this->paginateVar);
+        $this->dispatch('refreshHeader', $this->selectedChat);
+        $this->dispatch('refreshUserListForConversation', $this->selectedChat);
 
         $this->dispatch('chatSelected');
     }
@@ -84,7 +108,7 @@ class Chatbox extends Component
     public function resetChat()
     {
         $this->selectedChat = null;
-        $this->receiverInstance = null;
+        $this->receivers = null;
         $this->dispatch('refresh');
     }
 

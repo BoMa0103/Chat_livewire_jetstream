@@ -1,6 +1,27 @@
+@php use App\Models\Chat; @endphp
 <div>
 
     <div class="flex-container">
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list"
+                     viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </button>
+            <div class="overlay" id="overlay-menu" onclick="showHideMenu()"></div>
+            <div class="menu" id="menu">
+                <ul>
+                    <li><a onclick="showInput()">Create conversation</a></li>
+                </ul>
+            </div>
+            <div class="input-container" id="input-container">
+                <input type="text" placeholder="Enter conversation name" id="conversation-name-input">
+                <button class="send-button" onclick="createConversation()">Next</button>
+            </div>
+        </div>
         <div class="chat-search">
             <label for="default-search"
                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -19,8 +40,10 @@
         </div>
 
         <div class="show-users-in-list" onclick="showUsers()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor"
+                 class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
             </svg>
         </div>
     </div>
@@ -41,17 +64,27 @@
                             } else{$selectedFirstChatFlag = false;
                             echo ' nChat';}
                         }
-                    } @endphp" wire:key='{{$chat->id}}' wire:click="chatUserSelected({{$chat}}, {{$this->getChatUserInstance($chat, $name='id')}})">
+                    } @endphp" wire:key='{{$chat->id}}'
+                    wire:click="chatUserSelected({{$chat}})">
                     <div>
                         <div class='chat-info' id="{{$chat->id}}">
-                            <img class="w-7 h-7 mr-6 rounded-full avatar" src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
+                            <img class="w-7 h-7 mr-6 rounded-full avatar"
+                                 src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
                                  alt="User image">
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
-                                <p class="chat-name"> {{$this->getChatUserInstance($chat, $name='name')}} </p>
-                                <p class="chat-last-message" id="chat-last-message"> {!! $chat->messages->last() ? $chat->messages->last()->content : '' !!} </p>
+                                <p class="chat-name">
+                                    @php if($chat->chat_type === Chat::PRIVATE) {
+                                        echo $this->getChatUserInstance($chat, $name='name');
+                                    } else if($chat->chat_type === Chat::CONVERSATION){
+                                        echo $chat->name;
+                                    } @endphp
+                                </p>
+                                <p class="chat-last-message"
+                                   id="chat-last-message"> {!! $chat->messages->last() ? $chat->messages->last()->content : '' !!} </p>
                             </div>
-                            <p class="chat-last-message-data" id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
+                            <p class="chat-last-message-data"
+                               id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
                             @php
                                 $unreadMessagesCount = count($chat->messages->where('read_status', 0)->where('user_id', '!=', auth()->user()->id));
                                 if($unreadMessagesCount) {
@@ -78,15 +111,53 @@
     </div>
 
     <script>
+        var dropdownButton = document.querySelector('.dropdown-toggle');
+        var dropdownMenu = document.querySelector('.dropdown-menu');
+        var overlay = document.querySelector('.overlay');
+
+        dropdownButton.addEventListener('click', function () {
+            var overlay = document.getElementById('overlay-menu');
+            var menu = document.getElementById('menu');
+
+            if (overlay.style.display === 'block' && menu.style.display === 'block') {
+                overlay.style.display = 'none';
+                menu.style.display = 'none';
+            } else {
+                overlay.style.display = 'block';
+                menu.style.display = 'block';
+            }
+        });
+
+        function showInput() {
+            var inputContainer = document.getElementById('input-container');
+            var menu = document.getElementById('menu');
+
+            menu.style.display = 'none';
+            inputContainer.style.display = 'flex';
+        }
+
+        function createConversation() {
+            let conversationName = document.getElementById('conversation-name-input');
+
+            if (conversationName.value.trim() !== '') {
+            @this.dispatch('createConversation', {
+                conversationName: conversationName.value.trim()
+            })
+
+            }
+        }
+
         let search = document.getElementById('default-search');
 
         search.addEventListener('input', function () {
             if (search.value.trim() !== '') {
-                @this.dispatch('searchChats', {
-                    chatName:search.value
-                });
+            @this.dispatch('searchChats', {
+                chatName: search.value.trim()
+            })
+
             } else {
-                @this.dispatch('refreshChatList');
+            @this.dispatch('refreshChatList')
+
             }
         });
     </script>

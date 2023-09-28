@@ -23,11 +23,26 @@
                     </svg>
                 </button>
                 <div class="emoji-menu">
-                    <!-- Ваш список смайликов здесь -->
                     <div class="emoji-item">😀</div>
                     <div class="emoji-item">😍</div>
                     <div class="emoji-item">😂</div>
-                    <!-- Другие смайлики -->
+                    <div class="emoji-item">😁</div>
+                    <div class="emoji-item">🤣</div>
+                    <div class="emoji-item">😃</div>
+                    <div class="emoji-item">😄</div>
+                    <div class="emoji-item">😅</div>
+                    <div class="emoji-item">😆</div>
+                    <div class="emoji-item">😎</div>
+                    <div class="emoji-item">😙</div>
+                    <div class="emoji-item">🤗</div>
+                    <div class="emoji-item">😐</div>
+                    <div class="emoji-item">😖</div>
+                    <div class="emoji-item">😭</div>
+                    <div class="emoji-item">😡</div>
+                    <div class="emoji-item">🤬</div>
+                    <div class="emoji-item">🤨</div>
+                    <div class="emoji-item">🙄</div>
+                    <div class="emoji-item">😤</div>
                 </div>
             </div>
             <textarea wire:model="body" id="text" rows="1"

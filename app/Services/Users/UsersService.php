@@ -27,4 +27,9 @@ class UsersService
     {
         return $this->userRepository->getUsersWithoutUserWithId($id);
     }
+
+    public function getUsersAreNotInChat(int $chatId)
+    {
+        return $this->userRepository->getUsersAreNotInChat($chatId);
+    }
 }

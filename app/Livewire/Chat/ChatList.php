@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Chat;
 
+use App\Events\ChatCreate;
 use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
@@ -25,7 +26,12 @@ class ChatList extends Component
     {
         $auth_id = auth()->user()->id;
 
-        return ["echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList', "echo:online,MarkAsOnline" => 'markChatAsOnline', "echo:online,MarkAsOffline" => 'markChatAsOffline', "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline', 'chatUserSelected', 'refresh' => '$refresh', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats'];
+        return [
+            "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
+            "echo:online,MarkAsOnline" => 'markChatAsOnline',
+            "echo:online,MarkAsOffline" => 'markChatAsOffline',
+            "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
+            'chatUserSelected', 'refresh' => '$refresh', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
     }
 
     private function getChatsService(): ChatsService
@@ -50,12 +56,28 @@ class ChatList extends Component
 
         foreach ($chats as $chat) {
 
-            $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
+            if ($chat->name) {
+                $chatNameTmp = $chat->name;
+            } else {
+                $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
+            }
 
             if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
                 $this->chats [] = $chat;
             }
         }
+    }
+
+    public function createConversation($conversationName)
+    {
+        $createdChat = $this->getChatsService()->createFromArray([
+            'name' => $conversationName,
+            'chat_type' => Chat::CONVERSATION,
+        ]);
+
+        $createdChat->users()->attach(auth()->user());
+
+        $this->dispatch('refreshChatList');
     }
 
     public function resetChat()
@@ -118,21 +140,35 @@ class ChatList extends Component
         $this->dispatch('refresh');
     }
 
-    public function chatUserSelected(Chat $chat, $receiverId)
+    public function chatUserSelected(Chat $chat)
     {
         $this->selectedChat = $chat;
 
-        $receiverInstance = $this->getUsersService()->find($receiverId);
+        $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
 
-        $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
+        if(!$receivers->count()) {
+            $this->dispatch('loadChat', $this->selectedChat);
 
-        $this->dispatch('loadChat', $this->selectedChat, $receiverInstance);
+            $this->dispatch('loadChatData', $this->selectedChat);
+
+            $this->dispatch('updateSendMessage', $this->selectedChat);
+
+            return;
+        }
+
+        foreach ($receivers as $receiver) {
+            $receiverInstance = $this->getUsersService()->find($receiver->id);
+
+            $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
+        }
+        $this->dispatch('loadChat', $this->selectedChat);
 
         $this->dispatch('loadChatData', $this->selectedChat);
 
-        $this->dispatch('updateSendMessage', $this->selectedChat, $receiverInstance);
-
         $this->dispatch('broadcastMessageRead');
+
+        $this->dispatch('updateSendMessage', $this->selectedChat);
+
     }
 
     public function getChatUserInstance(Chat $chat, $request)
@@ -140,6 +176,10 @@ class ChatList extends Component
         $this->auth_id = auth()->id();
 
         $this->receiverInstance = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first();
+
+        if(!$this->receiverInstance) {
+            return null;
+        }
 
         if (isset($request)) {
             return $this->receiverInstance->$request;

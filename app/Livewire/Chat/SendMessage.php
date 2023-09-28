@@ -13,15 +13,13 @@ use Overtrue\LaravelEmoji\Emoji;
 class SendMessage extends Component
 {
     public $selectedChat;
-    public $receiverInstance;
     public $body;
     public $createdMessage;
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent'];
 
-    public function updateSendMessage(Chat $chat, User $receiver)
+    public function updateSendMessage(Chat $chat)
     {
         $this->selectedChat = $chat;
-        $this->receiverInstance = $receiver;
     }
 
     private function getMessagesService(): MessagesService
@@ -54,9 +52,19 @@ class SendMessage extends Component
 
         $this->dispatch('scroll-bottom');
 
-        $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
+        if(!$this->selectedChat->name) {
+            $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
 
-        broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiverId));
+            broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiverId));
+
+            return;
+        }
+
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        foreach ($receivers as $receiver) {
+            broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
+        }
     }
     public function render()
     {

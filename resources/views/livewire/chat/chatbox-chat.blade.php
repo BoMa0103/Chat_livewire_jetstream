@@ -1,6 +1,15 @@
+@php use App\Models\Chat; @endphp
 <div class="chat-messages" id="messages">
     @foreach($messages as $message)
-        <div wire:key='{{$message->id}}' class="message {{auth()->id() == $message->user_id ? 'outgoing' : 'incoming'}}">
+        <div wire:key='{{$message->id}}'
+             class="message {{auth()->id() == $message->user_id ? 'outgoing' : 'incoming'}}">
+            <div class="message-user-name @php
+                if($selectedChat->chat_type === Chat::PRIVATE || auth()->user()->name == $message->user()->first()->name) {
+                    echo ' hidden';
+                }
+            @endphp">
+                {{ $message->user()->first()->name }}
+            </div>
             <div class="message-content" id="message">
                 {!! $message->content !!}
             </div>

@@ -21,4 +21,13 @@ class EloquentUserRepository implements UserRepository
     {
         return User::where('id', '!=', $id)->get();
     }
+
+    public function getUsersAreNotInChat(int $chatId)
+    {
+        $chat = Chat::find($chatId);
+
+        $usersInChat = $chat->users()->pluck('user_id');
+
+        return User::whereNotIn('id', $usersInChat)->get();
+    }
 }

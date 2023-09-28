@@ -29,7 +29,9 @@ class UserList extends Component
         $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->user()->id, $userId);
 
         if (!$checkedChat) {
-            $createdChat = $this->getChatsService()->createFromArray([]);
+            $createdChat = $this->getChatsService()->createFromArray([
+                'chat_type' => Chat::PRIVATE
+            ]);
 
             $createdChat->users()->attach($userId);
             $createdChat->users()->attach(auth()->user());

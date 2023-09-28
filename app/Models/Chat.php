@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * App\Models\Chats
  *
  * @property int $id
+ * @property string|null $name
+ * @property int $chat_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $user
@@ -30,6 +32,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Chat extends Model
 {
     use HasFactory;
+
+    public const PRIVATE = 0;
+    public const CONVERSATION = 1;
 
     protected static $unguarded = true;
 
