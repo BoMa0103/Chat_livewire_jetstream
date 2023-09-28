@@ -551,8 +551,14 @@
 }
 
 .chat-name {
+    display: flex;
     margin-top: -8px;
     color: #e5dfd3;
+}
+
+.conv-icon {
+    margin-top: 4px;
+    margin-right: 4px;
 }
 
 .chat-last-message {

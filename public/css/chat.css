@@ -551,8 +551,14 @@
 }
 
 .chat-name {
+    display: flex;
     margin-top: -8px;
     color: #e5dfd3;
+}
+
+.conv-icon {
+    margin-top: 4px;
+    margin-right: 4px;
 }
 
 .chat-last-message {
@@ -674,6 +680,7 @@ input:focus {
     position: absolute;
     bottom: 80px;
     margin: 10px;
+    max-width: 200px;
     left: 0;
     display: none;
     box-shadow: 0 2px 4px #0003;
@@ -760,7 +767,7 @@ input:focus {
 
 .add-users-conv-list {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
