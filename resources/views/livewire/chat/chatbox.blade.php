@@ -1,8 +1,9 @@
 <div id="chat" class="chat">
 
     @if($selectedChat)
-        @livewire('chat.chatbox-header', ['receiverInstance' => $receiverInstance], key('chatbox-header-' . $receiverInstance->id))
-        @livewire('chat.chatbox-chat', ['messages' => $messages, 'selectedChat' => $selectedChat], key('chatbox-chat-' . $receiverInstance->id))
+        @livewire('chat.chatbox-header', ['selectedChat' => $selectedChat])
+        @livewire('chat.chatbox-chat', ['messages' => $messages, 'selectedChat' => $selectedChat])
+        @livewire('chat.user-list-for-conversation', ['selectedChat' => $selectedChat])
     @else
         @livewire('chat.no-chatbox')
     @endif
@@ -19,8 +20,6 @@
         let value = document.querySelectorAll('.status_tick');
 
         let valueArray = Array.from(value);
-
-        console.log(valueArray);
 
         valueArray.forEach(element => {
             element.innerHTML = "<svg style=\"position: relative; top: 4px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 30\" width=\"24\" height=\"24\" fill=\"none\">" +

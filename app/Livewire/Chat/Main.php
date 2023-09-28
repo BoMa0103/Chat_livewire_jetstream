@@ -10,7 +10,8 @@ class Main extends Component
 
     public $listeners = ['resetChat'];
 
-    public function resetChat(){
+    public function resetChat()
+    {
         $this->dispatch('refresh');
     }
 

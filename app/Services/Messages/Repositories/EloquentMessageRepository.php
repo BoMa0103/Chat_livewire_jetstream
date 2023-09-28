@@ -6,10 +6,6 @@ use App\Models\Message;
 
 class EloquentMessageRepository implements MessageRepository
 {
-    // @todo move to model
-    private const UNREAD_STATUS = 0;
-    private const READ_STATUS = 1;
-
     public function find(int $id): ?Message
     {
         return Message::find($id);
@@ -33,16 +29,16 @@ class EloquentMessageRepository implements MessageRepository
     public function setReadStatusMessages(int $chatId, int $userId)
     {
         return Message::where('chat_id', $chatId)
-            ->where('read_status', self::UNREAD_STATUS)
+            ->where('read_status', Message::UNREAD_STATUS)
             ->where('user_id', $userId)
-            ->update(['read_status' => self::READ_STATUS]);
+            ->update(['read_status' => Message::READ_STATUS]);
     }
 
     public function getUnreadMessagesCount(int $chatId, int $userId): int
     {
         return Message::where('chat_id', '=', $chatId)
             ->where('user_id', '!=', $userId)
-            ->where('read_status', '=', self::UNREAD_STATUS)
+            ->where('read_status', '=', Message::UNREAD_STATUS)
             ->count();
     }
 

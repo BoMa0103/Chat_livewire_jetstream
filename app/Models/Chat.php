@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Chats
  *
  * @property int $id
- * @property int $user_id_first
- * @property int $user_id_second
+ * @property string|null $name
+ * @property int $chat_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $user
+ * @property-read $users
  * @method static \Database\Factories\ChatFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Chat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chat newQuery()
@@ -31,23 +33,14 @@ class Chat extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-    // @todo same as
+    public const PRIVATE = 0;
+    public const CONVERSATION = 1;
+
     protected static $unguarded = true;
 
-    public function getReceiver(): User
+    public function users(): BelongsToMany
     {
-        // @todo use pivot, for many users
-        if ($this->user_id_first === auth()->id()) {
-
-            return User::firstWhere('id',$this->user_id_second);
-
-        } else {
-
-            return User::firstWhere('id',$this->user_id_first);
-        }
-
-
+        return $this->belongsToMany(User::class);
     }
 
     public function user(): BelongsTo

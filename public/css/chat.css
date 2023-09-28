@@ -9,6 +9,7 @@
     align-items: center;
     height: 100vh;
     font-size: 16px;
+    color: white;
 }
 
 .chat {
@@ -23,13 +24,27 @@
     margin: 0;
 }
 
+.shadow {
+    width: 200px; /* Ширина элемента */
+    height: 200px; /* Высота элемента */
+    background-color: #3498db; /* Цвет элемента */
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5); /* Горизонтальное смещение, вертикальное смещение, размытие и цвет тени */
+}
+
+.dropdown {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+}
+
 .chat_container {
+    position: relative;
     flex: 6;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 100vh;
     background-color: #2d3748;
     padding: 0;
     margin: 0;
@@ -41,11 +56,22 @@
     margin-top: -7px;
 }
 
+.chat-header-nav {
+    margin-left: auto;
+    display: flex;
+    height: fit-content;
+}
+
 .show-users {
     cursor: pointer;
     height: fit-content;
     margin-top: -7px;
-    margin-left: auto;
+}
+
+.add-users-conv {
+    cursor: pointer;
+    height: fit-content;
+    margin-top: -7px;
 }
 
 .show-users-in-list {
@@ -83,7 +109,7 @@
     font-weight: bold;
     font-size: 18px;
     position: relative;
-    background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    background-color: #1d232a;
     z-index: 1;
     padding-top: 12px;
     color: #e5dfd3;
@@ -93,7 +119,7 @@
 .concave-left {
     content: '';
     position: absolute;
-    background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    background-color: #1d232a;
     width: 50px;
     height: 50px;
     bottom: -50px;
@@ -104,7 +130,7 @@
 .concave-right {
     content: '';
     position: absolute;
-    background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    background-color: #1d232a;
     width: 50px;
     height: 50px;
     bottom: -50px;
@@ -150,7 +176,6 @@
 .chat-list-box {
     position: relative;
     height: fit-content;
-    background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
 }
 
 .message {
@@ -254,7 +279,7 @@
     *::after {
         content: '';
         position: absolute;
-        background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+        background-color: #1d232a;
         border-radius: 25%;
         right: 0;
         width: 100px;
@@ -385,7 +410,7 @@
     margin-left: -35px;
     margin-right: 20px;
     margin-bottom: 3px;
-    border: 2px solid hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    border: 2px solid #1d232a;
     display: none;
 }
 
@@ -400,13 +425,16 @@
     overflow: hidden;
     height: 100%;
     min-width: fit-content;
-    background-color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    background-color: #1d232a;
     z-index: 100;
     display: none;
     position: absolute;
     right: 0;
     width: 200px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
 }
+
 
 .flex-container-users {
     display: flex;
@@ -451,6 +479,35 @@
     min-width: fit-content;
 }
 
+.add-users-conv-list {
+    width: 220px;
+}
+
+.add-users-conv-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.add-users-conv-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.add-users-conv-list li:hover {
+    background-color: #6b7280;
+    transition: background-color 0.4s ease;
+    border-radius: 40px;
+}
+
+.message-user-name {
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: fit-content;
+    color: #9ca3af;
+}
+
 .chat-list-header {
     padding: 10px;
     text-align: center;
@@ -468,7 +525,11 @@
     height: 50px;
     z-index: 5;
     min-width: 300px;
-    user-select: none;
+    user-select: none;}
+
+.chat-last-message, .chat-last-message-data{
+    color: #9ca3af;
+    font-weight: bold !important;
 }
 
 .chat-name-last-message {
@@ -483,15 +544,21 @@
     height: 40px;
 }
 
-.chat-info img {
+.chat-info .avatar {
     margin-top: -5px;
     width: 40px;
     height: 40px;
 }
 
 .chat-name {
+    display: flex;
     margin-top: -8px;
     color: #e5dfd3;
+}
+
+.conv-icon {
+    margin-top: 4px;
+    margin-right: 4px;
 }
 
 .chat-last-message {
@@ -585,6 +652,130 @@ input {
 
 input:focus {
     outline: none;
+}
+
+.joypixels {
+    width: 24px;
+    height: 24px;
+}
+
+.chat-info .joypixels {
+    width: 16px;
+    height: 16px;
+}
+
+/* Стили для выпадающего списка */
+.emoji-dropdown {
+    display: inline-block;
+}
+
+.emoji-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.emoji-menu {
+    position: absolute;
+    bottom: 80px;
+    margin: 10px;
+    max-width: 200px;
+    left: 0;
+    display: none;
+    box-shadow: 0 2px 4px #0003;
+    border-radius: 0.5em;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.emoji-item {
+    padding: 8px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.menu {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: #4b5563;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.8em;
+}
+
+.menu li {
+    cursor: pointer;
+    width: 100%;
+    padding: 8px;
+}
+
+.menu li:hover {
+    background-color: #6b7280;
+    border-radius: 0.5em;
+}
+
+.open-menu-button {
+    cursor: pointer;
+}
+
+.input-container {
+    text-align: center;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    flex-direction: column;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    background-color: #4b5563;
+    padding: 20px;
+    border-radius: 0.8em;
+}
+
+.input-container input {
+    background-color: #4b5563;
+    border-radius: 0.5em;
+    margin: 10px;
+}
+
+.input-container button {
+    border-radius: 0.5em;
+    padding: 6px 10px 6px 10px;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.input-container button:hover {
+    background-color: #6b7280;
+}
+
+.add-users-conv-list {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: #4b5563;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.8em;
 }
 
 

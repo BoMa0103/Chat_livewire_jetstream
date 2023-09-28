@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d2bd816a134f359a49a1513482a46e3",
+    "content-hash": "a83f5dc0c724e775f092ff5cdce8b12a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1208,6 +1208,55 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
+            "name": "joypixels/emoji-toolkit",
+            "version": "6.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joypixels/emoji-toolkit.git",
+                "reference": "99f960c37eef1bdd0a3e30a676f8839c88e48ce3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joypixels/emoji-toolkit/zipball/99f960c37eef1bdd0a3e30a676f8839c88e48ce3",
+                "reference": "99f960c37eef1bdd0a3e30a676f8839c88e48ce3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6 || ~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JoyPixels\\": "lib/php/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(CC-BY-4.0 and MIT)"
+            ],
+            "description": "JoyPixels is a complete set of emoji designed for the web. The emoji-toolkit includes libraries to easily convert unicode characters to shortnames (:smile:) and shortnames to JoyPixels emoji images. PNG formats provided for the emoji images.",
+            "homepage": "http://www.joypixels.com",
+            "keywords": [
+                "JoyPixels",
+                "emoji",
+                "emoji-toolkit",
+                "emojione",
+                "emojis",
+                "emoticons",
+                "smileys",
+                "smilies",
+                "unicode"
+            ],
+            "support": {
+                "issues": "https://github.com/joypixels/emoji-toolkit/issues",
+                "source": "https://github.com/joypixels/emoji-toolkit/tree/6.6.0"
+            },
+            "time": "2021-07-08T22:11:29+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -2805,6 +2854,77 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "overtrue/laravel-emoji",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-emoji.git",
+                "reference": "9cdd16840343d14b08889d05b48b9c79b0304ed3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/laravel-emoji/zipball/9cdd16840343d14b08889d05b48b9c79b0304ed3",
+                "reference": "9cdd16840343d14b08889d05b48b9c79b0304ed3",
+                "shasum": ""
+            },
+            "require": {
+                "joypixels/emoji-toolkit": "^6.6",
+                "laravel/framework": "^9.0|^10.0"
+            },
+            "require-dev": {
+                "laravel/pint": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Overtrue\\LaravelEmoji\\EmojiServiceProvider"
+                    ],
+                    "aliases": {
+                        "Emoji": "Overtrue\\LaravelEmoji\\Emoji"
+                    }
+                },
+                "hooks": {
+                    "pre-commit": [
+                        "composer check-style"
+                    ],
+                    "pre-push": [
+                        "composer check-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Overtrue\\LaravelEmoji\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "An emojione bridge for Laravel.",
+            "support": {
+                "issues": "https://github.com/overtrue/laravel-emoji/issues",
+                "source": "https://github.com/overtrue/laravel-emoji/tree/2.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/overtrue",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-15T08:31:02+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -8942,5 +9062,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }

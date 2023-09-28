@@ -5,21 +5,17 @@ namespace App\Livewire\Chat;
 use App\Events\MessageRead;
 use App\Models\Chat;
 use App\Models\User;
+use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
 
 class Chatbox extends Component
 {
     public $selectedChat;
-    public $receiverInstance;
     public $messages;
     public $paginateVar = 20;
     public $messages_count;
-
-    private function getMessagesService(): MessagesService
-    {
-        return app(MessagesService::class);
-    }
+    public $receivers;
 
     public function getListeners()
     {
@@ -27,18 +23,25 @@ class Chatbox extends Component
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',
-        ];
+            'loadChat', 'pushMessage', 'broadcastMessageRead', 'resetChat',];
     }
 
-    public function resetChat(){
-        $this->selectedChat = null;
-        $this->receiverInstance = null;
-        $this->dispatch('refresh');
+    private function getMessagesService(): MessagesService
+    {
+        return app(MessagesService::class);
+    }
+
+    private function getChatsService(): ChatsService
+    {
+        return app(ChatsService::class);
     }
 
     function broadcastedMessageReceived($event)
     {
+        if($event['user']['id'] === auth()->id()) {
+            return;
+        }
+
         $this->dispatch('refresh');
 
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
@@ -64,10 +67,15 @@ class Chatbox extends Component
 
     public function broadcastMessageRead()
     {
-        broadcast(new MessageRead(
-            $this->selectedChat->id,
-            $this->receiverInstance->id,
-        ));
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
     }
 
     public function pushMessage(int $messageId)
@@ -79,19 +87,29 @@ class Chatbox extends Component
         $this->dispatch('rowChatToBottom');
     }
 
-    public function loadChat(Chat $chat, User $receiver)
+    public function loadChat(Chat $chat)
     {
         $this->selectedChat = $chat;
-        $this->receiverInstance = $receiver;
+
+        $this->receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
 
         $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
 
         $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
 
-        $this->dispatch('chat');
-        $this->dispatch('header');
+        // don't send messages directly because they parse to array
+        $this->dispatch('refreshChat', $this->selectedChat, $this->messages_count, $this->paginateVar);
+        $this->dispatch('refreshHeader', $this->selectedChat);
+        $this->dispatch('refreshUserListForConversation', $this->selectedChat);
 
         $this->dispatch('chatSelected');
+    }
+
+    public function resetChat()
+    {
+        $this->selectedChat = null;
+        $this->receivers = null;
+        $this->dispatch('refresh');
     }
 
     public function render()

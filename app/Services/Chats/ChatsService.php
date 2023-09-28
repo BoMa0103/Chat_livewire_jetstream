@@ -31,4 +31,9 @@ class ChatsService
     {
         return $this->chatRepository->getChatsOrderByDesc($userId);
     }
+
+    public function getChatReceivers(int $chatId, int $senderUserId)
+    {
+        return $this->chatRepository->getChatReceivers($chatId, $senderUserId);
+    }
 }

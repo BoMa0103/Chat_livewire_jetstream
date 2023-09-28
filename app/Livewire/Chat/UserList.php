@@ -7,6 +7,7 @@ use App\Events\MarkAsOnline;
 use App\Models\Chat;
 use App\Models\User;
 use App\Services\Chats\ChatsService;
+use App\Services\Users\UsersService;
 use Livewire\Component;
 
 class UserList extends Component
@@ -18,30 +19,34 @@ class UserList extends Component
         return app(ChatsService::class);
     }
 
+    private function getUsersService(): UsersService
+    {
+        return app(UsersService::class);
+    }
+
     public function checkChat(int $userId)
     {
         $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->user()->id, $userId);
 
         if (!$checkedChat) {
             $createdChat = $this->getChatsService()->createFromArray([
-                'user_id_first' => auth()->user()->id,
-                'user_id_second' => $userId,
+                'chat_type' => Chat::PRIVATE
             ]);
 
-            broadcast(event: new ChatCreate(
-                $createdChat->id,
-                $userId));
+            $createdChat->users()->attach($userId);
+            $createdChat->users()->attach(auth()->user());
+
+            broadcast(event: new ChatCreate($createdChat->id, $userId));
 
             $this->dispatch('refreshChatList');
 
-            broadcast(event: new MarkAsOnline(
-                auth()->user()->id));
+            broadcast(event: new MarkAsOnline(auth()->user()->id));
         }
     }
 
     public function render()
     {
-        $this->users = User::where('id', '!=', auth()->user()->id)->get();
+        $this->users = $this->getUsersService()->getUsersWithoutUserWithId(auth()->user()->id);
         return view('livewire.chat.user-list');
     }
 }

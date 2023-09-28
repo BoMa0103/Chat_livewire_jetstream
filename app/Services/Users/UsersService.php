@@ -17,4 +17,19 @@ class UsersService
     {
         return $this->userRepository->find($id);
     }
+
+    public function createFromArray(array $data): User
+    {
+        return $this->userRepository->createFromArray($data);
+    }
+
+    public function getUsersWithoutUserWithId(int $id)
+    {
+        return $this->userRepository->getUsersWithoutUserWithId($id);
+    }
+
+    public function getUsersAreNotInChat(int $chatId)
+    {
+        return $this->userRepository->getUsersAreNotInChat($chatId);
+    }
 }

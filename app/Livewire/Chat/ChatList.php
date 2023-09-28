@@ -2,18 +2,16 @@
 
 namespace App\Livewire\Chat;
 
+use App\Events\ChatCreate;
 use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
 use App\Models\Chat;
-use App\Models\Message;
-use App\Models\User;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use App\Events\ChatCreate;
 
 class ChatList extends Component
 {
@@ -23,6 +21,18 @@ class ChatList extends Component
     public $name;
     public $selectedChat;
     public $selectedFirstChatFlag = false;
+
+    public function getListeners()
+    {
+        $auth_id = auth()->user()->id;
+
+        return [
+            "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
+            "echo:online,MarkAsOnline" => 'markChatAsOnline',
+            "echo:online,MarkAsOffline" => 'markChatAsOffline',
+            "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
+            'chatUserSelected', 'refresh' => '$refresh', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
+    }
 
     private function getChatsService(): ChatsService
     {
@@ -39,19 +49,6 @@ class ChatList extends Component
         return app(MessagesService::class);
     }
 
-    public function getListeners()
-    {
-        $auth_id = auth()->user()->id;
-
-        return [
-            "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
-            "echo:online,MarkAsOnline" => 'markChatAsOnline',
-            "echo:online,MarkAsOffline" => 'markChatAsOffline',
-            "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
-            'chatUserSelected', 'refresh' => '$refresh', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats'
-        ];
-    }
-
     public function searchChats($chatName)
     {
         $chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
@@ -59,22 +56,32 @@ class ChatList extends Component
 
         foreach ($chats as $chat) {
 
-            if($chat->user_id_first === $this->auth_id) {
-                $chatNameTmp = $this->getUsersService()->find($chat->user_id_second)->name;
-                if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
-                    $this->chats [] = $chat;
-                }
-            }else {
-                $chatNameTmp = $this->getUsersService()->find($chat->user_id_first)->name;
-                if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
-                    $this->chats [] = $chat;
-                }
+            if ($chat->name) {
+                $chatNameTmp = $chat->name;
+            } else {
+                $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
             }
 
+            if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
+                $this->chats [] = $chat;
+            }
         }
     }
 
-    public function resetChat(){
+    public function createConversation($conversationName)
+    {
+        $createdChat = $this->getChatsService()->createFromArray([
+            'name' => $conversationName,
+            'chat_type' => Chat::CONVERSATION,
+        ]);
+
+        $createdChat->users()->attach(auth()->user());
+
+        $this->dispatch('refreshChatList');
+    }
+
+    public function resetChat()
+    {
         $this->selectedChat = null;
         $this->receiverInstance = null;
     }
@@ -85,7 +92,7 @@ class ChatList extends Component
 
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['receiver_user_id']);
 
-        if($chat){
+        if ($chat) {
             $this->dispatch('markChatCircleAsOnline', $chat->id);
         }
     }
@@ -114,7 +121,7 @@ class ChatList extends Component
 
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['user_id']);
 
-        if($chat){
+        if ($chat) {
             $this->dispatch('markChatCircleAsOffline', $chat->id);
         }
     }
@@ -126,37 +133,52 @@ class ChatList extends Component
         ));
     }
 
-    public function refreshChatList() {
+    public function refreshChatList()
+    {
         $this->chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
 
         $this->dispatch('refresh');
     }
 
-    public function chatUserSelected(Chat $chat, $receiverId)
+    public function chatUserSelected(Chat $chat)
     {
         $this->selectedChat = $chat;
 
-        $receiverInstance = $this->getUsersService()->find($receiverId);
+        $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
 
-        $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
+        if(!$receivers->count()) {
+            $this->dispatch('loadChat', $this->selectedChat);
 
-        $this->dispatch('loadChat', $this->selectedChat, $receiverInstance);
+            $this->dispatch('loadChatData', $this->selectedChat);
+
+            $this->dispatch('updateSendMessage', $this->selectedChat);
+
+            return;
+        }
+
+        foreach ($receivers as $receiver) {
+            $receiverInstance = $this->getUsersService()->find($receiver->id);
+
+            $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
+        }
+        $this->dispatch('loadChat', $this->selectedChat);
 
         $this->dispatch('loadChatData', $this->selectedChat);
 
-        $this->dispatch('updateSendMessage', $this->selectedChat, $receiverInstance);
-
         $this->dispatch('broadcastMessageRead');
+
+        $this->dispatch('updateSendMessage', $this->selectedChat);
+
     }
 
     public function getChatUserInstance(Chat $chat, $request)
     {
         $this->auth_id = auth()->id();
 
-        if ($chat->user_id_first == $this->auth_id) {
-            $this->receiverInstance = $this->getUsersService()->find($chat->user_id_second);
-        } else {
-            $this->receiverInstance = $this->getUsersService()->find($chat->user_id_first);
+        $this->receiverInstance = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first();
+
+        if(!$this->receiverInstance) {
+            return null;
         }
 
         if (isset($request)) {
@@ -170,8 +192,7 @@ class ChatList extends Component
 
         $this->chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
 
-        broadcast(event: new MarkAsOnline(
-            $this->auth_id));
+        broadcast(event: new MarkAsOnline($this->auth_id));
     }
 
     public function render()

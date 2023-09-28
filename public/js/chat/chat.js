@@ -41,6 +41,36 @@ function showUsers() {
     users_header.css('padding-right', '38px');
 }
 
+function showHideMenu() {
+    var overlay = document.getElementById('overlay-menu');
+    var inputContainer = document.getElementById('input-container');
+    var menu = document.getElementById('menu');
+
+    if (overlay.style.display === 'block' && menu.style.display === 'block') {
+        overlay.style.display = 'none';
+        menu.style.display = 'none';
+    } else if (overlay.style.display === 'block' && inputContainer.style.display === 'flex') {
+        overlay.style.display = 'none';
+        inputContainer.style.display = 'none';
+    } else {
+        overlay.style.display = 'block';
+        menu.style.display = 'block';
+    }
+}
+
+function showHideUsers() {
+    var overlay = document.getElementById('overlay-users');
+    var users = document.getElementById('add-users-conv-list');
+
+    if (overlay.style.display === 'block' && users.style.display === 'block') {
+        overlay.style.display = 'none';
+        users.style.display = 'none';
+    } else {
+        overlay.style.display = 'block';
+        users.style.display = 'block';
+    }
+}
+
 function hideUsers() {
     let users = $('.users');
     let users_header = $('.users_header');
@@ -96,10 +126,8 @@ function notifyMe(json) {
 /* Events */
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    let chatMessages = document.getElementById('messages');
     let textArea = document.getElementById('text');
     let sendButton = document.getElementById('send');
-    let search = document.getElementById('default-search');
 
     textArea.addEventListener('input', function () {
         if (textArea.value.trim() !== '') {

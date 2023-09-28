@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -92,13 +93,9 @@ class User extends Authenticatable
         return $this->hasMany(Message::class);
     }
 
-    public function chats(): HasMany
+    public function chats(): BelongsToMany
     {
-        // @todo use pivot
-        $firstParticipantChats = $this->hasMany(Chat::class, 'user_id_first');
-        $secondParticipantChats = $this->hasMany(Chat::class, 'user_id_second');
-
-        return $firstParticipantChats->union($secondParticipantChats);
+        return $this->belongsToMany(Chat::class);
     }
 
     protected $appends = [
