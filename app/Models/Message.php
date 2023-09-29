@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\MessageFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Message
@@ -12,22 +15,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $content
  * @property string $user
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Message query()
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereFromUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereSendTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereValue($value)
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Message newModelQuery()
+ * @method static Builder|Message newQuery()
+ * @method static Builder|Message query()
+ * @method static Builder|Message whereCreatedAt($value)
+ * @method static Builder|Message whereFromUser($value)
+ * @method static Builder|Message whereId($value)
+ * @method static Builder|Message whereSendTime($value)
+ * @method static Builder|Message whereUpdatedAt($value)
+ * @method static Builder|Message whereValue($value)
  * @property int $user_id
- * @property-read \App\Models\User|null $company
- * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereUserId($value)
- * @mixin \Eloquent
+ * @property-read User|null $company
+ * @method static MessageFactory factory($count = null, $state = [])
+ * @method static Builder|Message whereUserId($value)
  */
 class Message extends Model
 {
