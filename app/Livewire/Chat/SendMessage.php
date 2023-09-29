@@ -4,7 +4,6 @@ namespace App\Livewire\Chat;
 
 use App\Events\MessageSent;
 use App\Models\Chat;
-use App\Models\User;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
@@ -13,11 +12,14 @@ use Overtrue\LaravelEmoji\Emoji;
 class SendMessage extends Component
 {
     public $selectedChat;
-    public $body;
+
     public $createdMessage;
+
+    public $body;
+
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent'];
 
-    public function updateSendMessage(Chat $chat)
+    public function updateSendMessage(Chat $chat): void
     {
         $this->selectedChat = $chat;
     }
@@ -32,7 +34,7 @@ class SendMessage extends Component
         return app(ChatsService::class);
     }
 
-    function sendMessage()
+    public function sendMessage()
     {
         if ($this->body == null) {
             return null;
@@ -45,7 +47,6 @@ class SendMessage extends Component
 
         $this->dispatch('pushMessage', $this->createdMessage->id);
 
-        $this->dispatch('refresh');
         $this->dispatch('refreshChatList');
 
         $this->reset('body');

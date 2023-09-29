@@ -14,7 +14,7 @@ class ChatboxHeader extends Component
 
     public function getListeners()
     {
-        return ['refresh' => '$refresh', 'refreshHeader'];
+        return ['refreshHeader'];
     }
 
     private function getUsersService(): UsersService

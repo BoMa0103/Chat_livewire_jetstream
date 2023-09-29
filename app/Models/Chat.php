@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string|null $name
  * @property int $chat_type
+ * @property Carbon|null $last_time_message
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $user

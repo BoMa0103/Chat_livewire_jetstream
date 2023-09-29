@@ -33,7 +33,7 @@ class ChatboxChat extends Component
         return app(MessagesService::class);
     }
 
-    function broadcastedMessageRead($event)
+    public function broadcastedMessageRead($event)
     {
         if ($this->selectedChat) {
             if ((int)$this->selectedChat->id === (int)$event['chat_id']) {
@@ -42,7 +42,7 @@ class ChatboxChat extends Component
         }
     }
 
-    function broadcastedMessageReceived($event)
+    public function broadcastedMessageReceived($event)
     {
         if($event['user']['id'] === auth()->id()) {
             return;
@@ -112,7 +112,6 @@ class ChatboxChat extends Component
     public function loadChatData(Chat $chat)
     {
         $this->selectedChat = $chat;
-//        dump($this->selectedChat->id);
     }
 
     public function mount()

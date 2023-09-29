@@ -36,7 +36,7 @@ class Chatbox extends Component
         return app(ChatsService::class);
     }
 
-    function broadcastedMessageReceived($event)
+    public function broadcastedMessageReceived($event): void
     {
         if($event['user']['id'] === auth()->id()) {
             return;
@@ -65,7 +65,7 @@ class Chatbox extends Component
         $this->dispatch('refreshChatList');
     }
 
-    public function broadcastMessageRead()
+    public function broadcastMessageRead(): void
     {
         $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
 
@@ -78,7 +78,7 @@ class Chatbox extends Component
         }
     }
 
-    public function pushMessage(int $messageId)
+    public function pushMessage(int $messageId): void
     {
         $newMessage = $this->getMessagesService()->find($messageId);
 
@@ -87,7 +87,7 @@ class Chatbox extends Component
         $this->dispatch('rowChatToBottom');
     }
 
-    public function loadChat(Chat $chat)
+    public function loadChat(Chat $chat): void
     {
         $this->selectedChat = $chat;
 
@@ -105,7 +105,7 @@ class Chatbox extends Component
         $this->dispatch('chatSelected');
     }
 
-    public function resetChat()
+    public function resetChat(): void
     {
         $this->selectedChat = null;
         $this->receivers = null;

@@ -31,7 +31,7 @@ class ChatList extends Component
             "echo:online,MarkAsOnline" => 'markChatAsOnline',
             "echo:online,MarkAsOffline" => 'markChatAsOffline',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
-            'chatUserSelected', 'refresh' => '$refresh', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
+            'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
     }
 
     private function getChatsService(): ChatsService
@@ -49,7 +49,7 @@ class ChatList extends Component
         return app(MessagesService::class);
     }
 
-    public function searchChats($chatName)
+    public function searchChats($chatName): void
     {
         $chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
         $this->chats = [];
@@ -68,7 +68,7 @@ class ChatList extends Component
         }
     }
 
-    public function createConversation($conversationName)
+    public function createConversation($conversationName): void
     {
         $createdChat = $this->getChatsService()->createFromArray([
             'name' => $conversationName,
@@ -80,13 +80,13 @@ class ChatList extends Component
         $this->dispatch('refreshChatList');
     }
 
-    public function resetChat()
+    public function resetChat(): void
     {
         $this->selectedChat = null;
         $this->receiverInstance = null;
     }
 
-    public function markReceiveChatAsOnline($event)
+    public function markReceiveChatAsOnline($event): void
     {
         $user_id = $this->auth_id;
 
@@ -97,7 +97,7 @@ class ChatList extends Component
         }
     }
 
-    public function markChatAsOnline($event)
+    public function markChatAsOnline($event): void
     {
         $user_id = $this->auth_id;
 
@@ -115,7 +115,7 @@ class ChatList extends Component
         $this->dispatch('markChatCircleAsOnline', $chat->id);
     }
 
-    public function markChatAsOffline($event)
+    public function markChatAsOffline($event): void
     {
         $user_id = $this->auth_id;
 
@@ -126,33 +126,29 @@ class ChatList extends Component
         }
     }
 
-    public function sendEventMarkChatAsOffline()
+    public function sendEventMarkChatAsOffline(): void
     {
         broadcast(event: new MarkAsOffline(
             $this->auth_id,
         ));
     }
 
-    public function refreshChatList()
+    public function refreshChatList(): void
     {
         $this->chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
-
-        $this->dispatch('refresh');
     }
 
-    public function chatUserSelected(Chat $chat)
+    public function chatUserSelected(Chat $chat): void
     {
         $this->selectedChat = $chat;
 
         $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
 
+        $this->dispatch('loadChat', $this->selectedChat);
+        $this->dispatch('loadChatData', $this->selectedChat);
+        $this->dispatch('updateSendMessage', $this->selectedChat);
+
         if(!$receivers->count()) {
-            $this->dispatch('loadChat', $this->selectedChat);
-
-            $this->dispatch('loadChatData', $this->selectedChat);
-
-            $this->dispatch('updateSendMessage', $this->selectedChat);
-
             return;
         }
 
@@ -161,14 +157,8 @@ class ChatList extends Component
 
             $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
         }
-        $this->dispatch('loadChat', $this->selectedChat);
-
-        $this->dispatch('loadChatData', $this->selectedChat);
 
         $this->dispatch('broadcastMessageRead');
-
-        $this->dispatch('updateSendMessage', $this->selectedChat);
-
     }
 
     public function getChatUserInstance(Chat $chat, $request)
@@ -184,9 +174,11 @@ class ChatList extends Component
         if (isset($request)) {
             return $this->receiverInstance->$request;
         }
+
+        return null;
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->auth_id = auth()->id();
 
