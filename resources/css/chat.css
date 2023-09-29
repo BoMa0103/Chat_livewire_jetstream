@@ -680,7 +680,7 @@ input:focus {
     position: absolute;
     bottom: 80px;
     margin: 10px;
-    max-width: 200px;
+    max-width: 196px;
     left: 0;
     display: none;
     box-shadow: 0 2px 4px #0003;
@@ -692,6 +692,14 @@ input:focus {
     padding: 8px;
     cursor: pointer;
     display: inline-block;
+}
+
+.emoji-item:hover {
+    padding: 3px 5.5px;
+    font-size: 20px;
+    border-radius: 0.5em;
+    background-color: #6b7280;
+    transition: background-color 0.2s ease;
 }
 
 .overlay {

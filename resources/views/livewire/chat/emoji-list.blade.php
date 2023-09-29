@@ -1,0 +1,22 @@
+<div class="emoji-menu">
+    <div class="emoji-item">😀</div>
+    <div class="emoji-item">😍</div>
+    <div class="emoji-item">😂</div>
+    <div class="emoji-item">😁</div>
+    <div class="emoji-item">🤣</div>
+    <div class="emoji-item">😃</div>
+    <div class="emoji-item">😄</div>
+    <div class="emoji-item">😅</div>
+    <div class="emoji-item">😆</div>
+    <div class="emoji-item">😎</div>
+    <div class="emoji-item">😙</div>
+    <div class="emoji-item">🤗</div>
+    <div class="emoji-item">😐</div>
+    <div class="emoji-item">😖</div>
+    <div class="emoji-item">😭</div>
+    <div class="emoji-item">😡</div>
+    <div class="emoji-item">🤬</div>
+    <div class="emoji-item">🤨</div>
+    <div class="emoji-item">🙄</div>
+    <div class="emoji-item">😤</div>
+</div>

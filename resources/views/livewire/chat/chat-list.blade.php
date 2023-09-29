@@ -143,10 +143,9 @@
             let conversationName = document.getElementById('conversation-name-input');
 
             if (conversationName.value.trim() !== '') {
-            @this.dispatch('createConversation', {
-                conversationName: conversationName.value.trim()
-            })
-
+                @this.dispatch('createConversation', {
+                    conversationName: conversationName.value.trim()
+                })
             }
         }
 
@@ -154,13 +153,11 @@
 
         search.addEventListener('input', function () {
             if (search.value.trim() !== '') {
-            @this.dispatch('searchChats', {
-                chatName: search.value.trim()
-            })
-
+                @this.dispatch('searchChats', {
+                    chatName: search.value.trim()
+                })
             } else {
-            @this.dispatch('refreshChatList')
-
+                @this.dispatch('refreshChatList');
             }
         });
     </script>
