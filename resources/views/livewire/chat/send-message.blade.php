@@ -42,11 +42,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            var hideTimeout; // Переменная для хранения идентификатора таймера
 
-            // При клике на кнопку, показать меню
             $(".emoji-dropdown .emoji-button").click(function () {
-                clearTimeout(hideTimeout); // Очистить таймер скрытия меню, если он был запущен
                 var $menu = $(this).siblings(".emoji-menu");
                 if ($menu.css("display") === "none") {
                     $menu.css("display", "block");
@@ -61,16 +58,62 @@
                 textarea.dispatchEvent(new Event('input'));
             }
 
-            // Обработчик клика на смайлике
             $(".emoji-item").click(function () {
                 var selectedEmoji = $(this).text();
                 insertEmoji(selectedEmoji);
             });
 
-            // Закрыть меню, если клик произошел за его пределами
             $(document).click(function (e) {
                 if (!$(e.target).closest(".emoji-dropdown").length) {
                     $(".emoji-menu").css("display", "none");
+                }
+            });
+
+            const textArea = document.getElementById('text');
+
+            textArea.addEventListener('keydown', function(event) {
+                if(event.key === "Enter" && !event.ctrlKey && !event.shiftKey) {
+                    @this.dispatch('sendMessage')
+                    event.preventDefault();
+                }else if(event.key === "Enter" && (event.ctrlKey || event.shiftKey)) {
+                    const scrollHeight = this.scrollHeight;
+                    const scrollTop = this.scrollTop;
+                    const clientHeight = this.clientHeight;
+
+                    const currentValue = this.value;
+                    const selectionStart = this.selectionStart;
+                    const selectionEnd = this.selectionEnd;
+
+                    this.value = currentValue.substring(0, selectionStart) + '\n' + currentValue.substring(selectionEnd);
+                    this.selectionStart = this.selectionEnd = selectionStart + 1;
+
+                    if(textArea.rows < 6) {
+                        textArea.rows = textArea.rows + 1;
+                    }
+
+                    if (scrollTop + clientHeight >= scrollHeight) {
+                        this.scrollTop = scrollHeight;
+                    }
+
+                    event.preventDefault();
+                }else if(event.key === "Backspace") {
+                    // const currentValue = this.value;
+                    // const selectionStart = this.selectionStart;
+                    // const selectionEnd = this.selectionEnd;
+                    //
+                    // const lines = currentValue.split('\n');
+                    // const currentLineIndex = currentValue.substr(0, selectionStart).split('\n').length - 1;
+                    // const currentLine = lines[currentLineIndex];
+                    //
+                    // if (currentLineIndex > 0) {
+                    //     lines.splice(currentLineIndex, 1);
+                    //     this.value = lines.join('\n');
+                    //
+                    //     if (textArea.rows > 1) {
+                    //         event.preventDefault();
+                    //         textArea.rows = textArea.rows - 1;
+                    //     }
+                    // }
                 }
             });
         });

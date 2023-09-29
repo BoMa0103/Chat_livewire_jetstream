@@ -1,62 +1,3 @@
-<style>
-
-    /* Стили для ширины экрана больше 1028px */
-    @media (min-width: 1029px) {
-        .chat-list {
-            display: block;
-        }
-
-        .no-chat {
-            display: flex;
-        }
-
-        .return {
-            display: none;
-        }
-
-        .show-users-in-list {
-            display: none;
-        }
-    }
-
-    /* Стили для ширины экрана от 768px до 1028px */
-    @media (max-width: 1028px) and (min-width: 768px) {
-        .chat-list {
-            display: block;
-        }
-
-        .no-chat {
-            display: flex;
-        }
-
-        .users, .return {
-            display: none;
-        }
-
-        .show-users-in-list {
-            display: none;
-        }
-    }
-
-    /* Стили для ширины экрана меньше 768px */
-    @media (max-width: 767px) {
-        .chat-list, .users, .no-chat {
-            display: none;
-        }
-
-        .return {
-            display: block;
-        }
-
-        .concave-left {
-            display: block !important;
-        }
-
-        .show-users-no-chat {
-            display: none;
-        }
-    }
-</style>
 
 <div class="chat-container">
     <div class="chat-list">
@@ -74,6 +15,8 @@
     </div>
 
 </div>
+
+
 
 <script>
     window.onload = function () {

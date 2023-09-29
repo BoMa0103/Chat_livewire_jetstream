@@ -179,7 +179,7 @@
 }
 
 .message {
-    align-self: flex-end; /* Выравнивание сообщения по нижнему краю */
+    align-self: flex-end;
     display: flex;
     margin-bottom: 10px;
     max-width: 340px;
@@ -256,6 +256,7 @@
     resize: none !important;
     overflow: hidden;
     height: 100%;
+    user-select: none;
 }
 
 .no-chat {
@@ -667,6 +668,7 @@ input:focus {
 /* Стили для выпадающего списка */
 .emoji-dropdown {
     display: inline-block;
+    user-select: none;
 }
 
 .emoji-button {
@@ -784,6 +786,65 @@ input:focus {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 0.8em;
+}
+
+
+
+/* MEDIA */
+
+
+@media (min-width: 1029px) {
+    .chat-list {
+        display: block;
+    }
+
+    .no-chat {
+        display: flex;
+    }
+
+    .return {
+        display: none;
+    }
+
+    .show-users-in-list {
+        display: none;
+    }
+}
+
+@media (max-width: 1028px) and (min-width: 768px) {
+    .chat-list {
+        display: block;
+    }
+
+    .no-chat {
+        display: flex;
+    }
+
+    .users, .return {
+        display: none;
+    }
+
+    .show-users-in-list {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .chat-list, .users, .no-chat {
+        display: none;
+    }
+
+    .return {
+        display: block;
+    }
+
+    .concave-left {
+        display: block !important;
+    }
+
+    .show-users-no-chat {
+        display: none;
+    }
 }
 
 

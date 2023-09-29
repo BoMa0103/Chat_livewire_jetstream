@@ -17,7 +17,7 @@ class SendMessage extends Component
 
     public $body;
 
-    protected $listeners = ['updateSendMessage', 'dispatchMessageSent'];
+    protected $listeners = ['updateSendMessage', 'dispatchMessageSent', 'sendMessage'];
 
     public function updateSendMessage(Chat $chat): void
     {
@@ -36,7 +36,7 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-        if ($this->body == null) {
+        if (!$this->body || trim($this->body) == '') {
             return null;
         }
 
