@@ -656,8 +656,9 @@ input:focus {
 }
 
 .joypixels {
-    width: 24px;
-    height: 24px;
+    padding: 1px;
+    width: 20px;
+    height: 20px;
 }
 
 .chat-info .joypixels {
@@ -786,6 +787,10 @@ input:focus {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 0.8em;
+}
+
+img {
+    display: inline;
 }
 
 
