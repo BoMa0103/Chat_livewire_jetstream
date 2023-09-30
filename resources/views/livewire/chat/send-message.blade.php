@@ -22,28 +22,7 @@
                               d="M13.408 7.5h.01m-6.876 0h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM4.6 11a5.5 5.5 0 0 0 10.81 0H4.6Z"/>
                     </svg>
                 </button>
-                <div class="emoji-menu">
-                    <div class="emoji-item">😀</div>
-                    <div class="emoji-item">😍</div>
-                    <div class="emoji-item">😂</div>
-                    <div class="emoji-item">😁</div>
-                    <div class="emoji-item">🤣</div>
-                    <div class="emoji-item">😃</div>
-                    <div class="emoji-item">😄</div>
-                    <div class="emoji-item">😅</div>
-                    <div class="emoji-item">😆</div>
-                    <div class="emoji-item">😎</div>
-                    <div class="emoji-item">😙</div>
-                    <div class="emoji-item">🤗</div>
-                    <div class="emoji-item">😐</div>
-                    <div class="emoji-item">😖</div>
-                    <div class="emoji-item">😭</div>
-                    <div class="emoji-item">😡</div>
-                    <div class="emoji-item">🤬</div>
-                    <div class="emoji-item">🤨</div>
-                    <div class="emoji-item">🙄</div>
-                    <div class="emoji-item">😤</div>
-                </div>
+                @livewire('chat.emoji-list')
             </div>
             <textarea wire:model="body" id="text" rows="1"
                       class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat_textarea"
@@ -63,11 +42,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            var hideTimeout; // Переменная для хранения идентификатора таймера
 
-            // При клике на кнопку, показать меню
             $(".emoji-dropdown .emoji-button").click(function () {
-                clearTimeout(hideTimeout); // Очистить таймер скрытия меню, если он был запущен
                 var $menu = $(this).siblings(".emoji-menu");
                 if ($menu.css("display") === "none") {
                     $menu.css("display", "block");
@@ -82,16 +58,72 @@
                 textarea.dispatchEvent(new Event('input'));
             }
 
-            // Обработчик клика на смайлике
             $(".emoji-item").click(function () {
                 var selectedEmoji = $(this).text();
                 insertEmoji(selectedEmoji);
             });
 
-            // Закрыть меню, если клик произошел за его пределами
             $(document).click(function (e) {
                 if (!$(e.target).closest(".emoji-dropdown").length) {
                     $(".emoji-menu").css("display", "none");
+                }
+            });
+
+            const textArea = document.getElementById('text');
+
+            textArea.addEventListener('keydown', function(event) {
+                if(event.key === "Enter" && !event.ctrlKey && !event.shiftKey) {
+                    @this.dispatch('sendMessage')
+                    event.preventDefault();
+                }else if(event.key === "Enter" && (event.ctrlKey || event.shiftKey)) {
+                    const scrollHeight = this.scrollHeight;
+                    const scrollTop = this.scrollTop;
+                    const clientHeight = this.clientHeight;
+
+                    const currentValue = this.value;
+                    const selectionStart = this.selectionStart;
+                    const selectionEnd = this.selectionEnd;
+
+                    this.value = currentValue.substring(0, selectionStart) + '\n' + currentValue.substring(selectionEnd);
+                    this.selectionStart = this.selectionEnd = selectionStart + 1;
+
+                    // @todo show more lines in textarea
+                    // if(textArea.rows < 6) {
+                    //     textArea.rows += 1;
+                    // }
+
+                    if (scrollTop + clientHeight >= scrollHeight) {
+                        this.scrollTop = scrollHeight;
+                    }
+
+                    event.preventDefault();
+                }else if(event.key === "Backspace") {
+                    // @todo add delete rows
+                    // const selectionStart = this.selectionStart;
+                    // const selectionEnd = this.selectionEnd;
+                    // const currentValue = this.value;
+                    // const lines = currentValue.split('\n');
+                    // const currentLineIndex = this.value.substr(0, selectionStart).split('\n').length - 1;
+                    //
+                    // console.log(selectionStart);
+                    //
+                    // if (selectionStart === selectionEnd && currentLineIndex > 0) {
+                    //     event.preventDefault();
+                    //
+                    //     const textToMove = lines[currentLineIndex].substring(selectionStart);
+                    //     lines[currentLineIndex - 1] += textToMove;
+                    //
+                    //     // Удаляем текущую строку
+                    //     lines.splice(currentLineIndex, 1);
+                    //
+                    //     // Обновляем значение текстового поля
+                    //     this.value = lines.join('\n');
+                    //
+                    //     // Уменьшаем количество строк
+                    //     this.rows -= 1;
+                    //
+                    //     this.selectionStart = this.selectionEnd = selectionStart - textToMove.length;
+                    // }
                 }
             });
         });

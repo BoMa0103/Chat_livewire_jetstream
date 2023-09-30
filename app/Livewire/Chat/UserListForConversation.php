@@ -14,13 +14,12 @@ class UserListForConversation extends Component
 
     protected $listeners = ['refreshUserListForConversation'];
 
-
     private function getUsersService(): UsersService
     {
         return app(UsersService::class);
     }
 
-    public function addUserToConversation(int $userId)
+    public function addUserToConversation(int $userId): void
     {
         $user = $this->getUsersService()->find($userId);
 
@@ -29,7 +28,7 @@ class UserListForConversation extends Component
         broadcast(event: new ChatCreate($this->selectedChat, $userId));
     }
 
-    public function refreshUserListForConversation(Chat $selectedChat)
+    public function refreshUserListForConversation(Chat $selectedChat): void
     {
         $this->selectedChat = $selectedChat;
     }

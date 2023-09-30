@@ -11,6 +11,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        // @todo create primary key in table and delete this key
         DB::statement('SET SESSION sql_require_primary_key=0');
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

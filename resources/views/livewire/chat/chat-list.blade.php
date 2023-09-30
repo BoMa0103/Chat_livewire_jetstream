@@ -83,8 +83,9 @@
                                         echo $chat->name;
                                     } @endphp
                                 </p>
-                                <p class="chat-last-message"
-                                   id="chat-last-message"> {!! $chat->messages->last() ? $chat->messages->last()->content : '' !!} </p>
+                                <p class="chat-last-message" id="chat-last-message">
+                                    {!! $this->customHtmlspecialcharsForImg($chat->messages->last()) ? $this->customHtmlspecialcharsForImg($chat->messages->last()) : '' !!}
+                                </p>
                             </div>
                             <p class="chat-last-message-data"
                                id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
@@ -143,10 +144,9 @@
             let conversationName = document.getElementById('conversation-name-input');
 
             if (conversationName.value.trim() !== '') {
-            @this.dispatch('createConversation', {
-                conversationName: conversationName.value.trim()
-            })
-
+                @this.dispatch('createConversation', {
+                    conversationName: conversationName.value.trim()
+                })
             }
         }
 
@@ -154,13 +154,11 @@
 
         search.addEventListener('input', function () {
             if (search.value.trim() !== '') {
-            @this.dispatch('searchChats', {
-                chatName: search.value.trim()
-            })
-
+                @this.dispatch('searchChats', {
+                    chatName: search.value.trim()
+                })
             } else {
-            @this.dispatch('refreshChatList')
-
+                @this.dispatch('refreshChatList');
             }
         });
     </script>

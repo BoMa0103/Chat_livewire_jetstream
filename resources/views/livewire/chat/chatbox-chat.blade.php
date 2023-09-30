@@ -11,7 +11,7 @@
                 {{ $message->user()->first()->name }}
             </div>
             <div class="message-content" id="message">
-                {!! $message->content !!}
+                {!! $this->customHtmlspecialcharsForImg($message) !!}
             </div>
             <div class="message-meta">
                 <div class="message-time" id="time"> {{$message->created_at->format('H:i')}} </div>

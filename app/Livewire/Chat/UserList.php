@@ -24,7 +24,7 @@ class UserList extends Component
         return app(UsersService::class);
     }
 
-    public function checkChat(int $userId)
+    public function checkChat(int $userId): void
     {
         $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->user()->id, $userId);
 

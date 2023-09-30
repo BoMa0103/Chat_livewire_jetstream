@@ -179,7 +179,7 @@
 }
 
 .message {
-    align-self: flex-end; /* Выравнивание сообщения по нижнему краю */
+    align-self: flex-end;
     display: flex;
     margin-bottom: 10px;
     max-width: 340px;
@@ -256,6 +256,7 @@
     resize: none !important;
     overflow: hidden;
     height: 100%;
+    user-select: none;
 }
 
 .no-chat {
@@ -655,8 +656,9 @@ input:focus {
 }
 
 .joypixels {
-    width: 24px;
-    height: 24px;
+    padding: 1px;
+    width: 20px;
+    height: 20px;
 }
 
 .chat-info .joypixels {
@@ -667,6 +669,7 @@ input:focus {
 /* Стили для выпадающего списка */
 .emoji-dropdown {
     display: inline-block;
+    user-select: none;
 }
 
 .emoji-button {
@@ -680,7 +683,7 @@ input:focus {
     position: absolute;
     bottom: 80px;
     margin: 10px;
-    max-width: 200px;
+    max-width: 196px;
     left: 0;
     display: none;
     box-shadow: 0 2px 4px #0003;
@@ -692,6 +695,14 @@ input:focus {
     padding: 8px;
     cursor: pointer;
     display: inline-block;
+}
+
+.emoji-item:hover {
+    padding: 3px 5.5px;
+    font-size: 20px;
+    border-radius: 0.5em;
+    background-color: #6b7280;
+    transition: background-color 0.2s ease;
 }
 
 .overlay {
@@ -776,6 +787,69 @@ input:focus {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 0.8em;
+}
+
+img {
+    display: inline;
+}
+
+
+
+/* MEDIA */
+
+
+@media (min-width: 1029px) {
+    .chat-list {
+        display: block;
+    }
+
+    .no-chat {
+        display: flex;
+    }
+
+    .return {
+        display: none;
+    }
+
+    .show-users-in-list {
+        display: none;
+    }
+}
+
+@media (max-width: 1028px) and (min-width: 768px) {
+    .chat-list {
+        display: block;
+    }
+
+    .no-chat {
+        display: flex;
+    }
+
+    .users, .return {
+        display: none;
+    }
+
+    .show-users-in-list {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .chat-list, .users, .no-chat {
+        display: none;
+    }
+
+    .return {
+        display: block;
+    }
+
+    .concave-left {
+        display: block !important;
+    }
+
+    .show-users-no-chat {
+        display: none;
+    }
 }
 
 
