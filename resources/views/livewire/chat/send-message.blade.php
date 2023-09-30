@@ -87,9 +87,10 @@
                     this.value = currentValue.substring(0, selectionStart) + '\n' + currentValue.substring(selectionEnd);
                     this.selectionStart = this.selectionEnd = selectionStart + 1;
 
-                    if(textArea.rows < 6) {
-                        textArea.rows = textArea.rows + 1;
-                    }
+                    // @todo show more lines in textarea
+                    // if(textArea.rows < 6) {
+                    //     textArea.rows += 1;
+                    // }
 
                     if (scrollTop + clientHeight >= scrollHeight) {
                         this.scrollTop = scrollHeight;
@@ -97,22 +98,31 @@
 
                     event.preventDefault();
                 }else if(event.key === "Backspace") {
-                    // const currentValue = this.value;
+                    // @todo add delete rows
                     // const selectionStart = this.selectionStart;
                     // const selectionEnd = this.selectionEnd;
-                    //
+                    // const currentValue = this.value;
                     // const lines = currentValue.split('\n');
-                    // const currentLineIndex = currentValue.substr(0, selectionStart).split('\n').length - 1;
-                    // const currentLine = lines[currentLineIndex];
+                    // const currentLineIndex = this.value.substr(0, selectionStart).split('\n').length - 1;
                     //
-                    // if (currentLineIndex > 0) {
+                    // console.log(selectionStart);
+                    //
+                    // if (selectionStart === selectionEnd && currentLineIndex > 0) {
+                    //     event.preventDefault();
+                    //
+                    //     const textToMove = lines[currentLineIndex].substring(selectionStart);
+                    //     lines[currentLineIndex - 1] += textToMove;
+                    //
+                    //     // Удаляем текущую строку
                     //     lines.splice(currentLineIndex, 1);
+                    //
+                    //     // Обновляем значение текстового поля
                     //     this.value = lines.join('\n');
                     //
-                    //     if (textArea.rows > 1) {
-                    //         event.preventDefault();
-                    //         textArea.rows = textArea.rows - 1;
-                    //     }
+                    //     // Уменьшаем количество строк
+                    //     this.rows -= 1;
+                    //
+                    //     this.selectionStart = this.selectionEnd = selectionStart - textToMove.length;
                     // }
                 }
             });

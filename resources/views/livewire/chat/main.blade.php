@@ -1,4 +1,3 @@
-
 <div class="chat-container">
     <div class="chat-list">
         @livewire('chat.chat-list')
