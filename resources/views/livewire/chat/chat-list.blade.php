@@ -83,27 +83,9 @@
                                         echo $chat->name;
                                     } @endphp
                                 </p>
-                                <p class="chat-last-message"
-                                   id="chat-last-message">
-                                    @php
-                                        $imgTags = [];
-
-                                        if(!$chat->messages->last()){
-                                            return;
-                                        }
-
-                                        $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
-                                            $imgTags[] = $matches[0];
-                                            return '###IMG###';
-                                        }, $chat->messages->last()->content);
-
-                                        $content = htmlspecialchars($content);
-
-                                        foreach ($imgTags as $imgTag) {
-                                            $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
-                                        }
-                                    @endphp
-                                    {!! $chat->messages->last() ? $content : '' !!} </p>
+                                <p class="chat-last-message" id="chat-last-message">
+                                    {!! $this->customHtmlspecialcharsForImg($chat->messages->last()) ? $this->customHtmlspecialcharsForImg($chat->messages->last()) : '' !!}
+                                </p>
                             </div>
                             <p class="chat-last-message-data"
                                id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>

@@ -178,6 +178,28 @@ class ChatList extends Component
         return null;
     }
 
+    public function customHtmlspecialcharsForImg($lastMessage)
+    {
+        $imgTags = [];
+
+        if(!$lastMessage){
+            return null;
+        }
+
+        $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
+            $imgTags[] = $matches[0];
+            return '###IMG###';
+        }, $lastMessage->content);
+
+        $content = htmlspecialchars($content);
+
+        foreach ($imgTags as $imgTag) {
+            $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
+        }
+
+        return $content;
+    }
+
     public function mount(): void
     {
         $this->auth_id = auth()->id();

@@ -11,22 +11,7 @@
                 {{ $message->user()->first()->name }}
             </div>
             <div class="message-content" id="message">
-                @php
-                    $imgTags = [];
-
-                    $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
-                        $imgTags[] = $matches[0];
-                        return '###IMG###';
-                    }, $message->content);
-
-                    $content = htmlspecialchars($content);
-
-                    foreach ($imgTags as $imgTag) {
-                        $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
-                    }
-                    @endphp
-
-                {!! $content !!}
+                {!! $this->customHtmlspecialcharsForImg($message) !!}
             </div>
             <div class="message-meta">
                 <div class="message-time" id="time"> {{$message->created_at->format('H:i')}} </div>
