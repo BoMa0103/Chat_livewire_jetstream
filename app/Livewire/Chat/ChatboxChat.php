@@ -122,12 +122,15 @@ class ChatboxChat extends Component
             return null;
         }
 
+
         $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
             $imgTags[] = $matches[0];
             return '###IMG###';
         }, $message->content);
 
         $content = htmlspecialchars($content);
+
+        $content = nl2br($content);
 
         foreach ($imgTags as $imgTag) {
             $content = preg_replace('/###IMG###/', $imgTag, $content, 1);

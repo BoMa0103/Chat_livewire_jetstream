@@ -193,6 +193,8 @@ class ChatList extends Component
 
         $content = htmlspecialchars($content);
 
+        $content = nl2br($content);
+
         foreach ($imgTags as $imgTag) {
             $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
         }
