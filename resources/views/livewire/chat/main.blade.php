@@ -1,3 +1,59 @@
+<style>
+    @media (min-width: 1029px) {
+        .chat-list {
+            display: block;
+        }
+
+        .no-chat {
+            display: flex;
+        }
+
+        .return {
+            display: none;
+        }
+
+        .show-users-in-list {
+            display: none;
+        }
+    }
+
+    @media (max-width: 1028px) and (min-width: 768px) {
+        .chat-list {
+            display: block;
+        }
+
+        .no-chat {
+            display: flex;
+        }
+
+        .users, .return {
+            display: none;
+        }
+
+        .show-users-in-list {
+            display: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .chat-list, .users, .no-chat {
+            display: none;
+        }
+
+        .return {
+            display: block;
+        }
+
+        .concave-left {
+            display: block !important;
+        }
+
+        .show-users-no-chat {
+            display: none;
+        }
+    }
+</style>
+
 <div class="chat-container">
     <div class="chat-list">
         @livewire('chat.chat-list')
