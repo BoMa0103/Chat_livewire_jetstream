@@ -36,7 +36,7 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-        if (!$this->body || trim($this->body) == '') {
+        if ($this->body === null || trim($this->body) == '') {
             return null;
         }
 
@@ -50,8 +50,6 @@ class SendMessage extends Component
         $this->dispatch('refreshChatList');
 
         $this->reset('body');
-
-        $this->dispatch('scroll-bottom');
 
         if(!$this->selectedChat->name) {
             $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;

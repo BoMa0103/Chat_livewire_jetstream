@@ -97,33 +97,6 @@
                     }
 
                     event.preventDefault();
-                }else if(event.key === "Backspace") {
-                    // @todo add delete rows
-                    // const selectionStart = this.selectionStart;
-                    // const selectionEnd = this.selectionEnd;
-                    // const currentValue = this.value;
-                    // const lines = currentValue.split('\n');
-                    // const currentLineIndex = this.value.substr(0, selectionStart).split('\n').length - 1;
-                    //
-                    // console.log(selectionStart);
-                    //
-                    // if (selectionStart === selectionEnd && currentLineIndex > 0) {
-                    //     event.preventDefault();
-                    //
-                    //     const textToMove = lines[currentLineIndex].substring(selectionStart);
-                    //     lines[currentLineIndex - 1] += textToMove;
-                    //
-                    //     // Удаляем текущую строку
-                    //     lines.splice(currentLineIndex, 1);
-                    //
-                    //     // Обновляем значение текстового поля
-                    //     this.value = lines.join('\n');
-                    //
-                    //     // Уменьшаем количество строк
-                    //     this.rows -= 1;
-                    //
-                    //     this.selectionStart = this.selectionEnd = selectionStart - textToMove.length;
-                    // }
                 }
             });
         });

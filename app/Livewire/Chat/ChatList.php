@@ -6,6 +6,7 @@ use App\Events\ChatCreate;
 use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
+use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
@@ -32,6 +33,11 @@ class ChatList extends Component
             "echo:online,MarkAsOffline" => 'markChatAsOffline',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
+    }
+
+    private function getHtmlValidator(): HtmlValidator
+    {
+        return app(HtmlValidator::class);
     }
 
     private function getChatsService(): ChatsService
@@ -145,7 +151,6 @@ class ChatList extends Component
         $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
 
         $this->dispatch('loadChat', $this->selectedChat);
-        $this->dispatch('loadChatData', $this->selectedChat);
         $this->dispatch('updateSendMessage', $this->selectedChat);
 
         if(!$receivers->count()) {
@@ -180,26 +185,7 @@ class ChatList extends Component
 
     public function customHtmlspecialcharsForImg($lastMessage)
     {
-        $imgTags = [];
-
-        if(!$lastMessage){
-            return null;
-        }
-
-        $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
-            $imgTags[] = $matches[0];
-            return '###IMG###';
-        }, $lastMessage->content);
-
-        $content = htmlspecialchars($content);
-
-        $content = nl2br($content);
-
-        foreach ($imgTags as $imgTag) {
-            $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
-        }
-
-        return $content;
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($lastMessage);
     }
 
     public function mount(): void

@@ -2,7 +2,7 @@
 
     @if($selectedChat)
         @livewire('chat.chatbox-header', ['selectedChat' => $selectedChat])
-        @livewire('chat.chatbox-chat', ['messages' => $messages, 'selectedChat' => $selectedChat])
+        @livewire('chat.chatbox-chat', ['selectedChat' => $selectedChat])
         @livewire('chat.user-list-for-conversation', ['selectedChat' => $selectedChat])
     @else
         @livewire('chat.no-chatbox')
@@ -34,7 +34,9 @@
             let messagesElement = document.getElementById('messages');
 
             if (messagesElement) {
-                $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+                setTimeout(() => {
+                    $('.chat-messages').scrollTop($('.chat-messages')[0].scrollHeight);
+                }, 0);
             }
         });
 
@@ -49,24 +51,32 @@
 
         window.addEventListener('chatSelectedGetHeight', event => {
             let messagesElement = document.getElementById('messages');
-            let height = messagesElement.scrollHeight;
 
-            @this.dispatch('updateHeight', {
-                height:height
-            });
+            if (messagesElement) {
+                setTimeout(() => {
+                    let height = messagesElement.scrollHeight;
+                @this.dispatch('updateHeight', {
+                    height:height
+                });
+                }, 0);
+            }
         });
 
         window.addEventListener('updatedHeight', event => {
             let messagesElement = document.getElementById('messages');
-            let old = event.detail[0];
-            let newHeight = messagesElement.scrollHeight;
 
+            if (messagesElement) {
+                setTimeout(() => {
+                    let old = event.detail[0];
+                    let newHeight = messagesElement.scrollHeight;
 
-            messagesElement.scrollTop = newHeight - old;
+                    messagesElement.scrollTop = newHeight - old;
 
-            @this.dispatch('updateHeight', {
-                height:newHeight
-            });
+                    @this.dispatch('updateHeight', {
+                        height:newHeight
+                    });
+                }, 0);
+            }
         });
     });
 
