@@ -2,13 +2,11 @@
 
 namespace App\Livewire\Chat;
 
+use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
-use App\Models\Message;
 use App\Services\Messages\MessagesService;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
-use Overtrue\LaravelEmoji\Emoji;
+
 
 class ChatboxChat extends Component
 {
@@ -24,7 +22,7 @@ class ChatboxChat extends Component
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'refresh' => '$refresh', 'pushMessage', 'loadChatData', 'setMessages', 'loadMore', 'updateHeight', 'updatedHeightEvent', 'refreshChat'
+            'refresh' => '$refresh', 'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat'
         ];
     }
 
@@ -33,7 +31,12 @@ class ChatboxChat extends Component
         return app(MessagesService::class);
     }
 
-    public function broadcastedMessageRead($event)
+    private function getHtmlValidator(): HtmlValidator
+    {
+        return app(HtmlValidator::class);
+    }
+
+    public function broadcastedMessageRead($event): void
     {
         if ($this->selectedChat) {
             if ((int)$this->selectedChat->id === (int)$event['chat_id']) {
@@ -42,7 +45,7 @@ class ChatboxChat extends Component
         }
     }
 
-    public function broadcastedMessageReceived($event)
+    public function broadcastedMessageReceived($event): void
     {
         if($event['user']['id'] === auth()->id()) {
             return;
@@ -72,7 +75,7 @@ class ChatboxChat extends Component
 
     }
 
-    public function pushMessage(int $messageId)
+    public function pushMessage(int $messageId): void
     {
         $newMessage = $this->getMessagesService()->find($messageId);
 
@@ -81,66 +84,53 @@ class ChatboxChat extends Component
         $this->dispatch('rowChatToBottom');
     }
 
-    public function updatedHeightEvent()
+    public function updatedHeight(): void
     {
         $this->dispatch('updatedHeight', $this->height);
     }
 
-    public function refreshChat(Chat $selectedChat, int $messages_count, int $paginateVar)
+    public function refreshChat(Chat $selectedChat): void
     {
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $messages_count, $paginateVar);
         $this->selectedChat = $selectedChat;
+        $this->paginateVar = 20;
+        $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
+        $this->dispatch('rowChatToBottom');
+        $this->dispatch('chatSelectedGetHeight');
     }
 
-    public function updateHeight($height)
+    public function updateHeight($height): void
     {
         $this->height = $height;
     }
 
-    public function loadMore()
+    public function loadMore(): void
     {
-        $this->paginateVar += 20;
-
         $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+
+        if ($this->messages_count < $this->paginateVar)
+        {
+            return;
+        }
+
+        $this->paginateVar += 20;
 
         $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
 
-
-        $this->dispatch('updatedHeightEvent');
-    }
-
-    public function loadChatData(Chat $chat)
-    {
-        $this->selectedChat = $chat;
+        $this->updatedHeight();
     }
 
     public function customHtmlspecialcharsForImg($message)
     {
-        $imgTags = [];
-
-        if(!$message){
-            return null;
-        }
-
-
-        $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
-            $imgTags[] = $matches[0];
-            return '###IMG###';
-        }, $message->content);
-
-        $content = htmlspecialchars($content);
-
-        $content = nl2br($content);
-
-        foreach ($imgTags as $imgTag) {
-            $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
-        }
-
-        return $content;
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($message);
     }
 
     public function mount()
     {
+        $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
+
         $this->dispatch('chatSelectedGetHeight');
         $this->dispatch('rowChatToBottom');
         $this->dispatch('scrollEventHandle');

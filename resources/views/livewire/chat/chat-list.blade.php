@@ -84,7 +84,7 @@
                                     } @endphp
                                 </p>
                                 <p class="chat-last-message" id="chat-last-message">
-                                    {!! $this->customHtmlspecialcharsForImg($chat->messages->last()) ? $this->customHtmlspecialcharsForImg($chat->messages->last()) : '' !!}
+                                    {!! $this->customHtmlspecialcharsForImg($chat->messages->last()) !== null ? $this->customHtmlspecialcharsForImg($chat->messages->last()) : '' !!}
                                 </p>
                             </div>
                             <p class="chat-last-message-data"
