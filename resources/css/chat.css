@@ -94,8 +94,8 @@
 
 .flex-container {
     display: flex;
-    justify-content: space-between; /* Равномерное распределение между элементами */
-    align-items: center; /* Выравнивание элементов по вертикали */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .chat-search {
@@ -168,7 +168,6 @@
     margin-top: auto;
     padding-top: 15px;
     z-index: 1;
-    border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     mask-image: linear-gradient(180deg, transparent, white 10px);
 }
@@ -793,64 +792,6 @@ img {
     display: inline;
 }
 
-
-
-/* MEDIA */
-
-
-@media (min-width: 1029px) {
-    .chat-list {
-        display: block;
-    }
-
-    .no-chat {
-        display: flex;
-    }
-
-    .return {
-        display: none;
-    }
-
-    .show-users-in-list {
-        display: none;
-    }
-}
-
-@media (max-width: 1028px) and (min-width: 768px) {
-    .chat-list {
-        display: block;
-    }
-
-    .no-chat {
-        display: flex;
-    }
-
-    .users, .return {
-        display: none;
-    }
-
-    .show-users-in-list {
-        display: none;
-    }
-}
-
-@media (max-width: 767px) {
-    .chat-list, .users, .no-chat {
-        display: none;
-    }
-
-    .return {
-        display: block;
-    }
-
-    .concave-left {
-        display: block !important;
-    }
-
-    .show-users-no-chat {
-        display: none;
-    }
-}
 
 
 
