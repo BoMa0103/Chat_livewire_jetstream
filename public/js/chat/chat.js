@@ -21,7 +21,6 @@ function markChatAsOffline(chat_id) {
 function markSelectedChat(li) {
     li.classList.add('selected');
 
-
     if (li.classList.contains('firstChat')) {
         document.getElementById('concave-left').style.display = 'none';
         document.getElementById('messages').style.borderTopLeftRadius = '0';
@@ -42,9 +41,10 @@ function showUsers() {
 }
 
 function showHideMenu() {
-    var overlay = document.getElementById('overlay-menu');
-    var inputContainer = document.getElementById('input-container');
-    var menu = document.getElementById('menu');
+    let overlay = document.getElementById('overlay-menu');
+    let inputContainer = document.getElementById('input-container');
+    let menu = document.getElementById('menu');
+    let selectThemesContainer = document.getElementById('select-themes-container');
 
     if (overlay.style.display === 'block' && menu.style.display === 'block') {
         overlay.style.display = 'none';
@@ -52,6 +52,9 @@ function showHideMenu() {
     } else if (overlay.style.display === 'block' && inputContainer.style.display === 'flex') {
         overlay.style.display = 'none';
         inputContainer.style.display = 'none';
+    } else if(overlay.style.display === 'block' && selectThemesContainer.style.display === 'flex') {
+        overlay.style.display = 'none';
+        selectThemesContainer.style.display = 'none';
     } else {
         overlay.style.display = 'block';
         menu.style.display = 'block';
@@ -59,8 +62,8 @@ function showHideMenu() {
 }
 
 function showHideUsers() {
-    var overlay = document.getElementById('overlay-users');
-    var users = document.getElementById('add-users-conv-list');
+    let overlay = document.getElementById('overlay-users');
+    let users = document.getElementById('add-users-conv-list');
 
     if (overlay.style.display === 'block' && users.style.display === 'block') {
         overlay.style.display = 'none';
