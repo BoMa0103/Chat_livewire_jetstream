@@ -163,7 +163,7 @@
                 mainTextColor = '#e5dfd3';
                 backMessageColor = '#314448';
                 backSearchSendFormColor = '#7c9a92';
-                backTextAreaColor = '#c7d3bf';
+                backTextAreaColor = '#96aea7';
                 secondTextColor = '#7c9a92';
                 break;
             case 'pink':
