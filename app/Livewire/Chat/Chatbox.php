@@ -16,8 +16,13 @@ class Chatbox extends Component
     public function getListeners()
     {
         return [
-            'loadChat', 'resetChat'
+            'loadChat', 'resetChat', 'broadcastMessageRead'
         ];
+    }
+
+    private function getChatsService(): ChatsService
+    {
+        return app(ChatsService::class);
     }
 
     public function loadChat(Chat $chat): void
@@ -33,6 +38,19 @@ class Chatbox extends Component
     public function resetChat(): void
     {
         $this->selectedChat = null;
+    }
+
+    public function broadcastMessageRead(): void
+    {
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
     }
 
     public function render()

@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Chat;
 
+use App\Events\MessageRead;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
+use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use Livewire\Component;
 
@@ -22,8 +24,13 @@ class ChatboxChat extends Component
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'refresh' => '$refresh', 'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat'
+            'refresh' => '$refresh', 'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat', 'broadcastMessageRead'
         ];
+    }
+
+    private function getChatsService(): ChatsService
+    {
+        return app(ChatsService::class);
     }
 
     private function getMessagesService(): MessagesService
@@ -70,9 +77,19 @@ class ChatboxChat extends Component
         }else {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
+    }
 
-        $this->dispatch('refreshChatList');
+    public function broadcastMessageRead(): void
+    {
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
 
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
     }
 
     public function pushMessage(int $messageId): void

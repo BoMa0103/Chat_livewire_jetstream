@@ -14,13 +14,24 @@
             <div class="overlay" id="overlay-menu" onclick="showHideMenu()"></div>
             <div class="menu" id="menu">
                 <ul>
-                    <li><a onclick="showInput()">Create conversation</a></li>
+                    <li><a onclick="showInput()">Create Conversation</a></li>
+                    <li><a onclick="selectThemes()">Select Themes</a></li>
                 </ul>
             </div>
             <div class="input-container" id="input-container">
                 <input type="text" placeholder="Enter conversation name" id="conversation-name-input">
                 <button class="send-button" onclick="createConversation()">Next</button>
             </div>
+{{--            <div class="select-themes-container" id="select-themes-container">--}}
+{{--                <input type="radio" name="theme" id="theme1" value="theme1">--}}
+{{--                <label for="theme1">Тема 1</label>--}}
+
+{{--                <input type="radio" name="theme" id="theme2" value="theme2">--}}
+{{--                <label for="theme2">Тема 2</label>--}}
+
+{{--                <input type="radio" name="theme" id="theme3" value="theme3">--}}
+{{--                <label for="theme3">Тема 3</label>--}}
+{{--            </div>--}}
         </div>
         <div class="chat-search">
             <label for="default-search"
@@ -149,6 +160,18 @@
                 })
             }
         }
+
+        // function selectTheme() {
+        //     var selectThemesContainer = document.getElementById('select-themes-container');
+        //     var menu = document.getElementById('menu');
+        //
+        //     menu.style.display = 'none';
+        //     selectThemesContainer.style.display = 'flex';
+        // }
+        //
+        // function selectTheme() {
+        //
+        // }
 
         let search = document.getElementById('default-search');
 
