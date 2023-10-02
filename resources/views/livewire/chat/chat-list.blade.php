@@ -14,24 +14,20 @@
             <div class="overlay" id="overlay-menu" onclick="showHideMenu()"></div>
             <div class="menu" id="menu">
                 <ul>
-                    <li><a onclick="showInput()">Create Conversation</a></li>
-                    <li><a onclick="selectThemes()">Select Themes</a></li>
+                    <li onclick="showInput()"><a>Create Conversation</a></li>
+                    <li onclick="selectTheme()"><a>Select Theme</a></li>
                 </ul>
             </div>
             <div class="input-container" id="input-container">
                 <input type="text" placeholder="Enter conversation name" id="conversation-name-input">
                 <button class="send-button" onclick="createConversation()">Next</button>
             </div>
-{{--            <div class="select-themes-container" id="select-themes-container">--}}
-{{--                <input type="radio" name="theme" id="theme1" value="theme1">--}}
-{{--                <label for="theme1">Тема 1</label>--}}
-
-{{--                <input type="radio" name="theme" id="theme2" value="theme2">--}}
-{{--                <label for="theme2">Тема 2</label>--}}
-
-{{--                <input type="radio" name="theme" id="theme3" value="theme3">--}}
-{{--                <label for="theme3">Тема 3</label>--}}
-{{--            </div>--}}
+            <div class="select-themes-container" id="select-themes-container">
+                <input type="radio" name="theme" id="theme1" value="theme1" onclick="selectedTheme('default')">
+                <input type="radio" name="theme" id="theme2" value="theme2" onclick="selectedTheme('palegoldenrod')">
+                <input type="radio" name="theme" id="theme3" value="theme3" onclick="selectedTheme('pink')">
+                <input type="radio" name="theme" id="theme4" value="theme4" onclick="selectedTheme('lightblue')">
+            </div>
         </div>
         <div class="chat-search">
             <label for="default-search"
@@ -45,7 +41,7 @@
                     </svg>
                 </div>
                 <input type="search" id="default-search"
-                       class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 search-input"
                        placeholder="Search" required>
             </div>
         </div>
@@ -126,13 +122,13 @@
     </div>
 
     <script>
-        var dropdownButton = document.querySelector('.dropdown-toggle');
-        var dropdownMenu = document.querySelector('.dropdown-menu');
-        var overlay = document.querySelector('.overlay');
+        let dropdownButton = document.querySelector('.dropdown-toggle');
+        let dropdownMenu = document.querySelector('.dropdown-menu');
+        let overlay = document.querySelector('.overlay');
 
         dropdownButton.addEventListener('click', function () {
-            var overlay = document.getElementById('overlay-menu');
-            var menu = document.getElementById('menu');
+            let overlay = document.getElementById('overlay-menu');
+            let menu = document.getElementById('menu');
 
             if (overlay.style.display === 'block' && menu.style.display === 'block') {
                 overlay.style.display = 'none';
@@ -144,8 +140,8 @@
         });
 
         function showInput() {
-            var inputContainer = document.getElementById('input-container');
-            var menu = document.getElementById('menu');
+            let inputContainer = document.getElementById('input-container');
+            let menu = document.getElementById('menu');
 
             menu.style.display = 'none';
             inputContainer.style.display = 'flex';
@@ -161,17 +157,91 @@
             }
         }
 
-        // function selectTheme() {
-        //     var selectThemesContainer = document.getElementById('select-themes-container');
-        //     var menu = document.getElementById('menu');
-        //
-        //     menu.style.display = 'none';
-        //     selectThemesContainer.style.display = 'flex';
-        // }
-        //
-        // function selectTheme() {
-        //
-        // }
+        function selectTheme() {
+            let selectThemesContainer = document.getElementById('select-themes-container');
+            let menu = document.getElementById('menu');
+
+            let color = document.documentElement.style.getPropertyValue('--back-for-chat-color');
+
+            switch (color) {
+                case '#2d3748':
+                    $('#theme1').prop('checked', true);
+                    break;
+                case '#AEC09A':
+                    $('#theme2').prop('checked', true);
+                    break;
+                case '#85b3b1':
+                    $('#theme3').prop('checked', true);
+                    break;
+                case '#e6ad56':
+                    $('#theme4').prop('checked', true);
+                    break;
+            }
+
+            menu.style.display = 'none';
+            selectThemesContainer.style.display = 'flex';
+        }
+
+        function selectedTheme(index) {
+            let backForChatColor;
+            let backForChatInfoColor;
+            let mainTextColor;
+            let secondTextColor;
+            let backMessageColor;
+            let backSearchSendFormColor;
+            let backTextAreaColor;
+
+            switch (index) {
+                case 'default':
+                    backForChatColor = '#2d3748';
+                    backForChatInfoColor = '#1d232a';
+                    mainTextColor = '#e5dfd3'
+                    backMessageColor = '#1f2227';
+                    backSearchSendFormColor = '#374151';
+                    backTextAreaColor = '#1F2937';
+                    secondTextColor = '#4b5563';
+                    break;
+                case 'palegoldenrod':
+                    backForChatColor = '#AEC09A';
+                    backForChatInfoColor = '#536d6c';
+                    mainTextColor = '#e5dfd3';
+                    backMessageColor = '#314448';
+                    backSearchSendFormColor = '#7c9a92';
+                    backTextAreaColor = '#96aea7';
+                    secondTextColor = '#7c9a92';
+                    break;
+                case 'pink':
+                    backForChatColor = '#85b3b1';
+                    backForChatInfoColor = '#535d69';
+                    mainTextColor = '#e5dfd3'
+                    backMessageColor = '#535d74';
+                    backSearchSendFormColor = '#596C7B';
+                    backTextAreaColor = '#7A8995';
+                    secondTextColor = '#7A8995';
+                    break;
+                case 'lightblue':
+                    backForChatColor = '#e6ad56';
+                    backForChatInfoColor = '#68513b';
+                    mainTextColor = '#e0d7d0'
+                    backMessageColor = '#A78B71';
+                    backSearchSendFormColor = '#A78B71';
+                    backTextAreaColor = '#c1ad9b';
+                    secondTextColor = '#856f5a';
+                    break;
+            }
+
+            document.documentElement.style.setProperty('--back-for-chat-color', backForChatColor);
+            document.documentElement.style.setProperty('--back-for-chat-info-color', backForChatInfoColor);
+            document.documentElement.style.setProperty('--main-text-color', mainTextColor);
+            document.documentElement.style.setProperty('--second-text-color', secondTextColor);
+            document.documentElement.style.setProperty('--back-message-color', backMessageColor);
+            document.documentElement.style.setProperty('--back-search-send-form-color', backSearchSendFormColor);
+            document.documentElement.style.setProperty('--back-text-area-color', backTextAreaColor);
+
+            @this.dispatch('changeTheme', {
+                theme: index
+            })
+        }
 
         let search = document.getElementById('default-search');
 

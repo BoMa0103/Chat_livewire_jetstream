@@ -138,6 +138,63 @@
         markChatAsOffline(event.detail[0]);
     });
 
+    window.addEventListener('setTheme', event => {
+        let backForChatColor;
+        let backForChatInfoColor;
+        let mainTextColor;
+        let secondTextColor;
+        let backMessageColor;
+        let backSearchSendFormColor;
+        let backTextAreaColor;
+
+        switch (event.detail[0]) {
+            case 'default':
+                backForChatColor = '#2d3748';
+                backForChatInfoColor = '#1d232a';
+                mainTextColor = '#e5dfd3'
+                backMessageColor = '#1f2227';
+                backSearchSendFormColor = '#374151';
+                backTextAreaColor = '#1F2937';
+                secondTextColor = '#4b5563';
+                break;
+            case 'palegoldenrod':
+                backForChatColor = '#AEC09A';
+                backForChatInfoColor = '#536d6c';
+                mainTextColor = '#e5dfd3';
+                backMessageColor = '#314448';
+                backSearchSendFormColor = '#7c9a92';
+                backTextAreaColor = '#c7d3bf';
+                secondTextColor = '#7c9a92';
+                break;
+            case 'pink':
+                backForChatColor = '#85b3b1';
+                backForChatInfoColor = '#535d69';
+                mainTextColor = '#e5dfd3'
+                backMessageColor = '#535d74';
+                backSearchSendFormColor = '#596C7B';
+                backTextAreaColor = '#7A8995';
+                secondTextColor = '#7A8995';
+                break;
+            case 'lightblue':
+                backForChatColor = '#e6ad56';
+                backForChatInfoColor = '#68513b';
+                mainTextColor = '#e0d7d0'
+                backMessageColor = '#A78B71';
+                backSearchSendFormColor = '#A78B71';
+                backTextAreaColor = '#c1ad9b';
+                secondTextColor = '#856f5a';
+                break;
+        }
+
+        document.documentElement.style.setProperty('--back-for-chat-color', backForChatColor);
+        document.documentElement.style.setProperty('--back-for-chat-info-color', backForChatInfoColor);
+        document.documentElement.style.setProperty('--main-text-color', mainTextColor);
+        document.documentElement.style.setProperty('--second-text-color', secondTextColor);
+        document.documentElement.style.setProperty('--back-message-color', backMessageColor);
+        document.documentElement.style.setProperty('--back-search-send-form-color', backSearchSendFormColor);
+        document.documentElement.style.setProperty('--back-text-area-color', backTextAreaColor);
+    });
+
     $(document).on('click', '.return', function() {
         $('.no-chat').show();
         $('.chat-list').show();

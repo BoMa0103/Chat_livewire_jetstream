@@ -1,6 +1,6 @@
 <div class="chat-input" style="z-index: 10">
     <form wire:submit.prevent='sendMessage'>
-        <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+        <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 message-send-form">
             <button type="button"
                     class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat_button">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
