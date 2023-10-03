@@ -15,7 +15,10 @@ class Chatbox extends Component
 
     public function getListeners()
     {
+        $auth_id = auth()->user()->id;
+
         return [
+            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             'loadChat', 'resetChat', 'broadcastMessageRead'
         ];
     }
@@ -29,7 +32,6 @@ class Chatbox extends Component
     {
         $this->selectedChat = $chat;
 
-        // don't send messages directly because they parse to array
         $this->dispatch('refreshChat', $this->selectedChat);
         $this->dispatch('refreshHeader', $this->selectedChat);
         $this->dispatch('refreshUserListForConversation', $this->selectedChat);
@@ -50,6 +52,17 @@ class Chatbox extends Component
 
         foreach ($receivers as $receiver){
             broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
+    }
+
+    public function broadcastedMessageReceived($event): void
+    {
+        if($event['user']['id'] === auth()->id()) {
+            return;
+        }
+
+        if(!$this->selectedChat) {
+            $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
     }
 

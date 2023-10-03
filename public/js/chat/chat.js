@@ -113,6 +113,9 @@ function notifyMe(json) {
             body: 'New message from ' + json.user.name,
             icon: '/images/free-icon-chat-bubble-6068634.png',
         });
+
+        document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634- new-messages.png';
+
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
@@ -120,6 +123,8 @@ function notifyMe(json) {
                     body: 'New message from ' + json.user.name,
                     icon: '/images/free-icon-chat-bubble-6068634.png',
                 });
+
+                document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634- new-messages.png';
             }
         });
     }

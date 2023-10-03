@@ -58,23 +58,17 @@ class ChatboxChat extends Component
             return;
         }
 
-        $this->dispatch('refresh');
-
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
-        if ($this->selectedChat) {
+        if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
 
-            if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+            $broadcastedMessage->read_status = 1;
+            $broadcastedMessage->save();
 
-                $broadcastedMessage->read_status = 1;
-                $broadcastedMessage->save();
+            $this->pushMessage($broadcastedMessage->id);
 
-                $this->pushMessage($broadcastedMessage->id);
-
-                $this->dispatch('broadcastMessageRead');
-            }
-
-        }else {
+            $this->dispatch('broadcastMessageRead');
+        } else {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
     }

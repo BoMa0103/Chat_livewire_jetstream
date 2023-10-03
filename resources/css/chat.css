@@ -184,11 +184,6 @@ body {
     mask-image: linear-gradient(180deg, transparent, var(--main-text-color) 10px);
 }
 
-.chat-list-box {
-    position: relative;
-    height: fit-content;
-}
-
 .message {
     align-self: flex-end;
     display: flex;
@@ -613,8 +608,17 @@ body {
     border-radius: 4px;
 }
 
+.wire-chat-list {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .chat-list-box {
-    /*overflow-y: auto;*/
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
     scrollbar-width: thin;
     scrollbar-color: #9ca3af transparent;
 }
@@ -624,7 +628,7 @@ body {
 }
 
 .chat-list-box::-webkit-scrollbar {
-    width: 8px;
+    width: 0px;
 }
 
 .chat-list-box::-webkit-scrollbar-thumb {
