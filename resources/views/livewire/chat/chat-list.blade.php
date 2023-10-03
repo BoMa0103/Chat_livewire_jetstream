@@ -1,5 +1,5 @@
 @php use App\Models\Chat; @endphp
-<div>
+<div class="wire-chat-list">
 
     <div class="flex-container">
         <div class="dropdown">
