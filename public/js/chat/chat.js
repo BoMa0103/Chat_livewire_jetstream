@@ -85,6 +85,32 @@ function hideUsers() {
     users_header.css('padding-right', '');
 }
 
+function openChatSettings() {
+    let overlay = document.getElementById('overlay-chat-settings');
+    let chatSettings = document.getElementById('chat-settings');
+
+    if (overlay.style.display === 'block' && chatSettings.style.display === 'block') {
+        overlay.style.display = 'none';
+        chatSettings.style.display = 'none';
+    } else {
+        overlay.style.display = 'block';
+        chatSettings.style.display = 'block';
+    }
+}
+
+function showHideChatSettings() {
+    let overlay = document.getElementById('overlay-chat-settings');
+    let chatSettings = document.getElementById('chat-settings');
+
+    if (overlay.style.display === 'block' && chatSettings.style.display === 'block') {
+        overlay.style.display = 'none';
+        chatSettings.style.display = 'none';
+    } else {
+        overlay.style.display = 'block';
+        chatSettings.style.display = 'block';
+    }
+}
+
 /* Scroll */
 /* Move to blades */
 
@@ -114,7 +140,7 @@ function notifyMe(json) {
             icon: '/images/free-icon-chat-bubble-6068634.png',
         });
 
-        document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634- new-messages.png';
+        document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634-new-messages.png';
 
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
@@ -124,7 +150,7 @@ function notifyMe(json) {
                     icon: '/images/free-icon-chat-bubble-6068634.png',
                 });
 
-                document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634- new-messages.png';
+                document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634-new-messages.png';
             }
         });
     }
@@ -142,6 +168,16 @@ window.addEventListener("DOMContentLoaded", (event) => {
             sendButton.removeAttribute('disabled');
         } else {
             sendButton.setAttribute('disabled', 'disabled');
+        }
+    });
+
+    window.addEventListener('reloadChatPage', event=>{
+        location.reload();
+    });
+
+    document.addEventListener('visibilitychange', event => {
+        if (!document.hidden) {
+            document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634.png';
         }
     });
 });

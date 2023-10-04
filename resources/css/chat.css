@@ -10,6 +10,9 @@
     --back-message-color: #1f2227;
     --back-search-send-form-color: #374151;
     --back-text-area-color: #1F2937;
+    --hover-color: #6b7280;
+    --placeholder-color: #4b5563;
+    --placeholder-search-color: #9CA3AF;
 }
 
 body {
@@ -86,6 +89,13 @@ body {
     margin-top: -7px;
 }
 
+.chat-settings-button {
+    cursor: pointer;
+    height: fit-content;
+    margin-top: -7px;
+    padding: 3px;
+}
+
 .show-users-in-list {
     cursor: pointer;
     height: fit-content;
@@ -111,7 +121,7 @@ body {
 }
 
 .chat-search {
-    flex-grow: 1; /* Элемент chat-search будет занимать всю доступную ширину */
+    flex-grow: 1;
 }
 
 .chat-header {
@@ -264,6 +274,10 @@ body {
     height: 100%;
     user-select: none;
     background-color: var(--back-text-area-color) !important;
+}
+
+.chat_textarea::placeholder {
+    color: var(--placeholder-color);
 }
 
 .no-chat {
@@ -445,8 +459,8 @@ body {
 
 .flex-container-users {
     display: flex;
-    justify-content: space-between; /* Равномерное распределение между элементами */
-    align-items: center; /* Выравнивание элементов по вертикали */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .users-header {
@@ -502,7 +516,7 @@ body {
 }
 
 .add-users-conv-list li:hover {
-    background-color: #6b7280;
+    background-color: var(--hover-color);
     transition: background-color 0.4s ease;
     border-radius: 40px;
 }
@@ -512,7 +526,7 @@ body {
     border-radius: 5px;
     font-weight: bold;
     width: fit-content;
-    color: #9ca3af;
+    color: var(--main-text-color);
 }
 
 .chat-list-header {
@@ -535,7 +549,7 @@ body {
     user-select: none;}
 
 .chat-last-message, .chat-last-message-data{
-    color: #9ca3af;
+    color: var(--main-text-color);
     font-weight: bold !important;
 }
 
@@ -646,9 +660,9 @@ body {
     pointer-events: none; /* Prevent interactions */
 }
 
-/* Style for the icon within the button when disabled */
+
 .chat_button[disabled] svg {
-    fill: gray; /* Change the icon color to gray */
+    fill: gray;
 }
 
 .chat_textarea:focus {
@@ -659,6 +673,18 @@ body {
     z-index: 4;
     padding: 8px;
     height: 50px;
+}
+
+.search-input:focus {
+    box-shadow: none;
+}
+
+.input-container input:focus {
+    box-shadow: none;
+}
+
+.chat-search svg {
+    color: var(--placeholder-search-color);
 }
 
 input {
@@ -716,11 +742,22 @@ input:focus {
     padding: 3px 5.5px;
     font-size: 20px;
     border-radius: 0.5em;
-    background-color: #6b7280;
+    background-color: var(--hover-color);
     transition: background-color 0.2s ease;
 }
 
 .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.overlay-chat-settings {
     display: none;
     position: fixed;
     top: 0;
@@ -744,7 +781,21 @@ input:focus {
     border-radius: 0.8em;
 }
 
+.chat-settings {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: var(--second-text-color);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.8em;
+}
+
 .menu li {
+    font-weight: 600;
     cursor: pointer;
     width: 100%;
     padding: 8px;
@@ -752,7 +803,21 @@ input:focus {
 }
 
 .menu li:hover {
-    background-color: #6b7280;
+    background-color: var(--hover-color);
+    border-radius: 0.5em;
+}
+
+.chat-settings li {
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    padding: 8px;
+    user-select: none;
+    color: darkred;
+}
+
+.chat-settings li:hover {
+    background-color: var(--hover-color);
     border-radius: 0.5em;
 }
 
@@ -829,7 +894,7 @@ input[type='radio']:focus {
 }
 
 .input-container button:hover {
-    background-color: #6b7280;
+    background-color: var(--hover-color);
 }
 
 .add-users-conv-list {
@@ -855,6 +920,10 @@ img {
 
 .search-input {
     background-color: var(--back-search-send-form-color) !important;
+}
+
+.search-input::placeholder {
+    color: var(--placeholder-search-color);
 }
 
 

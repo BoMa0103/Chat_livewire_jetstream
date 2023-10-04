@@ -26,27 +26,29 @@ class UserList extends Component
 
     public function checkChat(int $userId): void
     {
-        $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->user()->id, $userId);
+        $checkedChat = $this->getChatsService()->findChatBetweenTwoUsers(auth()->id(), $userId);
 
-        if (!$checkedChat) {
-            $createdChat = $this->getChatsService()->createFromArray([
-                'chat_type' => Chat::PRIVATE
-            ]);
-
-            $createdChat->users()->attach($userId);
-            $createdChat->users()->attach(auth()->user());
-
-            broadcast(event: new ChatCreate($createdChat->id, $userId));
-
-            $this->dispatch('refreshChatList');
-
-            broadcast(event: new MarkAsOnline(auth()->user()->id));
+        if ($checkedChat) {
+            return;
         }
+
+        $createdChat = $this->getChatsService()->createFromArray([
+            'chat_type' => Chat::PRIVATE
+        ]);
+
+        $createdChat->users()->attach($userId);
+        $createdChat->users()->attach(auth()->user());
+
+        broadcast(event: new ChatCreate($createdChat->id, $userId));
+
+        $this->dispatch('refreshChatList');
+
+        broadcast(event: new MarkAsOnline(auth()->user()->id));
     }
 
     public function render()
     {
-        $this->users = $this->getUsersService()->getUsersWithoutUserWithId(auth()->user()->id);
+        $this->users = $this->getUsersService()->getUsersWithoutUserWithId(auth()->id());
         return view('livewire.chat.user-list');
     }
 }

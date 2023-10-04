@@ -25,7 +25,7 @@
                 @livewire('chat.emoji-list')
             </div>
             <textarea wire:model="body" id="text" rows="1"
-                      class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat_textarea"
+                      class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat_textarea"
                       placeholder="Your message..."></textarea>
             <button disabled id="send" type="submit"
                     class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600 chat_button">

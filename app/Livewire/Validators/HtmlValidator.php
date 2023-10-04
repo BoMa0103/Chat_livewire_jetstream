@@ -12,10 +12,13 @@ class HtmlValidator
             return null;
         }
 
-
         $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
-            $imgTags[] = $matches[0];
-            return '###IMG###';
+            if (str_contains($matches[0], 'class="joypixels"')) {
+                $imgTags[] = $matches[0];
+                return '###IMG###';
+            } else {
+                return $matches[0];
+            }
         }, $message->content);
 
         $content = htmlspecialchars($content);

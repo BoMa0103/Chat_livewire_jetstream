@@ -24,7 +24,7 @@ class ChatboxChat extends Component
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
-            'refresh' => '$refresh', 'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat', 'broadcastMessageRead'
+            'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat', 'broadcastMessageRead'
         ];
     }
 
@@ -45,10 +45,12 @@ class ChatboxChat extends Component
 
     public function broadcastedMessageRead($event): void
     {
-        if ($this->selectedChat) {
-            if ((int)$this->selectedChat->id === (int)$event['chat_id']) {
-                $this->dispatch('markMessageAsRead');
-            }
+        if (!$this->selectedChat) {
+            return;
+        }
+
+        if ((int)$this->selectedChat->id === (int)$event['chat_id']) {
+            $this->dispatch('markMessageAsRead');
         }
     }
 
