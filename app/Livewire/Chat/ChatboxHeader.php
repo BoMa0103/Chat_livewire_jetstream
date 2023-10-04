@@ -17,11 +17,6 @@ class ChatboxHeader extends Component
         return ['refreshHeader'];
     }
 
-    private function getUsersService(): UsersService
-    {
-        return app(UsersService::class);
-    }
-
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
