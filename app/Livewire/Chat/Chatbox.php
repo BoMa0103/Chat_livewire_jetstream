@@ -57,6 +57,8 @@ class Chatbox extends Component
 
     public function broadcastedMessageReceived($event): void
     {
+        $this->dispatch('refreshChatList');
+
         if($event['user']['id'] === auth()->id()) {
             return;
         }

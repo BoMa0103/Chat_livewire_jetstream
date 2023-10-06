@@ -40,10 +40,9 @@ class UserList extends Component
         $createdChat->users()->attach(auth()->user());
 
         broadcast(event: new ChatCreate($createdChat->id, $userId));
+        broadcast(event: new ChatCreate($createdChat->id, auth()->id()));
 
-        $this->dispatch('refreshChatList');
-
-        broadcast(event: new MarkAsOnline(auth()->user()->id));
+        broadcast(event: new MarkAsOnline(auth()->id()));
     }
 
     public function render()

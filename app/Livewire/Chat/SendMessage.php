@@ -45,11 +45,9 @@ class SendMessage extends Component
         $this->selectedChat->last_time_message = $this->createdMessage->created_at;
         $this->selectedChat->save();
 
-        $this->dispatch('pushMessage', $this->createdMessage->id);
-
-        $this->dispatch('refreshChatList');
-
         $this->reset('body');
+
+        broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 
         if(!$this->selectedChat->name) {
             $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
@@ -65,6 +63,7 @@ class SendMessage extends Component
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
         }
     }
+
     public function render()
     {
         return view('livewire.chat.send-message');

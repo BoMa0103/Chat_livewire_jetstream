@@ -32,7 +32,6 @@ class ChatList extends Component
             "echo:online,MarkAsOnline" => 'markChatAsOnline',
             "echo:online,MarkAsOffline" => 'markChatAsOffline',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
-            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
     }
 
@@ -54,11 +53,6 @@ class ChatList extends Component
     private function getMessagesService(): MessagesService
     {
         return app(MessagesService::class);
-    }
-
-    public function broadcastedMessageReceived($event): void
-    {
-        $this->dispatch('refreshChatList');
     }
 
     public function searchChats($chatName): void
@@ -89,7 +83,7 @@ class ChatList extends Component
 
         $createdChat->users()->attach(auth()->user());
 
-        $this->dispatch('refreshChatList');
+        broadcast(event: new ChatCreate($createdChat, $this->auth_id));
     }
 
     public function resetChat(): void

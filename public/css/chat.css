@@ -792,7 +792,7 @@ input:focus {
     width: 100%;
     padding: 8px;
     user-select: none;
-    color: darkred;
+    color: #ff4c4c;
 }
 
 .chat-settings li:hover {
