@@ -20,7 +20,7 @@ class ChatboxChat extends Component
 
     public function getListeners()
     {
-        $auth_id = auth()->user()->id;
+        $auth_id = auth()->id();
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
@@ -56,13 +56,16 @@ class ChatboxChat extends Component
 
     public function broadcastedMessageReceived($event): void
     {
-        if($event['user']['id'] === auth()->id()) {
-            return;
-        }
-
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
+        $this->dispatch('refreshChatList');
+
         if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+
+            if($event['user']['id'] === auth()->id()) {
+                $this->pushMessage($broadcastedMessage->id);
+                return;
+            }
 
             $broadcastedMessage->read_status = 1;
             $broadcastedMessage->save();
@@ -71,6 +74,11 @@ class ChatboxChat extends Component
 
             $this->dispatch('broadcastMessageRead');
         } else {
+
+            if($event['user']['id'] === auth()->id()) {
+                return;
+            }
+
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
         }
     }

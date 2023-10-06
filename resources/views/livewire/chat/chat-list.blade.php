@@ -14,8 +14,13 @@
             <div class="overlay" id="overlay-menu" onclick="showHideMenu()"></div>
             <div class="menu" id="menu">
                 <ul>
-                    <li onclick="showInput()"><a>Create Conversation</a></li>
-                    <li onclick="selectTheme()"><a>Select Theme</a></li>
+                    <a href="{{ route('profile.show') }}"><li>Profile settings</li></a>
+                    <li onclick="showInput()">Create Conversation</li>
+                    <li onclick="selectTheme()">Select Theme</li>
+                    <form method="POST" action="{{ route('logout') }}" x-data>
+                        @csrf
+                        <a href="{{ route('logout') }}" @click.prevent="$root.submit();"><li style="color: #ff4c4c">Log out</li></a>
+                    </form>
                 </ul>
             </div>
             <div class="input-container" id="input-container">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Chat\Main;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect()->route('chat');
+})->middleware('auth:sanctum');
+
 
 Route::get('/chat', Main::class)->middleware('auth:sanctum')->name('chat');
 
