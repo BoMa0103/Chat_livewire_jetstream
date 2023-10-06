@@ -142,6 +142,9 @@ function notifyMe(json) {
 
         document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634-new-messages.png';
 
+        const audio = new Audio('/audio/mixkit-message-pop-alert-2354.mp3');
+        audio.play();
+
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
@@ -151,6 +154,9 @@ function notifyMe(json) {
                 });
 
                 document.querySelector('link[rel="icon"]').href = '/images/free-icon-chat-bubble-6068634-new-messages.png';
+
+                const audio = new Audio('/audio/mixkit-message-pop-alert-2354.mp3');
+                audio.play();
             }
         });
     }
