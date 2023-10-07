@@ -107,6 +107,10 @@ class ChatList extends Component
     {
         $user_id = $this->auth_id;
 
+        if ($user_id === $event['user_id']) {
+            return;
+        }
+
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['user_id']);
 
         if(!$chat){
