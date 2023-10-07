@@ -60,6 +60,8 @@ class SendMessage extends Component
         $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
 
         foreach ($receivers as $receiver) {
+            $receiver->messagesToMany()->attach($this->createdMessage->id, ['chat_id' => $this->selectedChat->id]);
+
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
         }
     }

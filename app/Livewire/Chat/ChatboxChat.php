@@ -7,6 +7,7 @@ use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 
@@ -69,6 +70,11 @@ class ChatboxChat extends Component
 
             $broadcastedMessage->read_status = 1;
             $broadcastedMessage->save();
+
+            DB::table('message_user')
+                ->where('chat_id', $this->selectedChat->id)
+                ->where('user_id', auth()->id())
+                ->update(['read_status' => 1]);
 
             $this->pushMessage($broadcastedMessage->id);
 

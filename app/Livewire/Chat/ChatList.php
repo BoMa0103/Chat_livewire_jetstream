@@ -8,9 +8,11 @@ use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
+use App\Models\Message;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -161,11 +163,17 @@ class ChatList extends Component
             return;
         }
 
+        // @todo need to rebuild
         foreach ($receivers as $receiver) {
             $receiverInstance = $this->getUsersService()->find($receiver->id);
 
             $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
         }
+
+        DB::table('message_user')
+            ->where('chat_id', $this->selectedChat->id)
+            ->where('user_id', $this->auth_id)
+            ->update(['read_status' => 1]);
 
         $this->dispatch('broadcastMessageRead');
     }
