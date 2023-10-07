@@ -25,6 +25,7 @@ class EloquentChatRepository implements ChatRepository
             ->whereHas('users', function ($query) use ($userIdSecond) {
                 $query->where('user_id', $userIdSecond);
             })
+            ->where('chat_type', Chat::PRIVATE)
             ->first();
     }
 

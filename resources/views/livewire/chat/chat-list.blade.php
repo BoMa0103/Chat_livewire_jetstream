@@ -1,4 +1,4 @@
-@php use App\Models\Chat; @endphp
+@php use App\Models\Chat;use Illuminate\Support\Facades\DB; @endphp
 <div class="wire-chat-list">
 
     <div class="flex-container">
@@ -14,12 +14,16 @@
             <div class="overlay" id="overlay-menu" onclick="showHideMenu()"></div>
             <div class="menu" id="menu">
                 <ul>
-                    <a href="{{ route('profile.show') }}"><li>Profile settings</li></a>
+                    <a href="{{ route('profile.show') }}">
+                        <li>Profile settings</li>
+                    </a>
                     <li onclick="showInput()">Create Conversation</li>
                     <li onclick="selectTheme()">Select Theme</li>
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
-                        <a href="{{ route('logout') }}" @click.prevent="$root.submit();"><li style="color: #ff4c4c">Log out</li></a>
+                        <a href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                            <li style="color: #ff4c4c">Log out</li>
+                        </a>
                     </form>
                 </ul>
             </div>
@@ -102,7 +106,17 @@
                             <p class="chat-last-message-data"
                                id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
                             @php
-                                $unreadMessagesCount = count($chat->messages->where('read_status', 0)->where('user_id', '!=', auth()->user()->id));
+
+                                if ($chat->chat_type == Chat::PRIVATE) {
+                                    $unreadMessagesCount = count($chat->messages->where('read_status', 0)->where('user_id', '!=', auth()->user()->id));
+                                } else {
+                                    $unreadMessagesCount = DB::table('message_user')
+                                                        ->where('chat_id', $chat->id)
+                                                        ->where('user_id', $auth_id)
+                                                        ->where('read_status', 0)
+                                                        ->count();
+                                }
+
                                 if($unreadMessagesCount) {
                                     echo '<div class="chat-unread-messages-count">' .  $unreadMessagesCount . '</div>';
                                 }
@@ -156,9 +170,9 @@
             let conversationName = document.getElementById('conversation-name-input');
 
             if (conversationName.value.trim() !== '') {
-                @this.dispatch('createConversation', {
-                    conversationName: conversationName.value.trim()
-                })
+            @this.dispatch('createConversation', {
+                conversationName: conversationName.value.trim()
+            })
             }
         }
 
@@ -261,20 +275,21 @@
             document.documentElement.style.setProperty('--placeholder-color', placeholderColor);
             document.documentElement.style.setProperty('--placeholder-search-color', placeholderSearchColor);
 
-            @this.dispatch('changeTheme', {
-                theme: index
-            })
+        @this.dispatch('changeTheme', {
+            theme: index
+        })
         }
 
         let search = document.getElementById('default-search');
 
         search.addEventListener('input', function () {
             if (search.value.trim() !== '') {
-                @this.dispatch('searchChats', {
-                    chatName: search.value.trim()
-                })
+            @this.dispatch('searchChats', {
+                chatName: search.value.trim()
+            })
             } else {
-                @this.dispatch('refreshChatList');
+            @this.dispatch('refreshChatList')
+
             }
         });
     </script>
