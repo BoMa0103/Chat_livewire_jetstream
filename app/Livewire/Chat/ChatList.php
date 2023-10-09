@@ -165,10 +165,12 @@ class ChatList extends Component
 
         $this->getMessagesService()->setReadStatusMessages($chat->id, $this->auth_id);
 
-        DB::table('message_user')
-            ->where('chat_id', $this->selectedChat->id)
-            ->where('user_id', $this->auth_id)
-            ->update(['read_status' => 1]);
+        if ($chat->chat_type === Chat::PRIVATE) {
+            $this->dispatch('broadcastMessageRead');
+            return;
+        }
+
+        $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, $this->auth_id);
 
         $this->dispatch('broadcastMessageRead');
     }
