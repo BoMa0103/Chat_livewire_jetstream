@@ -24,9 +24,8 @@ jobs:
           PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
 
       - name: Deploy to Production
-        run: |
-          cd /var/www/chat
-
+        working-directory: /var/www/chat
+        run:
           git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git
 
           composer install --no-interaction --prefer-dist --optimize-autoloader
