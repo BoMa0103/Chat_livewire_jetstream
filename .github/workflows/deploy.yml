@@ -1,0 +1,40 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$PRODUCTION_SERVER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H dotstelegrambot.online >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+        env:
+          PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
+
+      - name: Deploy to Production
+        run: |
+          cd /var/www/chat
+
+          git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git
+
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+
+          php artisan migrate
+
+          npm run build
+
+          sudo systemctl reload apache2.service
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
