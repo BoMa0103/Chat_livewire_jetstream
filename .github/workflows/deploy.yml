@@ -26,14 +26,10 @@ jobs:
       - name: Deploy to Production
         working-directory: /var/www/chat
         run:
-          git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git
-
-          composer install --no-interaction --prefer-dist --optimize-autoloader
-
-          php artisan migrate
-
-          npm run build
-
-          sudo systemctl reload apache2.service
+          /usr/bin/git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git
+          /usr/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
+          /usr/bin/php artisan migrate
+          /usr/bin/npm run build
+          /usr/sbin/sudo systemctl reload apache2.service
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
