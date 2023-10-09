@@ -1,4 +1,4 @@
-@php use App\Models\Chat;use Illuminate\Support\Facades\DB; @endphp
+@php use App\Models\Chat;@endphp
 <div class="wire-chat-list">
 
     <div class="flex-container">
@@ -106,15 +106,10 @@
                             <p class="chat-last-message-data"
                                id="chat-last-message-data"> {{$chat->messages->last() ? $chat->messages->last()->created_at->format('H:i') : ''}} </p>
                             @php
-
                                 if ($chat->chat_type == Chat::PRIVATE) {
-                                    $unreadMessagesCount = count($chat->messages->where('read_status', 0)->where('user_id', '!=', auth()->user()->id));
+                                    $unreadMessagesCount = $this->getMessagesService()->getUnreadMessagesCount($chat->id, auth()->id());
                                 } else {
-                                    $unreadMessagesCount = DB::table('message_user')
-                                                        ->where('chat_id', $chat->id)
-                                                        ->where('user_id', $auth_id)
-                                                        ->where('read_status', 0)
-                                                        ->count();
+                                    $unreadMessagesCount = $this->getMessagesService()->getUnreadMessagesCountForConversation($chat->id, $auth_id);
                                 }
 
                                 if($unreadMessagesCount) {

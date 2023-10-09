@@ -163,17 +163,14 @@ class ChatList extends Component
             return;
         }
 
-        // @todo need to rebuild
-        foreach ($receivers as $receiver) {
-            $receiverInstance = $this->getUsersService()->find($receiver->id);
+        $this->getMessagesService()->setReadStatusMessages($chat->id, $this->auth_id);
 
-            $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
+        if ($chat->chat_type === Chat::PRIVATE) {
+            $this->dispatch('broadcastMessageRead');
+            return;
         }
 
-        DB::table('message_user')
-            ->where('chat_id', $this->selectedChat->id)
-            ->where('user_id', $this->auth_id)
-            ->update(['read_status' => 1]);
+        $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, $this->auth_id);
 
         $this->dispatch('broadcastMessageRead');
     }

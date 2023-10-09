@@ -12,9 +12,13 @@ interface MessageRepository
 
     public function getMessagesByChatIdOffsetLimit(int $chatId, int $offset, int $limit);
 
-    public function setReadStatusMessages(int $chatId, int $userId);
+    public function setReadStatusMessages(int $chatId, int $userId): void;
 
     public function getUnreadMessagesCount(int $chatId, int $userId): int;
+
+    public function setReadStatusMessagesForConversation(int $chatId, int $userId): void;
+
+    public function getUnreadMessagesCountForConversation(int $chatId, int $userId): int;
 
     public function getMessagesCount(int $chatId): int;
 

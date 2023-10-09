@@ -71,10 +71,7 @@ class ChatboxChat extends Component
             $broadcastedMessage->read_status = 1;
             $broadcastedMessage->save();
 
-            DB::table('message_user')
-                ->where('chat_id', $this->selectedChat->id)
-                ->where('user_id', auth()->id())
-                ->update(['read_status' => 1]);
+            $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, auth()->id());
 
             $this->pushMessage($broadcastedMessage->id);
 

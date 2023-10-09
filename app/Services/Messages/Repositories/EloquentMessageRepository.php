@@ -3,6 +3,7 @@
 namespace App\Services\Messages\Repositories;
 
 use App\Models\Message;
+use Illuminate\Support\Facades\DB;
 
 class EloquentMessageRepository implements MessageRepository
 {
@@ -26,11 +27,11 @@ class EloquentMessageRepository implements MessageRepository
             ->get();
     }
 
-    public function setReadStatusMessages(int $chatId, int $userId)
+    public function setReadStatusMessages(int $chatId, int $userId): void
     {
-        return Message::where('chat_id', $chatId)
+        Message::where('chat_id', $chatId)
             ->where('read_status', Message::UNREAD_STATUS)
-            ->where('user_id', $userId)
+            ->where('user_id', '!=', $userId)
             ->update(['read_status' => Message::READ_STATUS]);
     }
 
@@ -42,7 +43,24 @@ class EloquentMessageRepository implements MessageRepository
             ->count();
     }
 
-    public function getMessagesCount(int $chatId):int
+    public function setReadStatusMessagesForConversation(int $chatId, int $userId): void
+    {
+        DB::table('message_user')
+            ->where('chat_id', $chatId)
+            ->where('user_id', $userId)
+            ->update(['read_status' => 1]);
+    }
+
+    public function getUnreadMessagesCountForConversation(int $chatId, int $userId): int
+    {
+        return DB::table('message_user')
+            ->where('chat_id', $chatId)
+            ->where('user_id', $userId)
+            ->where('read_status', 0)
+            ->count();
+    }
+
+    public function getMessagesCount(int $chatId): int
     {
         return Message::where('chat_id', $chatId)->count();
     }
