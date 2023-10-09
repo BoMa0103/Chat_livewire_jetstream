@@ -1,4 +1,4 @@
-@php use App\Models\Chat;use Illuminate\Support\Facades\DB; @endphp
+@php use App\Models\Chat;@endphp
 <div class="wire-chat-list">
 
     <div class="flex-container">
