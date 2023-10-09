@@ -30,7 +30,7 @@ class EloquentMessageRepository implements MessageRepository
     {
         return Message::where('chat_id', $chatId)
             ->where('read_status', Message::UNREAD_STATUS)
-            ->where('user_id', $userId)
+            ->where('user_id', '!=', $userId)
             ->update(['read_status' => Message::READ_STATUS]);
     }
 

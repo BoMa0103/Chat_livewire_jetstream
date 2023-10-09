@@ -163,12 +163,7 @@ class ChatList extends Component
             return;
         }
 
-        // @todo need to rebuild
-        foreach ($receivers as $receiver) {
-            $receiverInstance = $this->getUsersService()->find($receiver->id);
-
-            $this->getMessagesService()->setReadStatusMessages($chat->id, $receiverInstance->id);
-        }
+        $this->getMessagesService()->setReadStatusMessages($chat->id, $this->auth_id);
 
         DB::table('message_user')
             ->where('chat_id', $this->selectedChat->id)
