@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Production
         working-directory: /var/www/chat
-        run:
+        run: |
           ssh root@dotstelegrambot.online "cd /var/www/chat && \
             git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
             composer install --no-interaction --prefer-dist --optimize-autoloader && \
