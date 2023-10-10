@@ -26,14 +26,6 @@ jobs:
         env:
           PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.7.0'
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Deploy to Production
         run: |
           ssh root@159.89.110.201 "cd /var/www/chat && \
