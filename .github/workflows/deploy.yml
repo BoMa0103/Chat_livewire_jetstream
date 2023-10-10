@@ -42,7 +42,7 @@ jobs:
             yes | php artisan migrate && \
             . ~/.nvm/nvm.sh && \
             nvm use node && \
-            node -v && \
+            npm run build && \
             sudo systemctl reload apache2.service"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
