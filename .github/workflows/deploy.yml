@@ -12,16 +12,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$PRODUCTION_SERVER_SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H dotstelegrambot.online >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-        env:
-          PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
+        
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.PRODUCTION_SERVER_SSH_KEY }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
 
       - name: Deploy to Production
         working-directory: /var/www/chat
