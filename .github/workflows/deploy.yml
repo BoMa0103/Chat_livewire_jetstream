@@ -21,11 +21,6 @@ jobs:
       - name: Deploy to Production
         working-directory: /var/www/chat
         run: |
-          ssh root@dotstelegrambot.online "cd /var/www/chat && \
-            git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
-            composer install --no-interaction --prefer-dist --optimize-autoloader && \
-            php artisan migrate && \
-            npm run build && \
-            sudo systemctl reload apache2.service"
+          ssh root@dotstelegrambot.online "ls"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
