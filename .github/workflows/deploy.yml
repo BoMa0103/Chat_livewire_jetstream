@@ -18,13 +18,13 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$PRODUCTION_SERVER_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H dotstelegrambot.online >> ~/.ssh/known_hosts
+          ssh-keyscan -H 159.89.110.201 >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
         env:
           PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
 
       - name: Deploy to Production
         run: |
-          ssh root@dotstelegrambot.online "ls"
+          ssh root@159.89.110.201 "ls"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
