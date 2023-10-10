@@ -19,6 +19,7 @@ class Chatbox extends Component
 
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
+            "echo-private:chat.{$auth_id},ChatDelete" => 'ChatDelete',
             'loadChat', 'resetChat', 'broadcastMessageRead'
         ];
     }
@@ -26,6 +27,11 @@ class Chatbox extends Component
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
+    }
+
+    public function chatDelete(): void
+    {
+        $this->dispatch('refreshChatList');
     }
 
     public function loadChat(Chat $chat): void

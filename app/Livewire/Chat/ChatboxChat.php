@@ -25,6 +25,7 @@ class ChatboxChat extends Component
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
+            "echo-private:chat.{$auth_id},ChatDelete" => 'ChatDelete',
             'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat', 'broadcastMessageRead'
         ];
     }
@@ -96,6 +97,17 @@ class ChatboxChat extends Component
 
         foreach ($receivers as $receiver){
             broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
+    }
+
+    public function ChatDelete($event): void
+    {
+        $this->dispatch('refreshChatList');
+        if ($this->selectedChat->id === $event['chat_id']) {
+            $this->dispatch('resetChat');
+            $this->dispatch('resetMessage');
+
+            $this->dispatch('hideMessageInput');
         }
     }
 

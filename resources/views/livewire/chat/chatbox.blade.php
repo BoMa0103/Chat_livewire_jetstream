@@ -12,7 +12,6 @@
 </div>
 
 <script>
-
     $(document).on('click', '.return', function (){
         @this.dispatch('resetChat');
     });
