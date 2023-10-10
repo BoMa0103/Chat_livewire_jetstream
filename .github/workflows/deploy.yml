@@ -25,6 +25,6 @@ jobs:
 
       - name: Deploy to Production
         run: |
-          ssh root@159.89.110.201 "ls"
+          ssh root@159.89.110.201 "cd /var/www/chat"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
