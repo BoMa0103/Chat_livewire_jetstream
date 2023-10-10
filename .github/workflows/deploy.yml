@@ -18,8 +18,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$PRODUCTION_SERVER_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          [ -f ~/.ssh/id_rsa.pub ] || ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
-          ssh-keyscan -H -i ~/.ssh/id_rsa dotstelegrambot.online >> ~/.ssh/known_hosts
+          ssh-keyscan -H dotstelegrambot.online >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
         env:
           PRODUCTION_SERVER_SSH_KEY: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
@@ -27,14 +26,11 @@ jobs:
       - name: Deploy to Production
         working-directory: /var/www/chat
         run:
-          git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git
-
-          composer install --no-interaction --prefer-dist --optimize-autoloader
-
-          php artisan migrate
-
-          npm run build
-
-          sudo systemctl reload apache2.service
+          ssh root@dotstelegrambot.online "cd /var/www/chat && \
+            git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
+            composer install --no-interaction --prefer-dist --optimize-autoloader && \
+            php artisan migrate && \
+            npm run build && \
+            sudo systemctl reload apache2.service"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
