@@ -28,7 +28,7 @@ jobs:
           ssh root@159.89.110.201 "cd /var/www/chat && \
             git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
             composer install --no-interaction --prefer-dist --optimize-autoloader && \
-            php artisan migrate && \
+            yes | php artisan migrate && \
             npm run build && \
             sudo systemctl reload apache2.service"
         env:
