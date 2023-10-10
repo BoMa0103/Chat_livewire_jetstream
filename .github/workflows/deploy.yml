@@ -40,6 +40,7 @@ jobs:
             git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
             composer install --no-interaction --prefer-dist --optimize-autoloader && \
             yes | php artisan migrate && \
+            nvm use node && \
             node -v && \
             sudo systemctl reload apache2.service"
         env:
