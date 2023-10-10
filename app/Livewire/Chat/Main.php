@@ -11,16 +11,11 @@ class Main extends Component
 
     public $theme;
 
-    public $listeners = ['resetChat', 'changeTheme'];
+    public $listeners = ['changeTheme'];
 
     private function getUsersService(): UsersService
     {
         return app(UsersService::class);
-    }
-
-    public function resetChat(): void
-    {
-        $this->dispatch('refresh');
     }
 
     public function changeTheme($theme): void

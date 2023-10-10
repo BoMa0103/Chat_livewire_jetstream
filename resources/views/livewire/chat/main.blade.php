@@ -138,6 +138,10 @@
         markChatAsOffline(event.detail[0]);
     });
 
+    window.addEventListener('hideMessageInput', event => {
+        $('.chat-input').hide();
+    });
+
     window.addEventListener('setTheme', event => {
         let backForChatColor;
         let backForChatInfoColor;
