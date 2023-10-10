@@ -32,7 +32,7 @@ jobs:
             git pull https://github.com/BoMa0103/Chat_livewire_jetstream.git && \
             composer install --no-interaction --prefer-dist --optimize-autoloader && \
             yes | php artisan migrate && \
-            npm run build && \
+            node -v && \
             sudo systemctl reload apache2.service"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
