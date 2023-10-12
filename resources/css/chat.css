@@ -500,6 +500,14 @@ body {
     min-width: fit-content;
 }
 
+.day_date {
+    margin: auto;
+    color: var(--main-text-color);
+    width: fit-content;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 .add-users-conv-list {
     width: 220px;
 }
