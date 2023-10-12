@@ -3,7 +3,7 @@
     @php $lastMessage = null @endphp
     @foreach($messages as $message)
         @if($lastMessage && $lastMessage->created_at->format('Y-m-d') !== $message->created_at->format('Y-m-d'))
-            <div class="day_date flex justify-center items-center p-3 pt-1.5 pb-1.5 pl-3 pr-3 rounded-full">{{ date("F j", $message->created_at->timestamp)  }}</div>
+            <div class="day_date">{{ date("F j", $message->created_at->timestamp)  }}</div>
         @endif
         <div wire:key='{{$message->id}}'
              class="message {{auth()->id() == $message->user_id ? 'outgoing' : 'incoming'}}">
