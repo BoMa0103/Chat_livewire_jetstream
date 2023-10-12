@@ -37,6 +37,7 @@
 
     @media (max-width: 767px) {
         .chat-list, .users, .no-chat {
+            border: none;
             display: none;
         }
 
