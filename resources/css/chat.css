@@ -506,6 +506,8 @@ body {
     width: fit-content;
     font-weight: 600;
     background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 6px 12px;
 }
 
 .add-users-conv-list {
