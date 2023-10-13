@@ -159,7 +159,7 @@ document.addEventListener('send-message-loaded', function () {
     $(".emoji-dropdown .emoji-button").click(function () {
         var $menu = $(this).siblings(".emoji-menu");
         if ($menu.css("display") === "none") {
-            $menu.css("display", "block");
+            $menu.css("display", "flex");
         } else {
             $menu.css("display", "none");
         }
