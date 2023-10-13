@@ -217,6 +217,7 @@ body {
     border-radius: 5px;
     text-align: right;
     color: var(--second-text-color);
+    user-select: none;
 }
 
 .message_user {
@@ -507,6 +508,7 @@ body {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     padding: 4px 18px;
+    user-select: none;
 }
 
 .add-users-conv-list {

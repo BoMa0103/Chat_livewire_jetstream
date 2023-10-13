@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 
-class ChatboxChat extends Component
+class ChatboxMessages extends Component
 {
     public $messages;
     public $selectedChat;
@@ -174,7 +174,6 @@ class ChatboxChat extends Component
 
     public function render()
     {
-        return view('livewire.chat.chatbox-chat');
+        return view('livewire.chat.chatbox-messages');
     }
-
 }

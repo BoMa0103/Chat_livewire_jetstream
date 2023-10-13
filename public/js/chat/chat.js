@@ -111,25 +111,7 @@ function showHideChatSettings() {
     }
 }
 
-/* Scroll */
-/* Move to blades */
-
-// function scrollToBottom() {
-//     let chatMessages = document.getElementById('messages');
-//
-//
-//     chatMessages.scrollTop = chatMessages.scrollHeight;
-// }
-//
-// function scrollToCurrentMessage() {
-//     let chatMessages = document.getElementById('messages');
-//
-//     // chatMessages.scrollTop = chatMessages.scrollHeight - previousScrollHeight;
-// }
-
-
 /* Notifications */
-
 
 function notifyMe(json) {
     if (!("Notification" in window)) {
@@ -162,10 +144,7 @@ function notifyMe(json) {
     }
 }
 
-
-/* Events */
-
-window.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener('send-message-loaded', function () {
     let textArea = document.getElementById('text');
     let sendButton = document.getElementById('send');
 
@@ -177,6 +156,65 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }
     });
 
+    $(".emoji-dropdown .emoji-button").click(function () {
+        var $menu = $(this).siblings(".emoji-menu");
+        if ($menu.css("display") === "none") {
+            $menu.css("display", "block");
+        } else {
+            $menu.css("display", "none");
+        }
+    });
+
+    function insertEmoji(emoji) {
+        var textarea = document.getElementById('text');
+        textarea.value += emoji;
+        textarea.dispatchEvent(new Event('input'));
+    }
+
+    $(".emoji-item").click(function () {
+        var selectedEmoji = $(this).text();
+        insertEmoji(selectedEmoji);
+    });
+
+    $(document).click(function (e) {
+        if (!$(e.target).closest(".emoji-dropdown").length) {
+            $(".emoji-menu").css("display", "none");
+        }
+    });
+
+    textArea.addEventListener('keydown', function (event) {
+        if (event.key === "Enter" && !event.ctrlKey && !event.shiftKey) {
+            window.myLivewireHandler();
+            event.preventDefault();
+        } else if (event.key === "Enter" && (event.ctrlKey || event.shiftKey)) {
+            const scrollHeight = this.scrollHeight;
+            const scrollTop = this.scrollTop;
+            const clientHeight = this.clientHeight;
+
+            const currentValue = this.value;
+            const selectionStart = this.selectionStart;
+            const selectionEnd = this.selectionEnd;
+
+            this.value = currentValue.substring(0, selectionStart) + '\n' + currentValue.substring(selectionEnd);
+            this.selectionStart = this.selectionEnd = selectionStart + 1;
+
+            // @todo show more lines in textarea
+            // if(textArea.rows < 6) {
+            //     textArea.rows += 1;
+            // }
+
+            if (scrollTop + clientHeight >= scrollHeight) {
+                this.scrollTop = scrollHeight;
+            }
+
+            event.preventDefault();
+        }
+    });
+});
+
+/* Events */
+
+window.addEventListener("DOMContentLoaded", (event) => {
     window.addEventListener('reloadChatPage', event=>{
         location.reload();
     });
