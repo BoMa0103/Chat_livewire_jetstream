@@ -217,6 +217,7 @@ body {
     border-radius: 5px;
     text-align: right;
     color: var(--second-text-color);
+    user-select: none;
 }
 
 .message_user {
@@ -507,6 +508,7 @@ body {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     padding: 4px 18px;
+    user-select: none;
 }
 
 .add-users-conv-list {
@@ -732,18 +734,22 @@ input:focus {
     position: absolute;
     bottom: 80px;
     margin: 10px;
-    max-width: 196px;
+    width: 200px;
     left: 0;
     display: none;
     box-shadow: 0 2px 4px #0003;
     border-radius: 0.5em;
     background-color: var(--back-search-send-form-color);
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .emoji-item {
     padding: 8px;
     cursor: pointer;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    width: calc(20%);
 }
 
 .emoji-item:hover {

@@ -36,4 +36,9 @@ class ChatsService
     {
         return $this->chatRepository->getChatReceivers($chatId, $senderUserId);
     }
+
+    public function deleteChat(int $chatId)
+    {
+        return $this->chatRepository->deleteChat($chatId);
+    }
 }

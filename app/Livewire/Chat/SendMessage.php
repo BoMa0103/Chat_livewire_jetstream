@@ -66,6 +66,11 @@ class SendMessage extends Component
         }
     }
 
+    public function mount(): void
+    {
+        $this->dispatch('send-message-loaded');
+    }
+
     public function render()
     {
         return view('livewire.chat.send-message');

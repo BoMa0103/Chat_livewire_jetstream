@@ -15,4 +15,6 @@ interface ChatRepository
     public function getChatsOrderByDesc(int $userId);
 
     public function getChatReceivers(int $chatId, int $senderUserId);
+
+    public function deleteChat(int $chatId);
 }

@@ -25,8 +25,7 @@ class ChatSettings extends Component
 
         $receivers = $this->getChatsService()->getChatReceivers($deletedChatId, auth()->id())->get();
 
-        $this->selectedChat->delete();
-        DB::table('chat_user')->where('chat_id', $this->selectedChat->id)->delete();
+        $this->getChatsService()->deleteChat($this->selectedChat->id);
 
         $this->dispatch('resetChat');
         $this->dispatch('resetMessage');

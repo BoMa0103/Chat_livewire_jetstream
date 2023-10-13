@@ -62,8 +62,6 @@
 
     <div class="chat_container">
         @livewire('chat.chatbox')
-
-        @livewire('chat.send-message')
     </div>
 
     <div class="users shadow">
@@ -226,9 +224,14 @@
         $('.chat_container').hide();
     });
 
+    // @todo need to rebuild using pusher events
     window.addEventListener('beforeunload', function (event) {
         @this.dispatch('sendEventMarkChatAsOffline');
     });
+
+    window.myLivewireHandler = function () {
+        @this.dispatch('sendMessage');
+    };
 </script>
 
 
