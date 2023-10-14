@@ -111,7 +111,6 @@ body {
 
 .chat-header-name {
     margin-left: 10px;
-    margin-top: 1px;
 }
 
 .flex-container {
@@ -136,6 +135,14 @@ body {
     padding-top: 12px;
     color: var(--main-text-color);
     display: flex;
+}
+
+.last-seen {
+    font-weight: 500;
+    font-size: 15px;
+    margin-left: 10px;
+    margin-top: 3px;
+    color: lightgray;
 }
 
 .concave-left {
@@ -220,7 +227,7 @@ body {
     user-select: none;
 }
 
-.message_user {
+.message-user {
     display: flex;
     padding: 4px 12px;
     border-radius: 5px;
