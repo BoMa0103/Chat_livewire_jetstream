@@ -140,6 +140,10 @@ class ChatList extends Component
 
     public function sendEventMarkChatAsOffline(): void
     {
+        $user = $this->getUsersService()->find($this->auth_id);
+        $user->last_seen = now();
+        $user->save();
+
         broadcast(event: new MarkAsOffline(
             $this->auth_id,
         ));

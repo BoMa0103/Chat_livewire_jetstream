@@ -20,3 +20,4 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('chat.{receiverId}', function ($user, $receiverId){
     return auth()->user()->id === (int) $receiverId;
 });
+

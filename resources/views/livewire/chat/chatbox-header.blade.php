@@ -8,6 +8,9 @@
         </svg>
     </div>
     <div class="chat-header-name">{{$chatName}}</div>
+    @if ($selectedChat->chat_type !== Chat::CONVERSATION)
+        <div class="last-seen">({{$lastSeen}})</div>
+    @endif
     <div class="concave-left" id="concave-left">
         <div class='leftconcave'></div>
     </div>
@@ -20,14 +23,16 @@
                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
             </svg>
         </div>
-        <div class="add-users-conv @php if($selectedChat->chat_type === Chat::PRIVATE){echo ' hidden';} @endphp"
-             onclick="showHideUsers()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" class="bi bi-plus"
-                 viewBox="0 0 16 16">
-                <path
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
-        </div>
+        @if ($selectedChat->chat_type !== Chat::PRIVATE)
+            <div class="add-users-conv"
+                 onclick="showHideUsers()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" class="bi bi-plus"
+                     viewBox="0 0 16 16">
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+            </div>
+        @endif
         <div class="show-users" onclick="showUsers()">
             <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor"
                  class="bi bi-arrow-right-short" viewBox="0 0 16 16">

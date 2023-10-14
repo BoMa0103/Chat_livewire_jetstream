@@ -31,6 +31,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $theme
+ * @property Carbon|null last_seen
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection<int, PersonalAccessToken> $tokens

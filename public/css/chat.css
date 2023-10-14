@@ -219,7 +219,7 @@ body {
     color: var(--second-text-color);
 }
 
-.message_user {
+.message-user {
     display: flex;
     padding: 4px 12px;
     border-radius: 5px;
