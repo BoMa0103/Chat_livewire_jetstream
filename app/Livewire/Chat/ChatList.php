@@ -131,9 +131,12 @@ class ChatList extends Component
     {
         $user_id = $this->auth_id;
 
-        dd($event);
         $parts = explode('.', $event['payload']['events'][0]['channel']);
         $logout_user_id = end($parts);
+
+        $user = $this->getUsersService()->find($logout_user_id);
+        $user->last_seen = now();
+        $user->save();
 
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $logout_user_id);
 
@@ -141,17 +144,6 @@ class ChatList extends Component
             $this->dispatch('markChatCircleAsOffline', $chat->id);
         }
     }
-
-//    public function sendEventMarkChatAsOffline(): void
-//    {
-//        $user = $this->getUsersService()->find($this->auth_id);
-//        $user->last_seen = now();
-//        $user->save();
-//
-//        broadcast(event: new MarkAsOffline(
-//            $this->auth_id,
-//        ));
-//    }
 
     public function refreshChatList(): void
     {
