@@ -224,11 +224,6 @@
         $('.chat_container').hide();
     });
 
-    // @todo need to rebuild using pusher events
-    // window.addEventListener('beforeunload', function (event) {
-    //     @this.dispatch('sendEventMarkChatAsOffline');
-    // });
-
     window.myLivewireHandler = function () {
         @this.dispatch('sendMessage');
     };

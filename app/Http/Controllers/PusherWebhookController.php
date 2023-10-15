@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\MarkAsOffline;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class PusherWebhookController extends Controller
 {
@@ -12,7 +11,7 @@ class PusherWebhookController extends Controller
     {
 //        $payload = json_decode($request->getContent());
 
-        if ($request['events'][0]['name'] === 'channel_vacated') {
+        if ($request['events'][0]['name'] === 'channel_vacated' && explode('.', $request['events'][0]['channel'])[0] === 'online') {
             broadcast(event: new MarkAsOffline(
                 $request,
             ));
