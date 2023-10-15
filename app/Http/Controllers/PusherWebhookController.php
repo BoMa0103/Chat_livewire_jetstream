@@ -16,7 +16,6 @@ class PusherWebhookController extends Controller
 
         if ($request['events'][0]['name'] === 'channel_vacated') {
             broadcast(event: new MarkAsOffline(
-//            1,
                 $request,
             ));
         }
