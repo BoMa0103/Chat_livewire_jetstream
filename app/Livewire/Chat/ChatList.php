@@ -131,6 +131,7 @@ class ChatList extends Component
     {
         $user_id = $this->auth_id;
 
+        dd($event['payload']);
         $parts = explode('.', $event['payload']['events'][0]['channel']);
         $logout_user_id = end($parts);
 
