@@ -16,15 +16,15 @@ class MarkAsOffline implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user_id;
+//    public $user_id;
     public $payload;
 
     public function __construct(
-        $user_id,
+//        $user_id,
         $payload = null,
     )
     {
-        $this->user_id = $user_id;
+//        $this->user_id = $user_id;
         $this->payload = $payload;
     }
 
