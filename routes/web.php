@@ -22,8 +22,6 @@ Route::get('/', function () {
 
 Route::get('/chat', Main::class)->middleware('auth:sanctum')->name('chat');
 
-Route::post('/pusher', PusherWebhookController::class)->name('pusher');
-
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
