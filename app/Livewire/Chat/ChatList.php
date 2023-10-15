@@ -133,6 +133,8 @@ class ChatList extends Component
 
         $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['user_id']);
 
+        dump($event['payload']);
+
         if ($chat) {
             $this->dispatch('markChatCircleAsOffline', $chat->id);
         }

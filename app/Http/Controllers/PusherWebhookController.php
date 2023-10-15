@@ -14,6 +14,7 @@ class PusherWebhookController extends Controller
 
         broadcast(event: new MarkAsOffline(
             1,
+            $payload,
         ));
     }
 }
