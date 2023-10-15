@@ -15,6 +15,7 @@ use Illuminate\Queue\SerializesModels;
 class MarkAsOffline implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $payload;
 
     public function __construct(
