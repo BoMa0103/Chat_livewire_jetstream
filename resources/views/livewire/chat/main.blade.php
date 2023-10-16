@@ -33,6 +33,10 @@
         .show-users-in-list {
             display: none;
         }
+
+        .img-button, .emoji-button {
+            display: none;
+        }
     }
 
     @media (max-width: 767px) {
@@ -50,6 +54,10 @@
         }
 
         .show-users-no-chat {
+            display: none;
+        }
+
+        .img-button, .emoji-button {
             display: none;
         }
     }
@@ -81,9 +89,9 @@
             $('.chat-input').hide();
 
             if(window.innerWidth < 768) {
-                $('.chat_container').hide();
+                $('.chatbox').hide();
             } else {
-                $('.chat_container').show();
+                $('.chatbox').show();
             }
         } else {
             $('.chat-input').show();
@@ -104,9 +112,9 @@
             $('.chat-input').hide();
 
             if(window.innerWidth < 768) {
-                $('.chat_container').hide();
+                $('.chatbox').hide();
             } else {
-                $('.chat_container').show();
+                $('.chatbox').show();
             }
         } else {
             if(window.innerWidth < 768) {
@@ -118,7 +126,7 @@
     });
 
     $(document).on('click', '.chat-item', function (){
-        $('.chat_container').show();
+        $('.chatbox').show();
 
         if(window.innerWidth < 768) {
             $('.chat-list').hide();
@@ -150,7 +158,7 @@
         $('.chat-list').show();
         $('.chat').hide();
         $('.chat-input').hide();
-        $('.chat_container').hide();
+        $('.chatbox').hide();
     });
 
     window.myLivewireHandler = function () {

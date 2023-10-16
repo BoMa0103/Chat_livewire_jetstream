@@ -65,6 +65,11 @@ body {
     margin: 0;
 }
 
+.user-info {
+    display: flex;
+    overflow: hidden;
+}
+
 .return {
     cursor: pointer;
     height: fit-content;
@@ -143,6 +148,9 @@ body {
     margin-left: 10px;
     margin-top: 3px;
     color: lightgray;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .concave-left {
