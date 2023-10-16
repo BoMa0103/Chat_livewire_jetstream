@@ -35,7 +35,6 @@ jobs:
             . ~/.nvm/nvm.sh && \
             nvm use node && \
             npm run build && \
-            sudo systemctl reload apache2.service && \
-            reboot"
+            sudo systemctl reload apache2.service"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
