@@ -52,7 +52,7 @@ body {
     padding-left: 8px;
 }
 
-.chat_container {
+.chatbox {
     position: relative;
     flex: 6;
     overflow: hidden;
@@ -262,7 +262,7 @@ body {
     cursor: pointer;
 }
 
-.chat_button {
+.chat-button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -270,10 +270,10 @@ body {
     margin: 5px !important;
 }
 
-.chat_button:hover {
+.chat-button:hover {
 }
 
-.chat_textarea {
+.chat-textarea {
     flex: 1;
     padding: 10px !important;
     border-radius: 5px;
@@ -284,7 +284,7 @@ body {
     background-color: var(--back-text-area-color) !important;
 }
 
-.chat_textarea::placeholder {
+.chat-textarea::placeholder {
     color: var(--placeholder-color);
 }
 
@@ -397,12 +397,6 @@ body {
     display: flex;
 }
 
-.chat_last_data_unread_messages {
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-}
-
 .chat-last-message-data {
     display: flex;
     margin-left: auto;
@@ -411,7 +405,6 @@ body {
     padding-top: 16px;
     font-weight: 400;
 }
-
 
 .chat-unread-messages-count {
     display: flex;
@@ -504,11 +497,11 @@ body {
     flex: 2;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
     min-width: fit-content;
 }
 
-.day_date {
+.day-date {
     margin: 4px auto;
     color: var(--main-text-color);
     width: fit-content;
@@ -673,16 +666,16 @@ body {
 
 
 /* Style for the button when disabled */
-.chat_button[disabled] {
+.chat-button[disabled] {
     pointer-events: none; /* Prevent interactions */
 }
 
 
-.chat_button[disabled] svg {
+.chat-button[disabled] svg {
     fill: gray;
 }
 
-.chat_textarea:focus {
+.chat-textarea:focus {
     outline: none;
 }
 

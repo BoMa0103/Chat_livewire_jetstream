@@ -13,6 +13,7 @@
 
     <!-- Scripts -->
     <script type="text/javascript" src="{{ URL::asset('js/chat/chat.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/chat/themes.js') }}"></script>
 
     <script
         src="https://code.jquery.com/jquery-3.7.1.js"

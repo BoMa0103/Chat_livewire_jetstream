@@ -2,7 +2,7 @@
     <form wire:submit.prevent='sendMessage'>
         <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 message-send-form">
             <button type="button"
-                    class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat_button">
+                    class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat-button">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                      viewBox="0 0 20 18">
                     <path fill="currentColor"
@@ -15,7 +15,7 @@
                 <span class="sr-only">Upload image</span>
             </button>
             <div class="emoji-dropdown">
-                <button class="emoji-button p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat_button" type="button">
+                <button class="emoji-button p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat-button" type="button">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                          viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -25,10 +25,10 @@
                 @livewire('chat.emoji-list')
             </div>
             <textarea wire:model="body" id="text" rows="1"
-                      class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat_textarea"
+                      class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat-textarea"
                       placeholder="Your message..."></textarea>
             <button disabled id="send" type="submit"
-                    class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600 chat_button">
+                    class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600 chat-button">
                 <svg class="w-5 h-5 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                      viewBox="0 0 18 20">
                     <path
