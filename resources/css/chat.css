@@ -213,7 +213,7 @@ body {
     align-self: flex-end;
     display: flex;
     margin-bottom: 10px;
-    max-width: 340px;
+    max-width: 100%;
     margin-top: auto;
     color: var(--main-text-color);
     z-index: 1;
