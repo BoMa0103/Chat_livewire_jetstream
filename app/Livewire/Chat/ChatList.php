@@ -70,7 +70,7 @@ class ChatList extends Component
                 $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
             }
 
-            if (Str::startsWith(strtolower($chatNameTmp), strtolower($chatName))) {
+            if (Str::startsWith(mb_strtolower($chatNameTmp, 'UTF-8'), mb_strtolower($chatName, 'UTF-8'))) {
                 $this->chats [] = $chat;
             }
         }
