@@ -4,7 +4,7 @@
         @livewire('chat.chatbox-header', ['selectedChat' => $selectedChat])
         @livewire('chat.chatbox-messages', ['selectedChat' => $selectedChat])
         @livewire('chat.user-list-for-conversation', ['selectedChat' => $selectedChat])
-        @livewire('chat.chat-settings', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-settings', ['selectedChat' => $selectedChat], key($selectedChat->id))
         @livewire('chat.send-message', ['selectedChat' => $selectedChat])
     @else
         @livewire('chat.no-chatbox')
@@ -80,11 +80,6 @@
             }
         });
     });
-
-    function deleteChat() {
-        @this.dispatch('deleteChat');
-    }
-
 </script>
 
 

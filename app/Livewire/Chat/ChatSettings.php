@@ -12,8 +12,6 @@ class ChatSettings extends Component
 {
     public $selectedChat;
 
-    protected $listeners = ['deleteChat'];
-
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);

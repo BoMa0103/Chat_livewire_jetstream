@@ -59,6 +59,13 @@ class ChatList extends Component
 
     public function searchChats($chatName): void
     {
+        $chatName = trim($chatName);
+
+        if ($chatName === '') {
+            $this->refreshChatList();
+            return;
+        }
+
         $chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
         $this->chats = [];
 
