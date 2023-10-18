@@ -68,6 +68,7 @@ body {
 .user-info {
     display: flex;
     overflow: hidden;
+    user-select: none;
 }
 
 .return {
@@ -941,6 +942,7 @@ img {
 }
 
 .search-input {
+    user-select: none;
     background-color: var(--back-search-send-form-color) !important;
 }
 
