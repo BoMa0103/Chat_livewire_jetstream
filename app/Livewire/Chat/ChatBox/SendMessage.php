@@ -23,7 +23,7 @@ class SendMessage extends Component
 
     #[Rule('max:10000')]
     public $file;
-  
+
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent', 'sendMessage'];
 
     private function getChatsService(): ChatsService
@@ -43,10 +43,10 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-        if ($this->file) {
+//        if ($this->file) {
 //            $filename = $this->uploadedFile->store('/', 'files');
-        }
-      
+//        }
+
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
