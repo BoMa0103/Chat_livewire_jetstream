@@ -12,10 +12,12 @@ use Livewire\Component;
 class ChatboxMessages extends Component
 {
     public $messages;
+
     public $selectedChat;
     public $paginateVar = 20;
-    public $messages_count;
-    public $height;
+    public $messagesCount;
+
+    public $scrollHeight;
 
     public function getListeners()
     {
@@ -121,36 +123,35 @@ class ChatboxMessages extends Component
 
     public function updatedHeight(): void
     {
-        $this->dispatch('updatedHeight', $this->height);
+        $this->dispatch('updatedHeight', $this->scrollHeight);
     }
 
     public function refreshChat(Chat $selectedChat): void
     {
         $this->selectedChat = $selectedChat;
         $this->paginateVar = 20;
-        $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
+        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
         $this->dispatch('rowChatToBottom');
         $this->dispatch('chatSelectedGetHeight');
     }
 
     public function updateHeight($height): void
     {
-        $this->height = $height;
+        $this->scrollHeight = $height;
     }
 
     public function loadMore(): void
     {
-        $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
 
-        if ($this->messages_count < $this->paginateVar)
-        {
+        if ($this->messagesCount < $this->paginateVar) {
             return;
         }
 
         $this->paginateVar += 20;
 
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
 
         $this->updatedHeight();
     }
@@ -162,9 +163,9 @@ class ChatboxMessages extends Component
 
     public function mount()
     {
-        $this->messages_count = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
 
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messages_count, $this->paginateVar);
+        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
 
         $this->dispatch('chatSelectedGetHeight');
         $this->dispatch('rowChatToBottom');

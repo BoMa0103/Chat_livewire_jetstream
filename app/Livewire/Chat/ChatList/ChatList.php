@@ -3,6 +3,7 @@
 namespace App\Livewire\Chat\ChatList;
 
 use App\Events\ChatCreate;
+use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
 use App\Livewire\Validators\HtmlValidator;
@@ -140,18 +141,22 @@ class ChatList extends Component
     {
         $user_id = $this->auth_id;
 
-        $parts = explode('.', $event['payload']['events'][0]['channel']);
-        $logout_user_id = end($parts);
+        $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $event['user_id']);
 
-        $user = $this->getUsersService()->find($logout_user_id);
+        $user = $this->getUsersService()->find($event['user_id']);
         $user->last_seen = now();
         $user->save();
-
-        $chat = $this->getChatsService()->findChatBetweenTwoUsers($user_id, $logout_user_id);
 
         if ($chat) {
             $this->dispatch('markChatCircleAsOffline', $chat->id);
         }
+    }
+
+    public function sendEventMarkChatAsOffline(): void
+    {
+        broadcast(event: new MarkAsOffline(
+            $this->auth_id,
+        ));
     }
 
     public function refreshChatList(): void

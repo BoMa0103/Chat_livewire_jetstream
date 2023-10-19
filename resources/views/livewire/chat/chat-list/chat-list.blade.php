@@ -85,8 +85,8 @@
                     <div>
                         <div class='chat-info' id="{{$chat->id}}">
                             <img class="w-7 h-7 mr-6 rounded-full avatar"
-                                 src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
-                                 alt="User image">
+                                 src="{{ auth()->user()->profile_photo_url }}"
+                                 alt="Profile photo">
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
                                 <p class="chat-name">
