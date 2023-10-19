@@ -20,3 +20,4 @@ yarn-error.log
 tmp
 rr
 .rr.yaml
+docker-compose.yml

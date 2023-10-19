@@ -43,8 +43,6 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-        $this->dispatch('error', ['message' => 'Tetst']);
-
         if ($this->file) {
 //            $filename = $this->uploadedFile->store('/', 'files');
         }
