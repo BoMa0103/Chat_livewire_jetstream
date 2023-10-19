@@ -1,79 +1,15 @@
-<style>
-    @media (min-width: 1029px) {
-        .chat-list {
-            display: block;
-        }
-
-        .no-chat {
-            display: flex;
-        }
-
-        .return {
-            display: none;
-        }
-
-        .show-users-in-list {
-            display: none;
-        }
-    }
-
-    @media (max-width: 1028px) and (min-width: 768px) {
-        .chat-list {
-            display: block;
-        }
-
-        .no-chat {
-            display: flex;
-        }
-
-        .users, .return {
-            display: none;
-        }
-
-        .show-users-in-list {
-            display: none;
-        }
-
-        .img-button, .emoji-button {
-            display: none;
-        }
-    }
-
-    @media (max-width: 767px) {
-        .chat-list, .users, .no-chat {
-            border: none;
-            display: none;
-        }
-
-        .return {
-            display: block;
-        }
-
-        .concave-left {
-            display: block !important;
-        }
-
-        .show-users-no-chat {
-            display: none;
-        }
-
-        .img-button, .emoji-button {
-            display: none;
-        }
-    }
-</style>
-
 <div class="chat-container">
+
     <div class="chat-list">
-        @livewire('chat.chat-list')
+        @livewire('chat.chat-list.chat-list')
     </div>
 
     <div class="chatbox">
-        @livewire('chat.chatbox')
+        @livewire('chat.chat-box.chatbox')
     </div>
 
     <div class="users shadow">
-        @livewire('chat.user-list')
+        @livewire('chat.user-list.user-list')
     </div>
 
 </div>
@@ -159,6 +95,11 @@
         $('.chat').hide();
         $('.chat-input').hide();
         $('.chatbox').hide();
+    });
+
+    // @todo need to rebuild using pusher events
+    window.addEventListener('beforeunload', function (event) {
+        @this.dispatch('sendEventMarkChatAsOffline');
     });
 
     window.myLivewireHandler = function () {

@@ -1,27 +1,34 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox;
 
 use App\Events\MessageSent;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Overtrue\LaravelEmoji\Emoji;
 
 class SendMessage extends Component
 {
+    use WithFileUploads;
+
     public $selectedChat;
 
     public $createdMessage;
 
     public $body;
 
+    #[Rule('max:10000')]
+    public $file;
+
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent', 'sendMessage'];
 
-    public function updateSendMessage(Chat $chat): void
+    private function getChatsService(): ChatsService
     {
-        $this->selectedChat = $chat;
+        return app(ChatsService::class);
     }
 
     private function getMessagesService(): MessagesService
@@ -29,13 +36,17 @@ class SendMessage extends Component
         return app(MessagesService::class);
     }
 
-    private function getChatsService(): ChatsService
+    public function updateSendMessage(Chat $chat): void
     {
-        return app(ChatsService::class);
+        $this->selectedChat = $chat;
     }
 
     public function sendMessage()
     {
+        if ($this->file) {
+//            $filename = $this->uploadedFile->store('/', 'files');
+        }
+
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
@@ -47,11 +58,18 @@ class SendMessage extends Component
 
         $this->reset('body');
 
+        $this->sendEvents();
+    }
+
+    private function sendEvents(): void
+    {
+        // Send Message to all connections with this user
         broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 
-        if(!$this->selectedChat->name) {
+        if ($this->selectedChat->chat_type === Chat::PRIVATE) {
             $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
 
+            // Send Message to all connections with receiver user
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiverId));
 
             return;
@@ -62,6 +80,7 @@ class SendMessage extends Component
         foreach ($receivers as $receiver) {
             $receiver->messagesToMany()->attach($this->createdMessage->id, ['chat_id' => $this->selectedChat->id]);
 
+            // Send Message to all receivers connections
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
         }
     }
@@ -73,6 +92,6 @@ class SendMessage extends Component
 
     public function render()
     {
-        return view('livewire.chat.send-message');
+        return view('livewire.chat.chat-box.send-message');
     }
 }

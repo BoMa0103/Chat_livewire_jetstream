@@ -1,13 +1,13 @@
 <div id="chat" class="chat">
 
     @if($selectedChat)
-        @livewire('chat.chatbox-header', ['selectedChat' => $selectedChat])
-        @livewire('chat.chatbox-messages', ['selectedChat' => $selectedChat])
-        @livewire('chat.user-list-for-conversation', ['selectedChat' => $selectedChat])
-        @livewire('chat.chat-settings', ['selectedChat' => $selectedChat])
-        @livewire('chat.send-message', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-box.chatbox-header', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-box.chatbox-messages', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-box.user-list-for-conversation', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-box.chat-settings', ['selectedChat' => $selectedChat], key($selectedChat->id))
+        @livewire('chat.chat-box.send-message', ['selectedChat' => $selectedChat])
     @else
-        @livewire('chat.no-chatbox')
+        @livewire('chat.chat-box.no-chatbox')
     @endif
 
 </div>
@@ -80,11 +80,6 @@
             }
         });
     });
-
-    function deleteChat() {
-        @this.dispatch('deleteChat');
-    }
-
 </script>
 
 
