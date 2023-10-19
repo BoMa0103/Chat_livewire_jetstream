@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox;
 
 use App\Events\ChatDelete;
 use App\Models\Chat;
@@ -11,8 +11,6 @@ use Livewire\Component;
 class ChatSettings extends Component
 {
     public $selectedChat;
-
-    protected $listeners = ['deleteChat'];
 
     private function getChatsService(): ChatsService
     {
@@ -49,6 +47,6 @@ class ChatSettings extends Component
 
     public function render()
     {
-        return view('livewire.chat.chat-settings');
+        return view('livewire.chat.chat-box.chat-settings');
     }
 }

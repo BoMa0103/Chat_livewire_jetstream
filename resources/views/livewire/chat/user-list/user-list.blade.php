@@ -12,8 +12,8 @@
     </div>
 
     <ul id="user-list">
-    @foreach($users as $user)
-            <li wire:click='checkChat({{$user->id}})'>{{$user->name}}</li>
-    @endforeach
+        @foreach($users as $user)
+                <li wire:click='checkChat({{$user->id}})'>{{$user->name}}</li>
+        @endforeach
     </ul>
 </div>

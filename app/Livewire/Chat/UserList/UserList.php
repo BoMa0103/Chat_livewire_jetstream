@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\UserList;
 
 use App\Events\ChatCreate;
 use App\Events\MarkAsOnline;
 use App\Models\Chat;
-use App\Models\User;
 use App\Services\Chats\ChatsService;
 use App\Services\Users\UsersService;
 use Livewire\Component;
@@ -48,6 +47,7 @@ class UserList extends Component
     public function render()
     {
         $this->users = $this->getUsersService()->getUsersWithoutUserWithId(auth()->id());
-        return view('livewire.chat.user-list');
+
+        return view('livewire.chat.user-list.user-list');
     }
 }

@@ -49,7 +49,7 @@
                               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="search" id="default-search"
+                <input wire:input="searchChats($event.target.value)" type="search" id="default-search"
                        class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 search-input"
                        placeholder="Search" required>
             </div>
@@ -85,8 +85,8 @@
                     <div>
                         <div class='chat-info' id="{{$chat->id}}">
                             <img class="w-7 h-7 mr-6 rounded-full avatar"
-                                 src="/images/alexander-hipp-iEEBWgY_6lA-unsplash.jpg"
-                                 alt="User image">
+                                 src="{{ auth()->user()->profile_photo_url }}"
+                                 alt="Profile photo">
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
                                 <p class="chat-name">
@@ -203,19 +203,6 @@
                 theme: themeId
             })
         }
-
-        let search = document.getElementById('default-search');
-
-        search.addEventListener('input', function () {
-            if (search.value.trim() !== '') {
-            @this.dispatch('searchChats', {
-                chatName: search.value.trim()
-            })
-            } else {
-            @this.dispatch('refreshChatList')
-
-            }
-        });
     </script>
 
 </div>
