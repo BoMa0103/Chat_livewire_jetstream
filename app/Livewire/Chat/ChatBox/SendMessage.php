@@ -6,17 +6,24 @@ use App\Events\MessageSent;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Overtrue\LaravelEmoji\Emoji;
 
 class SendMessage extends Component
 {
+    use WithFileUploads;
+
     public $selectedChat;
 
     public $createdMessage;
 
     public $body;
 
+    #[Rule('max:10000')]
+    public $file;
+  
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent', 'sendMessage'];
 
     private function getChatsService(): ChatsService
@@ -36,6 +43,10 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
+        if ($this->file) {
+//            $filename = $this->uploadedFile->store('/', 'files');
+        }
+      
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
@@ -52,6 +63,7 @@ class SendMessage extends Component
 
     private function sendEvents(): void
     {
+
         // Send Message to all connections with THIS user
         broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 
