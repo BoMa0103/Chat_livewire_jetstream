@@ -89,6 +89,10 @@
         setTheme(event.detail[0]);
     });
 
+    window.addEventListener('warning', event => {
+        toastr.warning(event.detail[0].message);
+    });
+
     $(document).on('click', '.return', function() {
         $('.no-chat').show();
         $('.chat-list').show();

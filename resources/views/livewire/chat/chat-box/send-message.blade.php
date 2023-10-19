@@ -10,7 +10,11 @@
                 <span class="sr-only">Upload image</span>
             </label>
             <input wire:model="file" type="file" id="file-upload" style="display: none;">
-            @error('file') <script>toastr.success(' Are you the 6 fingered man?')</script>@enderror
+            @error('file')
+                @php
+                    $this->dispatch('warning', ['message' => $message]);
+                @endphp
+            @enderror
             <div class="emoji-dropdown">
                 <button
                     class="emoji-button p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 chat-button"
