@@ -85,7 +85,13 @@
                     <div>
                         <div class='chat-info' id="{{$chat->id}}">
                             <img class="w-7 h-7 mr-6 rounded-full avatar"
-                                 src="{{ auth()->user()->profile_photo_url }}"
+                                 src="
+                                    @php if($chat->chat_type === Chat::PRIVATE) {
+                                            echo $this->getChatUserInstance($chat, $name='profile_photo_url');
+                                        } else if($chat->chat_type === Chat::CONVERSATION){
+                                            echo 'images/free-icon-chat-bubble-6068634.png';
+                                    } @endphp
+                                 "
                                  alt="Profile photo">
                             <div class='online-circle' wire:ignore></div>
                             <div class='chat-name-last-message'>
