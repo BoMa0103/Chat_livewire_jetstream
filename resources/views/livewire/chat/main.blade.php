@@ -65,15 +65,15 @@
 
 <div class="chat-container">
     <div class="chat-list">
-        @livewire('chat.chat-list')
+        @livewire('chat.chat-list.chat-list')
     </div>
 
     <div class="chatbox">
-        @livewire('chat.chatbox')
+        @livewire('chat.chat-box.chatbox')
     </div>
 
     <div class="users shadow">
-        @livewire('chat.user-list')
+        @livewire('chat.user-list.user-list')
     </div>
 
 </div>

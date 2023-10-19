@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class NoChatbox extends Component
 {
     public function render()
     {
-        return view('livewire.chat.no-chatbox');
+        return view('livewire.chat.chat-box.no-chatbox');
     }
 }

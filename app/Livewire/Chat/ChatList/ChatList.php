@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatList;
 
 use App\Events\ChatCreate;
-use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
 use App\Events\ReceiveMarkAsOnline;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
-use App\Models\Message;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ChatList extends Component
 {
     public $auth_id;
+
     public $chats;
+
     public $receiverInstance;
+
     public $name;
+
     public $selectedChat;
+
     public $selectedFirstChatFlag = false;
 
     public function getListeners()
@@ -215,6 +217,6 @@ class ChatList extends Component
 
     public function render()
     {
-        return view('livewire.chat.chat-list');
+        return view('livewire.chat.chat-list.chat-list');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox;
 
 use App\Events\ChatCreate;
 use App\Models\Chat;
@@ -10,6 +10,7 @@ use Livewire\Component;
 class UserListForConversation extends Component
 {
     public $selectedChat;
+
     public $users;
 
     protected $listeners = ['refreshUserListForConversation'];
@@ -37,6 +38,6 @@ class UserListForConversation extends Component
     {
         $this->users = $this->getUsersService()->getUsersAreNotInChat($this->selectedChat->id);
 
-        return view('livewire.chat.user-list-for-conversation');
+        return view('livewire.chat.chat-box.user-list-for-conversation');
     }
 }

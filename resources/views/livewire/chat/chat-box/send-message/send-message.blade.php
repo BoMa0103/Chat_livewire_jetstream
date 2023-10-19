@@ -22,7 +22,7 @@
                               d="M13.408 7.5h.01m-6.876 0h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM4.6 11a5.5 5.5 0 0 0 10.81 0H4.6Z"/>
                     </svg>
                 </button>
-                @livewire('chat.emoji-list')
+                @livewire('chat.chat-box.send-message.emoji-list')
             </div>
             <textarea wire:model="body" id="text" rows="1"
                       class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-gray-600 focus:border-gray-600 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-gray-600 dark:focus:border-gray-600 chat-textarea"

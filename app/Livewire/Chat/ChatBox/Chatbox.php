@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox;
 
 use App\Events\MessageRead;
 use App\Models\Chat;
-use App\Models\User;
 use App\Services\Chats\ChatsService;
-use App\Services\Messages\MessagesService;
 use Livewire\Component;
 
 class Chatbox extends Component
@@ -19,7 +17,7 @@ class Chatbox extends Component
 
         return [
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
-            "echo-private:chat.{$auth_id},ChatDelete" => 'ChatDelete',
+            "echo-private:chat.{$auth_id},ChatDelete" => 'chatDelete',
             'loadChat', 'resetChat', 'broadcastMessageRead'
         ];
     }
@@ -76,6 +74,6 @@ class Chatbox extends Component
 
     public function render()
     {
-        return view('livewire.chat.chatbox');
+        return view('livewire.chat.chat-box.chatbox');
     }
 }

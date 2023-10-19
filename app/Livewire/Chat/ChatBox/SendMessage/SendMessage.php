@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Chat;
+namespace App\Livewire\Chat\ChatBox\SendMessage;
 
 use App\Events\MessageSent;
 use App\Models\Chat;
@@ -73,6 +73,6 @@ class SendMessage extends Component
 
     public function render()
     {
-        return view('livewire.chat.send-message');
+        return view('livewire.chat.chat-box.send-message.send-message');
     }
 }
