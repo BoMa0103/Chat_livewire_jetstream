@@ -23,7 +23,7 @@ class SendMessage extends Component
 
     #[Rule('max:10000')]
     public $file;
-
+  
     protected $listeners = ['updateSendMessage', 'dispatchMessageSent', 'sendMessage'];
 
     private function getChatsService(): ChatsService
@@ -46,7 +46,7 @@ class SendMessage extends Component
         if ($this->file) {
 //            $filename = $this->uploadedFile->store('/', 'files');
         }
-
+      
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
@@ -63,7 +63,8 @@ class SendMessage extends Component
 
     private function sendEvents(): void
     {
-        // Send Message to all connections with this user
+
+        // Send Message to all connections with THIS user
         broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 
         if ($this->selectedChat->chat_type === Chat::PRIVATE) {
