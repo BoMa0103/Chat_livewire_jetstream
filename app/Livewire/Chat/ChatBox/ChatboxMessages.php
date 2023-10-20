@@ -45,6 +45,19 @@ class ChatboxMessages extends Component
         return app(HtmlValidator::class);
     }
 
+    public function broadcastMessageRead(): void
+    {
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
+    }
+
     public function broadcastedMessageRead($event): void
     {
         if (!$this->selectedChat) {
@@ -85,19 +98,6 @@ class ChatboxMessages extends Component
         }
     }
 
-    public function broadcastMessageRead(): void
-    {
-        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
-
-        if(!$receivers->count()) {
-            return;
-        }
-
-        foreach ($receivers as $receiver){
-            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
-        }
-    }
-
     public function chatDelete($event): void
     {
         if ($this->selectedChat->id === $event['chat_id']) {
@@ -117,6 +117,11 @@ class ChatboxMessages extends Component
         $this->dispatch('rowChatToBottom');
     }
 
+    public function updateHeight($height): void
+    {
+        $this->scrollHeight = $height;
+    }
+
     public function updatedHeight(): void
     {
         $this->dispatch('updatedHeight', $this->scrollHeight);
@@ -130,11 +135,6 @@ class ChatboxMessages extends Component
         $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
         $this->dispatch('rowChatToBottom');
         $this->dispatch('chatSelectedGetHeight');
-    }
-
-    public function updateHeight($height): void
-    {
-        $this->scrollHeight = $height;
     }
 
     public function loadMore(): void
