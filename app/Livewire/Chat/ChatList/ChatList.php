@@ -5,6 +5,7 @@ namespace App\Livewire\Chat\ChatList;
 use App\Events\ChatCreate;
 use App\Events\MarkAsOffline;
 use App\Events\MarkAsOnline;
+use App\Events\MessageRead;
 use App\Events\ReceiveMarkAsOnline;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
@@ -22,8 +23,6 @@ class ChatList extends Component
 
     public $receiverInstance;
 
-    public $name;
-
     public $selectedChat;
 
     public $selectedFirstChatFlag = false;
@@ -38,8 +37,8 @@ class ChatList extends Component
             "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
             "echo-private:chat.{$auth_id},ChatDelete" => 'refreshChatList',
-            "echo-private:chat.{$auth_id},MessageSent",
-            'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
+            "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
+            'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation', 'broadcastMessageRead'];
     }
 
     private function getHtmlValidator(): HtmlValidator
@@ -60,6 +59,32 @@ class ChatList extends Component
     private function getMessagesService(): MessagesService
     {
         return app(MessagesService::class);
+    }
+
+    public function broadcastMessageRead(): void
+    {
+        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+
+        if(!$receivers->count()) {
+            return;
+        }
+
+        foreach ($receivers as $receiver){
+            broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
+        }
+    }
+
+    public function broadcastedMessageReceived($event): void
+    {
+        $this->dispatch('refreshChatList');
+
+        if($event['user']['id'] === auth()->id()) {
+            return;
+        }
+
+        if(!$this->selectedChat) {
+            $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
+        }
     }
 
     public function searchChats($chatName): void
