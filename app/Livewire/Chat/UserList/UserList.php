@@ -13,6 +13,13 @@ class UserList extends Component
 {
     public $users;
 
+    public function getListeners()
+    {
+        return [
+            "echo:users,UserCreate",
+        ];
+    }
+
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);

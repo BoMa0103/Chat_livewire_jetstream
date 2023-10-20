@@ -60,8 +60,6 @@ class ChatboxMessages extends Component
     {
         $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
-        $this->dispatch('refreshChatList');
-
         if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
 
             if($event['user']['id'] === auth()->id()) {
@@ -102,8 +100,6 @@ class ChatboxMessages extends Component
 
     public function chatDelete($event): void
     {
-        $this->dispatch('refreshChatList');
-
         if ($this->selectedChat->id === $event['chat_id']) {
             $this->dispatch('resetChat');
             $this->dispatch('resetMessage');

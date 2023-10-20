@@ -863,6 +863,10 @@ input:focus {
     border-radius: 0.8em;
 }
 
+.chat-loader {
+    background-color: var(--back-for-chat-color);
+}
+
 .select-themes-container {
     text-align: center;
     display: none;

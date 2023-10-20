@@ -33,10 +33,12 @@ class ChatList extends Component
         $auth_id = auth()->user()->id;
 
         return [
-            "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
             "echo:online,MarkAsOnline" => 'markChatAsOnline',
             "echo:online,MarkAsOffline" => 'markChatAsOffline',
+            "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
+            "echo-private:chat.{$auth_id},ChatDelete" => 'refreshChatList',
+            "echo-private:chat.{$auth_id},MessageSent",
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
     }
 
