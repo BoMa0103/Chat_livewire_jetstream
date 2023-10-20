@@ -63,7 +63,6 @@ class SendMessage extends Component
 
     private function sendEvents(): void
     {
-
         // Send Message to all connections with THIS user
         broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 

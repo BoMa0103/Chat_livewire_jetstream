@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Events\UserCreate;
 use App\Models\User;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
@@ -33,10 +34,14 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return $this->getUsersService()->createFromArray([
+        $createdUser = $this->getUsersService()->createFromArray([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        broadcast(new UserCreate());
+
+        return $createdUser;
     }
 }

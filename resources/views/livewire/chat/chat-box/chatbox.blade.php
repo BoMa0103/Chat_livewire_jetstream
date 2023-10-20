@@ -1,5 +1,18 @@
 <div id="chat" class="chat">
 
+    <div class="chat-loader absolute inset-0 flex justify-center items-center z-50" wire:loading>
+        <div class="flex flex-col items-center justify-center h-full">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="80px" height="80px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#1d3f72" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                    <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                </circle>
+                <circle cx="50" cy="50" r="23" stroke-width="8" stroke="#5699d2" stroke-dasharray="36.12831551628262 36.12831551628262" stroke-dashoffset="36.12831551628262" fill="none" stroke-linecap="round">
+                    <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;-360 50 50"></animateTransform>
+                </circle>
+            </svg>
+        </div>
+    </div>
+
     @if($selectedChat)
         @livewire('chat.chat-box.chatbox-header', ['selectedChat' => $selectedChat])
         @livewire('chat.chat-box.chatbox-messages', ['selectedChat' => $selectedChat])
