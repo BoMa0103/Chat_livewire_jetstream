@@ -14,11 +14,11 @@
     </div>
 
     @if($selectedChat)
-        @livewire('chat.chat-box.chatbox-header', ['selectedChat' => $selectedChat])
-        @livewire('chat.chat-box.chatbox-messages', ['selectedChat' => $selectedChat])
-        @livewire('chat.chat-box.user-list-for-conversation', ['selectedChat' => $selectedChat])
-        @livewire('chat.chat-box.chat-settings', ['selectedChat' => $selectedChat], key($selectedChat->id))
-        @livewire('chat.chat-box.send-message', ['selectedChat' => $selectedChat])
+        @livewire('chat.chat-box.chatbox-header', ['selectedChat' => $selectedChat], key('chatbox-header-' . $selectedChat->id))
+        @livewire('chat.chat-box.chatbox-messages', ['selectedChat' => $selectedChat], key('chatbox-messages-' . $selectedChat->id))
+        @livewire('chat.chat-box.user-list-for-conversation', ['selectedChat' => $selectedChat], key('user-list-' . $selectedChat->id))
+        @livewire('chat.chat-box.chat-settings', ['selectedChat' => $selectedChat], key('chat-settings-' . $selectedChat->id))
+        @livewire('chat.chat-box.send-message', ['selectedChat' => $selectedChat], key('send-message-' . $selectedChat->id))
     @else
         @livewire('chat.chat-box.no-chatbox')
     @endif
