@@ -76,14 +76,22 @@ class ChatList extends Component
 
     public function broadcastedMessageReceived($event): void
     {
-        $this->dispatch('refreshChatList');
-
         if($event['user']['id'] === auth()->id()) {
             return;
         }
 
         if(!$this->selectedChat) {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
+            return;
+        }
+
+        if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+            $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
+
+            $broadcastedMessage->read_status = 1;
+            $broadcastedMessage->save();
+
+            $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, auth()->id());
         }
     }
 
