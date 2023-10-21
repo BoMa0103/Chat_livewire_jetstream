@@ -9,18 +9,14 @@ class ChatGenerator
 {
     public static function generate(array $data = []): Chat
     {
-        $userFirst = User::factory()->create();
-        $userSecond = User::factory()->create();
-        return Chat::factory()->for($userFirst, 'userFirst')->for($userSecond, 'userSecond')->create($data);
+        return Chat::factory()->create($data);
     }
 
     public static function generateModel(array $data = []): array
     {
-        $userFirst = User::factory()->create();
-        $userSecond = User::factory()->create();
         return [
-            'user_id_first' => $data['user_id_first'] ?? $userFirst->id,
-            'user_id_second' => $data['user_id_second'] ?? $userSecond->id,
+            'name' => $data['name'] ?? fake()->name,
+            'chat_type' => $data['chat_type'] ?? Chat::CONVERSATION,
         ];
     }
 }

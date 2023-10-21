@@ -41,11 +41,6 @@ class ChatList extends Component
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation', 'broadcastMessageRead'];
     }
 
-    private function getHtmlValidator(): HtmlValidator
-    {
-        return app(HtmlValidator::class);
-    }
-
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
@@ -59,6 +54,11 @@ class ChatList extends Component
     private function getMessagesService(): MessagesService
     {
         return app(MessagesService::class);
+    }
+
+    private function getHtmlValidator(): HtmlValidator
+    {
+        return app(HtmlValidator::class);
     }
 
     public function broadcastMessageRead(): void
@@ -84,51 +84,17 @@ class ChatList extends Component
 
         if(!$this->selectedChat) {
             $this->dispatch('notify', ['user' => ['name' => $event['user']['name']]]);
-        }
-    }
-
-    public function searchChats($chatName): void
-    {
-        $chatName = trim($chatName);
-
-        if ($chatName === '') {
-            $this->refreshChatList();
             return;
         }
 
-        $chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
-        $this->chats = [];
+        if ((int) $this->selectedChat->id === (int)$event['chat']['id']) {
+            $broadcastedMessage = $this->getMessagesService()->find($event['message']['id']);
 
-        foreach ($chats as $chat) {
+            $broadcastedMessage->read_status = 1;
+            $broadcastedMessage->save();
 
-            if ($chat->name) {
-                $chatNameTmp = $chat->name;
-            } else {
-                $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
-            }
-
-            if (Str::startsWith(mb_strtolower($chatNameTmp, 'UTF-8'), mb_strtolower($chatName, 'UTF-8'))) {
-                $this->chats [] = $chat;
-            }
+            $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, auth()->id());
         }
-    }
-
-    public function createConversation($conversationName): void
-    {
-        $createdChat = $this->getChatsService()->createFromArray([
-            'name' => $conversationName,
-            'chat_type' => Chat::CONVERSATION,
-        ]);
-
-        $createdChat->users()->attach(auth()->user());
-
-        broadcast(event: new ChatCreate($createdChat, $this->auth_id));
-    }
-
-    public function resetChat(): void
-    {
-        $this->selectedChat = null;
-        $this->receiverInstance = null;
     }
 
     public function markReceiveChatAsOnline($event): void
@@ -184,6 +150,50 @@ class ChatList extends Component
         broadcast(event: new MarkAsOffline(
             $this->auth_id,
         ));
+    }
+
+    public function searchChats($chatName): void
+    {
+        $chatName = trim($chatName);
+
+        if ($chatName === '') {
+            $this->refreshChatList();
+            return;
+        }
+
+        $chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
+        $this->chats = [];
+
+        foreach ($chats as $chat) {
+
+            if ($chat->name) {
+                $chatNameTmp = $chat->name;
+            } else {
+                $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
+            }
+
+            if (Str::startsWith(mb_strtolower($chatNameTmp, 'UTF-8'), mb_strtolower($chatName, 'UTF-8'))) {
+                $this->chats [] = $chat;
+            }
+        }
+    }
+
+    public function createConversation($conversationName): void
+    {
+        $createdChat = $this->getChatsService()->createFromArray([
+            'name' => $conversationName,
+            'chat_type' => Chat::CONVERSATION,
+        ]);
+
+        $createdChat->users()->attach(auth()->user());
+
+        broadcast(event: new ChatCreate($createdChat, $this->auth_id));
+    }
+
+    public function resetChat(): void
+    {
+        $this->selectedChat = null;
+        $this->receiverInstance = null;
     }
 
     public function refreshChatList(): void

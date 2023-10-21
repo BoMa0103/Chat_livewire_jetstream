@@ -45,7 +45,14 @@ class UserList extends Component
         $createdChat->users()->attach($userId);
         $createdChat->users()->attach(auth()->user());
 
+        $this->sendChatCreateEvents($createdChat, $userId);
+    }
+
+    private function sendChatCreateEvents(Chat $createdChat, int $userId): void
+    {
+        // Send event to all receiver user connections
         broadcast(event: new ChatCreate($createdChat->id, $userId));
+        // Send event to all this user connections
         broadcast(event: new ChatCreate($createdChat->id, auth()->id()));
 
         broadcast(event: new MarkAsOnline(auth()->id()));

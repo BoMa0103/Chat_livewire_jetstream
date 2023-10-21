@@ -41,7 +41,8 @@ class EloquentChatRepositoryTest extends TestCase
 
         $chat = $this->getEloquentChatRepository()->createFromArray($model);
 
-        $this->assertSame($model['user_id_first'], $chat->user_id_first);
+        $this->assertSame($model['name'], $chat->name);
+        $this->assertSame($model['chat_type'], $chat->chat_type);
         $this->assertDatabaseCount('chats', 1);
     }
 
@@ -58,8 +59,15 @@ class EloquentChatRepositoryTest extends TestCase
     {
         $chat = ChatGenerator::generate();
 
-        $chat = $this->getEloquentChatRepository()->findChatBetweenTwoUsers($chat->user_id_first, $chat->user_id_second);
+        $userFirst = UserGenerator::generate();
+        $userSecond = UserGenerator::generate();
 
-        $this->assertNotNull($chat);
+        $chat->users()->attach($userFirst);
+        $chat->users()->attach($userSecond);
+
+        $foundChat = $this->getEloquentChatRepository()->findChatBetweenTwoUsers($userFirst->id, $userSecond->id);
+
+        $this->assertSame($chat->id, $foundChat->id);
+        $this->assertNotNull($foundChat);
     }
 }
