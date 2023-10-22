@@ -67,10 +67,13 @@ class SendMessage extends Component
         broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, auth()->id()));
 
         if ($this->selectedChat->chat_type === Chat::PRIVATE) {
-            $receiverId = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->id;
-
+            $receiver = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first();
+            // If receiver account was deleted
+            if (!$receiver) {
+                return;
+            }
             // Send Message to all connections with receiver user
-            broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiverId));
+            broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
 
             return;
         }
