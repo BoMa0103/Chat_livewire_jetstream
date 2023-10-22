@@ -42,6 +42,10 @@ class ChatSettings extends Component
         ));
 
         if ($this->selectedChat->chat_type === Chat::PRIVATE) {
+            // If receiver's account was deleted
+            if (!$receivers->first()) {
+                return;
+            }
             // Send chat delete to all connections with receiver user
             broadcast(event: new ChatDelete(
                 $receivers->first()->id, $deletedChatId,
