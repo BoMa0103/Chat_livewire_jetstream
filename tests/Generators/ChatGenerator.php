@@ -3,7 +3,6 @@
 namespace Tests\Generators;
 
 use App\Models\Chat;
-use App\Models\User;
 
 class ChatGenerator
 {

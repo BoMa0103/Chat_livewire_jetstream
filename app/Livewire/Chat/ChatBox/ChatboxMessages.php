@@ -53,6 +53,7 @@ class ChatboxMessages extends Component
             return;
         }
 
+        // Send messages read to all receivers connections
         foreach ($receivers as $receiver){
             broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
         }

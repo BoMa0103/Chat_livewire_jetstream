@@ -37,6 +37,7 @@ class ChatList extends Component
             "echo-private:chat.{$auth_id},ChatCreate" => 'refreshChatList',
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
             "echo-private:chat.{$auth_id},ChatDelete" => 'refreshChatList',
+            "echo-private:chat.{$auth_id},MessageRead" => 'refreshChatList',
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation', 'broadcastMessageRead'];
     }
@@ -69,6 +70,12 @@ class ChatList extends Component
             return;
         }
 
+        // Send chat delete to all connections with THIS user
+        broadcast(event: new MessageRead(
+            $this->selectedChat->id, auth()->id(),
+        ));
+
+        // Send messages read to all receivers connections
         foreach ($receivers as $receiver){
             broadcast(new MessageRead($this->selectedChat->id, $receiver->id));
         }
@@ -232,7 +239,7 @@ class ChatList extends Component
 
         $this->receiverInstance = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first();
 
-        if(!$this->receiverInstance) {
+        if (!$this->receiverInstance) {
             return null;
         }
 
