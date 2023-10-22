@@ -29,19 +29,31 @@ class ChatSettings extends Component
         $this->dispatch('resetMessage');
         $this->dispatch('refreshChatList');
 
-        // Browser event
         $this->dispatch('hideMessageInput');
 
+        $this->sendDeleteChatEvents($deletedChatId, $receivers);
+    }
+
+    private function sendDeleteChatEvents(int $deletedChatId, $receivers): void
+    {
+        // Send chat delete to all connections with THIS user
+        broadcast(event: new ChatDelete(
+            auth()->id(), $deletedChatId,
+        ));
+
         if ($this->selectedChat->chat_type === Chat::PRIVATE) {
+            // Send chat delete to all connections with receiver user
             broadcast(event: new ChatDelete(
                 $receivers->first()->id, $deletedChatId,
             ));
-        } else {
-            foreach ($receivers as $receiver) {
-                broadcast(event: new ChatDelete(
-                    $receiver->id, $deletedChatId,
-                ));
-            }
+            return;
+        }
+
+        foreach ($receivers as $receiver) {
+            // Send chat delete to all receivers connections
+            broadcast(event: new ChatDelete(
+                $receiver->id, $deletedChatId,
+            ));
         }
     }
 

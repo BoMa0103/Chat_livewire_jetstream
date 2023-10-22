@@ -10,7 +10,7 @@
     <div class="user-info">
         <div class="chat-header-name">{{$chatName}}</div>
         @if ($selectedChat->chat_type !== Chat::CONVERSATION)
-            <div class="last-seen">({{$lastSeen}})</div>
+            <div class="last-seen">({{$lastSeen ? $lastSeen : 'last seen a long time ago'}})</div>
         @endif
     </div>
     <div class="concave-left" id="concave-left">

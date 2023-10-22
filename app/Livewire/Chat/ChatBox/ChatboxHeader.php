@@ -26,19 +26,6 @@ class ChatboxHeader extends Component
         $this->selectedChat = $selectedChat;
     }
 
-    public function render()
-    {
-        if($this->selectedChat->chat_type === Chat::CONVERSATION){
-            $this->chatName = $this->selectedChat->name;
-        } else {
-            $this->chatName = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->name;
-
-            $this->updateLastSeen();
-        }
-
-        return view('livewire.chat.chat-box.chatbox-header');
-    }
-
     private function updateLastSeen(): void
     {
         $lastSeen = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->last_seen;
@@ -60,5 +47,24 @@ class ChatboxHeader extends Component
             $daysAgo = floor($timeDifference / 86400);
             $this->lastSeen = "last seen $daysAgo days ago";
         }
+    }
+
+    public function render()
+    {
+        if($this->selectedChat->chat_type === Chat::CONVERSATION){
+            $this->chatName = $this->selectedChat->name;
+        } else {
+            $receiver = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first();
+
+            if(!$receiver) {
+                $this->chatName = 'Deleted Account';
+                return view('livewire.chat.chat-box.chatbox-header');
+            }
+
+            $this->chatName = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first()->name;
+            $this->updateLastSeen();
+        }
+
+        return view('livewire.chat.chat-box.chatbox-header');
     }
 }
