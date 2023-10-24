@@ -8,11 +8,11 @@
         <div wire:key='{{$message->id}}'
              class="message {{auth()->id() == $message->user_id ? 'outgoing' : 'incoming'}}">
             <div class="message-user-name @php
-                if($selectedChat->chat_type === Chat::PRIVATE || auth()->user()->name == $message->user()->first()->name) {
+                if($selectedChat->chat_type === Chat::PRIVATE || ($message->user()->first() && ($message->user()->first()->name === $message->user()->first()->name))) {
                     echo ' hidden';
                 }
             @endphp">
-                {{ $message->user()->first()->name }}
+                {{ $message->user()->first() ? $message->user()->first()->name : 'Deleted Account' }}
             </div>
             <div class="message-content" id="message">
                 {!! $this->customHtmlspecialcharsForImg($message) !!}
@@ -21,7 +21,7 @@
                 <div class="message-time" id="time"> {{$message->created_at->format('H:i')}} </div>
                 @php
 
-                    if($message->user->id === auth()->id())
+                    if($message->user && $message->user->id === auth()->id())
 
                         if($message->read_status == 0){
 

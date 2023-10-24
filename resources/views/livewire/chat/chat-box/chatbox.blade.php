@@ -18,7 +18,9 @@
         @livewire('chat.chat-box.chatbox-messages', ['selectedChat' => $selectedChat], key('chatbox-messages-' . $selectedChat->id))
         @livewire('chat.chat-box.user-list-for-conversation', ['selectedChat' => $selectedChat], key('user-list-' . $selectedChat->id))
         @livewire('chat.chat-box.chat-settings', ['selectedChat' => $selectedChat], key('chat-settings-' . $selectedChat->id))
-        @livewire('chat.chat-box.send-message', ['selectedChat' => $selectedChat], key('send-message-' . $selectedChat->id))
+        @if($this->checkChatReceiverNotDelete())
+            @livewire('chat.chat-box.send-message', ['selectedChat' => $selectedChat], key('send-message-' . $selectedChat->id))
+        @endif
     @else
         @livewire('chat.chat-box.no-chatbox')
     @endif

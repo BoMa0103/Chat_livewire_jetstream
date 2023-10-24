@@ -14,11 +14,24 @@ class ChatboxHeader extends Component
 
     public $selectedChat;
 
-    protected $listeners = ['refreshHeader'];
+    public function getListeners()
+    {
+        $auth_id = auth()->id();
+
+        return [
+            "echo-private:user-delete.{$auth_id},UserDelete" => 'userDeleteHandler',
+            'refreshHeader', 'refresh' => '$refresh',
+        ];
+    }
 
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
+    }
+
+    public function userDeleteHandler()
+    {
+        $this->dispatch('refresh');
     }
 
     public function refreshHeader(Chat $selectedChat)

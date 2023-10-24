@@ -21,3 +21,7 @@ Broadcast::channel('chat.{receiverId}', function ($user, $receiverId){
     return auth()->user()->id === (int) $receiverId;
 });
 
+Broadcast::channel('user-delete.{receiverId}', function ($user, $receiverId){
+    return auth()->user()->id === (int) $receiverId;
+});
+

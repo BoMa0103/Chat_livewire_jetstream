@@ -12,10 +12,11 @@ class Chatbox extends Component
 
     public function getListeners()
     {
-        $auth_id = auth()->user()->id;
+        $auth_id = auth()->id();
 
         return [
             "echo-private:chat.{$auth_id},ChatDelete" => 'chatDelete',
+            'refresh' => '$refresh',
             'loadChat', 'resetChat'
         ];
     }
@@ -37,6 +38,19 @@ class Chatbox extends Component
         $this->dispatch('refreshChat', $this->selectedChat);
         $this->dispatch('refreshHeader', $this->selectedChat);
         $this->dispatch('refreshUserListForConversation', $this->selectedChat);
+    }
+
+    public function checkChatReceiverNotDelete(): bool
+    {
+        if ($this->selectedChat->chat_type === Chat::PRIVATE) {
+            $receiver = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->first();
+
+            if (!$receiver) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function resetChat(): void
