@@ -34,10 +34,6 @@ class Chatbox extends Component
     public function loadChat(Chat $chat): void
     {
         $this->selectedChat = $chat;
-
-        $this->dispatch('refreshChat', $this->selectedChat);
-        $this->dispatch('refreshHeader', $this->selectedChat);
-        $this->dispatch('refreshUserListForConversation', $this->selectedChat);
     }
 
     public function checkChatReceiverNotDelete(): bool
