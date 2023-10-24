@@ -26,7 +26,7 @@ class ChatboxMessages extends Component
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             "echo-private:chat.{$auth_id},MessageRead" => 'broadcastedMessageRead',
             "echo-private:chat.{$auth_id},ChatDelete" => 'chatDelete',
-            'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat', 'broadcastMessageRead'
+            'pushMessage', 'setMessages', 'loadMore', 'updateHeight', 'refreshChat'
         ];
     }
 
@@ -88,7 +88,7 @@ class ChatboxMessages extends Component
 
             $this->pushMessage($broadcastedMessage->id);
 
-            $this->dispatch('broadcastMessageRead');
+            $this->broadcastMessageRead();
         } else {
 
             if($event['user']['id'] === auth()->id()) {

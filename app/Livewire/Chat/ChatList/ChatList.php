@@ -40,7 +40,7 @@ class ChatList extends Component
             "echo-private:chat.{$auth_id},MessageRead" => 'refreshChatList',
             "echo-private:user-delete.{$auth_id},UserDelete" => 'refreshChatList',
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
-            'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation', 'broadcastMessageRead'];
+            'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation'];
     }
 
     private function getChatsService(): ChatsService
@@ -70,11 +70,6 @@ class ChatList extends Component
         if(!$receivers->count()) {
             return;
         }
-
-        // Send chat delete to all connections with THIS user
-        broadcast(event: new MessageRead(
-            $this->selectedChat->id, auth()->id(),
-        ));
 
         // Send messages read to all receivers connections
         foreach ($receivers as $receiver){
@@ -220,25 +215,19 @@ class ChatList extends Component
     {
         $this->selectedChat = $chat;
 
-//        $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
-
         $this->dispatch('loadChat', $this->selectedChat);
         $this->dispatch('updateSendMessage', $this->selectedChat);
-
-//        if(!$receivers->count()) {
-//            return;
-//        }
 
         $this->getMessagesService()->setReadStatusMessages($chat->id, $this->auth_id);
 
         if ($chat->chat_type === Chat::PRIVATE) {
-            $this->dispatch('broadcastMessageRead');
+            $this->broadcastMessageRead();
             return;
         }
 
         $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, $this->auth_id);
 
-        $this->dispatch('broadcastMessageRead');
+        $this->broadcastMessageRead();
     }
 
     public function getChatUserInstance(Chat $chat, $request)
