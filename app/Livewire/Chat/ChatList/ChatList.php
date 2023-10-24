@@ -29,7 +29,7 @@ class ChatList extends Component
 
     public function getListeners()
     {
-        $auth_id = auth()->user()->id;
+        $auth_id = auth()->id();
 
         return [
             "echo:online,MarkAsOnline" => 'markChatAsOnline',
@@ -38,6 +38,7 @@ class ChatList extends Component
             "echo:online.{$auth_id},ReceiveMarkAsOnline" => 'markReceiveChatAsOnline',
             "echo-private:chat.{$auth_id},ChatDelete" => 'refreshChatList',
             "echo-private:chat.{$auth_id},MessageRead" => 'refreshChatList',
+            "echo-private:user-delete.{$auth_id},UserDelete" => 'refreshChatList',
             "echo-private:chat.{$auth_id},MessageSent" => 'broadcastedMessageReceived',
             'chatUserSelected', 'resetChat', 'refreshChatList', 'sendEventMarkChatAsOffline', 'searchChats', 'createConversation', 'broadcastMessageRead'];
     }
@@ -173,10 +174,17 @@ class ChatList extends Component
 
         foreach ($chats as $chat) {
 
-            if ($chat->name) {
+            if ($chat->chat_type === Chat::CONVERSATION) {
                 $chatNameTmp = $chat->name;
             } else {
-                $chatNameTmp = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first()->name;
+                $receiver = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->first();
+
+                // If receiver user account was deleted
+                if (!$receiver) {
+                    $chatNameTmp = 'Deleted Account';
+                } else {
+                    $chatNameTmp = $receiver->name;
+                }
             }
 
             if (Str::startsWith(mb_strtolower($chatNameTmp, 'UTF-8'), mb_strtolower($chatName, 'UTF-8'))) {
@@ -212,14 +220,14 @@ class ChatList extends Component
     {
         $this->selectedChat = $chat;
 
-        $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
+//        $receivers = $this->getChatsService()->getChatReceivers($chat->id, $this->auth_id)->get();
 
         $this->dispatch('loadChat', $this->selectedChat);
         $this->dispatch('updateSendMessage', $this->selectedChat);
 
-        if(!$receivers->count()) {
-            return;
-        }
+//        if(!$receivers->count()) {
+//            return;
+//        }
 
         $this->getMessagesService()->setReadStatusMessages($chat->id, $this->auth_id);
 

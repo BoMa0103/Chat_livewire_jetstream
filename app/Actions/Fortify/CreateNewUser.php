@@ -40,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        broadcast(new UserCreate());
+//        broadcast(new UserCreate());
 
         return $createdUser;
     }
