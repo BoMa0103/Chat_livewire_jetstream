@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Message whereUpdatedAt($value)
  * @method static Builder|Message whereValue($value)
  * @property int $user_id
+ * @property string $translations;
  * @property-read User|null $company
  * @method static MessageFactory factory($count = null, $state = [])
  * @method static Builder|Message whereUserId($value)
@@ -40,6 +41,10 @@ class Message extends Model
     public const READ_STATUS = 1;
 
     protected static $unguarded = true;
+
+    protected $casts = [
+        'translations' => 'array',
+    ];
 
     public function user(): BelongsTo
     {

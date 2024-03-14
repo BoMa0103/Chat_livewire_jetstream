@@ -111,6 +111,18 @@ function showHideChatSettings() {
     }
 }
 
+function showHideLanguages() {
+    let chatLanguages = document.getElementById('chat-languages');
+    let chatSettings = document.getElementById('chat-settings');
+    chatSettings.style.display = 'none';
+
+    if (chatLanguages.style.display === 'block') {
+        chatLanguages.style.display = 'none';
+    } else {
+        chatLanguages.style.display = 'block';
+    }
+}
+
 /* Notifications */
 
 function notifyMe(json) {

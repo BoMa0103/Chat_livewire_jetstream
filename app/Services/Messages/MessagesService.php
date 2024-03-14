@@ -4,6 +4,7 @@ namespace App\Services\Messages;
 
 use App\Models\Message;
 use App\Services\Messages\Repositories\MessageRepository;
+use Illuminate\Support\Collection;
 
 class MessagesService
 {
@@ -53,8 +54,19 @@ class MessagesService
         return $this->messageRepository->getMessagesCount($chatId);
     }
 
-    public function getLastMessages(int $chatId, int $messagesCount, int $paginateVar)
+    /**
+     * @param int $chatId
+     * @param int $messagesCount
+     * @param int $paginateVar
+     * @return Collection<Message>
+     */
+    public function getMessages(int $chatId, int $messagesCount, int $paginateVar): Collection
     {
-        return $this->messageRepository->getLastMessages($chatId, $messagesCount, $paginateVar);
+        return $this->messageRepository->getMessages($chatId, $messagesCount, $paginateVar);
+    }
+
+    public function updateTranslations(Message $message, string $translatedContent, string $lang): void
+    {
+        $this->messageRepository->updateTranslations($message, $translatedContent, $lang);
     }
 }

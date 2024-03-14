@@ -814,6 +814,12 @@ input:focus {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 0.8em;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.chat-settings::-webkit-scrollbar {
+    width: 0px;
 }
 
 .menu li {
@@ -835,7 +841,6 @@ input:focus {
     width: 100%;
     padding: 8px;
     user-select: none;
-    color: #ff4c4c;
 }
 
 .chat-settings li:hover {

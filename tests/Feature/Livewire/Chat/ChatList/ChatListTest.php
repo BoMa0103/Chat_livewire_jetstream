@@ -17,7 +17,7 @@ class ChatListTest extends TestCase
     {
         $user = UserGenerator::generate();
 
-        auth()->login($user);
+        Livewire::actingAs($user);
 
         $conversationName = fake()->name;
 

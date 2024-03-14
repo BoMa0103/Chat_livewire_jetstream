@@ -101,6 +101,8 @@ function openChatSettings() {
 function showHideChatSettings() {
     let overlay = document.getElementById('overlay-chat-settings');
     let chatSettings = document.getElementById('chat-settings');
+    let chatLanguages = document.getElementById('chat-languages');
+    chatLanguages.style.display = 'none';
 
     if (overlay.style.display === 'block' && chatSettings.style.display === 'block') {
         overlay.style.display = 'none';
@@ -108,6 +110,18 @@ function showHideChatSettings() {
     } else {
         overlay.style.display = 'block';
         chatSettings.style.display = 'block';
+    }
+}
+
+function showHideLanguages() {
+    let chatSettings = document.getElementById('chat-settings');
+    let chatLanguages = document.getElementById('chat-languages');
+    chatSettings.style.display = 'none';
+
+    if (chatLanguages.style.display === 'block') {
+        chatLanguages.style.display = 'none';
+    } else {
+        chatLanguages.style.display = 'block';
     }
 }
 

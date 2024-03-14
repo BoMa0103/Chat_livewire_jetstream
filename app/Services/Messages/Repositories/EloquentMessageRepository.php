@@ -3,6 +3,7 @@
 namespace App\Services\Messages\Repositories;
 
 use App\Models\Message;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class EloquentMessageRepository implements MessageRepository
@@ -65,11 +66,30 @@ class EloquentMessageRepository implements MessageRepository
         return Message::where('chat_id', $chatId)->count();
     }
 
-    public function getLastMessages(int $chatId, int $messagesCount, int $paginateVar)
+    /**
+     * @param int $chatId
+     * @param int $messagesCount
+     * @param int $paginateVar
+     * @return Collection<Message>
+     */
+    public function getMessages(int $chatId, int $messagesCount, int $paginateVar): Collection
     {
         return Message::where('chat_id', $chatId)
             ->skip($messagesCount - $paginateVar)
             ->take($paginateVar)
             ->get();
     }
+    public function updateTranslations(Message $message, string $translatedContent, string $lang): void
+    {
+        $translations = array_merge(
+            $message->translations ?? [], [
+                $lang => $translatedContent,
+        ]);
+
+        Message::whereId($message->id)
+            ->update([
+                'translations' => $translations,
+            ]);
+    }
+
 }
