@@ -9,7 +9,7 @@
     <div class="chat-settings" id="chat-languages">
         <ul>
             @foreach($languages as $lang)
-                <li wire:click='setLanguage("{{$lang}}")'>{{$lang}}</li>
+                <li wire:click='setLanguage("{{$lang}}")' {{$lang === $selectedLang ? 'class=selected' : ''}}>{{$lang}}</li>
             @endforeach
         </ul>
     </div>
