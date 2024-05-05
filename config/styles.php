@@ -11,7 +11,7 @@ return [
             'backTextAreaColor' => '#1F2937',
             'secondTextColor' => '#4b5563',
             'hoverColor' => '#6b7280',
-            'placeholderColorChat' => '#4b5563',
+            'placeholderColorChat' => '#353E47',
             'placeholderSearchColor' => '#9CA3AF',
         ],
         'palegoldenrod' => [

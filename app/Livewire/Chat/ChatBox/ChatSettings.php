@@ -6,7 +6,6 @@ use App\Events\ChatDelete;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
 use App\Services\Translations\TranslationsService;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class ChatSettings extends Component
@@ -15,7 +14,7 @@ class ChatSettings extends Component
 
     public array $languages;
 
-    public ?string $selectedLang = null;
+    public ?string $selectedLangCode = null;
 
     private function getChatsService(): ChatsService
     {
@@ -30,7 +29,7 @@ class ChatSettings extends Component
     public function mount(): void
     {
         $this->languages = $this->getTranslationsService()->getSupportedLanguages();
-        $this->selectedLang = $this->getChatsService()->getLangForChat(
+        $this->selectedLangCode = $this->getChatsService()->getLangForChat(
             $this->selectedChat->id,
             auth()->id(),
         );

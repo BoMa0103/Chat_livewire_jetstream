@@ -11,7 +11,7 @@
     --back-search-send-form-color: #374151;
     --back-text-area-color: #1F2937;
     --hover-color: #6b7280;
-    --placeholder-color: #4b5563;
+    --placeholder-color: #353E47;
     --placeholder-search-color: #9CA3AF;
 }
 
@@ -816,6 +816,11 @@ input:focus {
     border-radius: 0.8em;
     max-height: 80%;
     overflow-y: auto;
+}
+
+.chat-settings .selected {
+    background-color: var(--placeholder-color);
+    border-radius: 0.5em;
 }
 
 .chat-settings::-webkit-scrollbar {

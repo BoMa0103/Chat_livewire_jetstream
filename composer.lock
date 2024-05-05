@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31de6796fb4f9413b7d779d9920f73f1",
+    "content-hash": "7ff5fe8a1e0d79f0cbf550ed93c5c15a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -488,6 +488,47 @@
                 }
             ],
             "time": "2022-12-15T16:57:16+00:00"
+        },
+        {
+            "name": "dotsplatform/utils",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dotsplatform/utils.git",
+                "reference": "aacd5c123d43ad064469cc7d18528042e86f2890"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dotsplatform/utils/zipball/aacd5c123d43ad064469cc7d18528042e86f2890",
+                "reference": "aacd5c123d43ad064469cc7d18528042e86f2890",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^9.35|^10.",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "eduarguz/shift-php-cs": "^3.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dots\\": "src/Dots",
+                    "Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Development tools from Dots Platform",
+            "support": {
+                "issues": "https://github.com/dotsplatform/utils/issues",
+                "source": "https://github.com/dotsplatform/utils/tree/v2.0.1"
+            },
+            "time": "2024-03-27T06:49:38+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -4457,16 +4498,16 @@
         },
         {
             "name": "pusher/pusher-php-server",
-            "version": "7.2.3",
+            "version": "7.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pusher/pusher-http-php.git",
-                "reference": "416e68dd5f640175ad5982131c42a7a666d1d8e9"
+                "reference": "de2f72296808f9cafa6a4462b15a768ff130cddb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/416e68dd5f640175ad5982131c42a7a666d1d8e9",
-                "reference": "416e68dd5f640175ad5982131c42a7a666d1d8e9",
+                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/de2f72296808f9cafa6a4462b15a768ff130cddb",
+                "reference": "de2f72296808f9cafa6a4462b15a768ff130cddb",
                 "shasum": ""
             },
             "require": {
@@ -4512,9 +4553,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pusher/pusher-http-php/issues",
-                "source": "https://github.com/pusher/pusher-http-php/tree/7.2.3"
+                "source": "https://github.com/pusher/pusher-http-php/tree/7.2.4"
             },
-            "time": "2023-05-17T16:00:06+00:00"
+            "time": "2023-12-15T10:58:53+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10542,5 +10583,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }

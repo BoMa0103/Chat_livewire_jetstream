@@ -11,7 +11,7 @@
     --back-search-send-form-color: #374151;
     --back-text-area-color: #1F2937;
     --hover-color: #6b7280;
-    --placeholder-color: #4b5563;
+    --placeholder-color: #353E47;
     --placeholder-search-color: #9CA3AF;
 }
 
@@ -789,6 +789,11 @@ input:focus {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
+}
+
+.chat-settings .selected {
+    background-color: var(--placeholder-color);
+    border-radius: 0.5em;
 }
 
 .menu {

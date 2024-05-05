@@ -20,23 +20,32 @@ class GoogleCloudTranslationsClient implements TranslationsClient
     public function getSupportedLanguages(): array
     {
         $url = 'https://translate.googleapis.com/v3/projects/35602587281/supportedLanguages';
-        $this->googleClient->setAuthConfig('/var/www/storage/app/citric-glow-348722-da16cee9e329.json');
+        $this->googleClient->setAuthConfig('/var/www/storage/app/citric-glow-348722-63bad30fad01.json');
         $this->googleClient->addScope('https://www.googleapis.com/auth/cloud-translation');
         $this->httpClient= $this->googleClient->authorize($this->httpClient);
 
-        $response = $this->httpClient->get($url);
+        $response = $this->httpClient->get($url, [
+            'query' => [
+                'displayLanguageCode' => 'en',
+            ]
+        ]);
 
         $data = json_decode($response->getBody(), true);
 
         $languages = collect($data['languages']);
 
-        return $languages->pluck('languageCode')->toArray();
+        return $languages->map(function ($language) {
+            return [
+                'code' => $language['languageCode'],
+                'name' => $language['displayName'],
+            ];
+        })->toArray();
     }
 
     public function translateText(string $content, string $targetLanguageCode): string
     {
         $url = 'https://translate.googleapis.com/v3/projects/35602587281:translateText';
-        $this->googleClient->setAuthConfig('/var/www/storage/app/citric-glow-348722-da16cee9e329.json');
+        $this->googleClient->setAuthConfig('/var/www/storage/app/citric-glow-348722-63bad30fad01.json');
         $this->googleClient->addScope('https://www.googleapis.com/auth/cloud-translation');
         $this->httpClient= $this->googleClient->authorize($this->httpClient);
 

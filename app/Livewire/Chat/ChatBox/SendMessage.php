@@ -51,10 +51,6 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-//        if ($this->file) {
-//            $filename = $this->uploadedFile->store('/', 'files');
-//        }
-
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
