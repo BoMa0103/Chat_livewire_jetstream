@@ -248,15 +248,21 @@ class ChatList extends Component
         return null;
     }
 
-    public function customHtmlspecialcharsForImg(?Message $lastMessage): ?string
+    public function getMessageContent(?Message $lastMessage): ?string
     {
         if (! $lastMessage) {
             return null;
         }
 
         $content = $lastMessage->content;
-        if ($lastMessage->chat->lang) {
-            $content = $message->translations[$lastMessage->chat->lang] ?? $lastMessage->content;
+
+        $lang = $this->getChatsService()->getLangForChat(
+            $lastMessage->chat()->first()->id,
+            auth()->id(),
+        );
+
+        if ($lang && $lastMessage->user_id !== auth()->id()) {
+            $content = $lastMessage->translations[$lang] ?? $lastMessage->content;
         }
 
         return $this->getHtmlValidator()->customHtmlspecialcharsForImg($content);

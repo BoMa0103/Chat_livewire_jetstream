@@ -14,8 +14,19 @@
             @endphp">
                 {{ $message->user()->first() ? $message->user()->first()->name : 'Deleted Account' }}
             </div>
-            <div class="message-content" id="message">
-                {!! $this->customHtmlspecialcharsForImg($message) !!}
+            <div class="message-content" id="message-{{$message->id}}">
+                {!! $this->getMessageContent($message) !!}
+            </div>
+            <div class="origin-message-content" id="origin-message-{{$message->id}}">
+                {!! $this->getOriginMessageContent($message) !!}
+            </div>
+            <div class="message-translated-info @php
+                if (! $this->isMessageContentTranslated($message)) {
+                    echo ' hidden';
+                }
+            @endphp">
+                <text id="message-translated-flag-{{$message->id}}">Translated</text>
+                <button class="message-see-origin-button" onclick="showHideOriginMessageContent({{$message->id}})" id="origin-message-button-{{$message->id}}">See origin</button>
             </div>
             <div class="message-meta">
                 <div class="message-time" id="time"> {{$message->created_at->format('H:i')}} </div>

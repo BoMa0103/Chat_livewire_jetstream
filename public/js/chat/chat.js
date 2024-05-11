@@ -125,6 +125,29 @@ function showHideLanguages() {
     }
 }
 
+function showHideOriginMessageContent(message_id) {
+    let originMessage = document.getElementById('origin-message-' + message_id);
+    let message = document.getElementById('message-' + message_id);
+    let button = document.getElementById('origin-message-button-' + message_id);
+    let translatedFlag = document.getElementById('message-translated-flag-' + message_id);
+
+    if (! originMessage || ! message || ! button || ! translatedFlag) {
+        return;
+    }
+
+    if (originMessage.style.display === 'block') {
+        originMessage.style.display = 'none';
+        message.style.display = 'block';
+        button.textContent = 'See origin';
+        translatedFlag.textContent = 'Translated';
+    } else {
+        originMessage.style.display = 'block';
+        message.style.display = 'none';
+        button.textContent = 'See translated';
+        translatedFlag.textContent = '';
+    }
+}
+
 /* Notifications */
 
 function notifyMe(json) {

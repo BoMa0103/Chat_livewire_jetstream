@@ -74,6 +74,23 @@ function showHideUsers() {
     }
 }
 
+function showHideOriginMessageContent(message_id) {
+    let originMessage = document.getElementById('origin-message-' + message_id);
+    let message = document.getElementById('message-' + message_id);
+
+    if (! originMessage || ! message) {
+        return;
+    }
+
+    if (originMessage.style.display === 'block') {
+        originMessage.style.display = 'none';
+        message.style.display = 'block';
+    } else {
+        originMessage.style.display = 'block';
+        message.style.display = 'none';
+    }
+}
+
 function hideUsers() {
     let users = $('.users');
     let users_header = $('.users_header');

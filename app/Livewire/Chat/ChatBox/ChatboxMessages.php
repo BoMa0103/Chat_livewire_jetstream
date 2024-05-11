@@ -48,11 +48,26 @@ class ChatboxMessages extends Component
         return app(HtmlValidator::class);
     }
 
+    public function mount()
+    {
+        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+
+        $this->messages = $this->getMessagesService()->getMessages(
+            $this->selectedChat->id,
+            $this->messagesCount,
+            $this->paginateVar,
+        );
+
+        $this->dispatch('chatSelectedGetHeight');
+        $this->dispatch('rowChatToBottom');
+        $this->dispatch('scrollEventHandle');
+    }
+
     public function broadcastMessageRead(): void
     {
         $receivers = $this->getChatsService()->getChatReceivers(
             $this->selectedChat->id,
-            auth()->id()
+            auth()->id(),
         )->get();
 
         if(!$receivers->count()) {
@@ -92,7 +107,7 @@ class ChatboxMessages extends Component
 
             $this->getMessagesService()->setReadStatusMessagesForConversation(
                 $this->selectedChat->id,
-                auth()->id()
+                auth()->id(),
             );
 
             $this->pushMessage($broadcastedMessage->id);
@@ -146,7 +161,7 @@ class ChatboxMessages extends Component
         $this->messages = $this->getMessagesService()->getMessages(
             $this->selectedChat->id,
             $this->messagesCount,
-            $this->paginateVar
+            $this->paginateVar,
         );
 
         $this->dispatch('rowChatToBottom');
@@ -166,13 +181,13 @@ class ChatboxMessages extends Component
         $this->messages = $this->getMessagesService()->getMessages(
             $this->selectedChat->id,
             $this->messagesCount,
-            $this->paginateVar
+            $this->paginateVar,
         );
 
         $this->updatedHeight();
     }
 
-    public function customHtmlspecialcharsForImg(Message $message): string
+    public function getMessageContent(Message $message): string
     {
         $content = $message->content;
         $lang = $this->getChatsService()->getLangForChat(
@@ -187,18 +202,26 @@ class ChatboxMessages extends Component
         return $this->getHtmlValidator()->customHtmlspecialcharsForImg($content);
     }
 
-    public function mount()
+    public function getOriginMessageContent(Message $message): string
     {
-        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($message->content);
+    }
 
-        $this->messages = $this->getMessagesService()->getMessages(
+    public function isMessageContentTranslated(Message $message): bool
+    {
+        $lang = $this->getChatsService()->getLangForChat(
             $this->selectedChat->id,
-            $this->messagesCount,
-            $this->paginateVar
+            auth()->id(),
         );
 
-        $this->dispatch('chatSelectedGetHeight');
-        $this->dispatch('rowChatToBottom');
-        $this->dispatch('scrollEventHandle');
+        if (! $lang) {
+            return false;
+        }
+
+        if ($message->user_id === auth()->id()) {
+            return false;
+        }
+
+        return isset($message->translations[$lang]);
     }
 }

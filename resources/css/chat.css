@@ -227,6 +227,14 @@ body {
     word-wrap: break-word;
 }
 
+.origin-message-content {
+    max-width: 340px;
+    padding: 4px 8px 0px 8px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    display: none;
+}
+
 .message-time {
     font-size: 12px;
     padding: 4px 6px;
@@ -547,6 +555,15 @@ body {
     font-weight: bold;
     width: fit-content;
     color: var(--main-text-color);
+}
+
+.message-translated-info {
+    padding: 0 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: fit-content;
+    color: var(--second-text-color);
+    min-width: 150px;
 }
 
 .chat-list-header {
