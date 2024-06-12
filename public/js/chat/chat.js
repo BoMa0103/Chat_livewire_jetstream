@@ -101,6 +101,8 @@ function openChatSettings() {
 function showHideChatSettings() {
     let overlay = document.getElementById('overlay-chat-settings');
     let chatSettings = document.getElementById('chat-settings');
+    let chatLanguages = document.getElementById('chat-languages');
+    chatLanguages.style.display = 'none';
 
     if (overlay.style.display === 'block' && chatSettings.style.display === 'block') {
         overlay.style.display = 'none';
@@ -108,6 +110,41 @@ function showHideChatSettings() {
     } else {
         overlay.style.display = 'block';
         chatSettings.style.display = 'block';
+    }
+}
+
+function showHideLanguages() {
+    let chatSettings = document.getElementById('chat-settings');
+    let chatLanguages = document.getElementById('chat-languages');
+    chatSettings.style.display = 'none';
+
+    if (chatLanguages.style.display === 'block') {
+        chatLanguages.style.display = 'none';
+    } else {
+        chatLanguages.style.display = 'block';
+    }
+}
+
+function showHideOriginMessageContent(message_id) {
+    let originMessage = document.getElementById('origin-message-' + message_id);
+    let message = document.getElementById('message-' + message_id);
+    let button = document.getElementById('origin-message-button-' + message_id);
+    let translatedFlag = document.getElementById('message-translated-flag-' + message_id);
+
+    if (! originMessage || ! message || ! button || ! translatedFlag) {
+        return;
+    }
+
+    if (originMessage.style.display === 'block') {
+        originMessage.style.display = 'none';
+        message.style.display = 'block';
+        button.textContent = 'See origin';
+        translatedFlag.textContent = 'Translated';
+    } else {
+        originMessage.style.display = 'block';
+        message.style.display = 'none';
+        button.textContent = 'See translated';
+        translatedFlag.textContent = '';
     }
 }
 

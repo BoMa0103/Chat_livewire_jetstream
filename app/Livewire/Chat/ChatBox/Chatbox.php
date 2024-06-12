@@ -53,9 +53,4 @@ class Chatbox extends Component
     {
         $this->selectedChat = null;
     }
-
-    public function render()
-    {
-        return view('livewire.chat.chat-box.chatbox');
-    }
 }

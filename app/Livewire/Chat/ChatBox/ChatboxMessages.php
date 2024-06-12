@@ -5,13 +5,16 @@ namespace App\Livewire\Chat\ChatBox;
 use App\Events\MessageRead;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
+use App\Models\Message;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
+use App\Services\Translations\TranslationsService;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class ChatboxMessages extends Component
 {
-    public $messages;
+    public Collection $messages;
 
     public $selectedChat;
     public $paginateVar = 20;
@@ -45,9 +48,27 @@ class ChatboxMessages extends Component
         return app(HtmlValidator::class);
     }
 
+    public function mount()
+    {
+        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
+
+        $this->messages = $this->getMessagesService()->getMessages(
+            $this->selectedChat->id,
+            $this->messagesCount,
+            $this->paginateVar,
+        );
+
+        $this->dispatch('chatSelectedGetHeight');
+        $this->dispatch('rowChatToBottom');
+        $this->dispatch('scrollEventHandle');
+    }
+
     public function broadcastMessageRead(): void
     {
-        $receivers = $this->getChatsService()->getChatReceivers($this->selectedChat->id, auth()->id())->get();
+        $receivers = $this->getChatsService()->getChatReceivers(
+            $this->selectedChat->id,
+            auth()->id(),
+        )->get();
 
         if(!$receivers->count()) {
             return;
@@ -84,7 +105,10 @@ class ChatboxMessages extends Component
             $broadcastedMessage->read_status = 1;
             $broadcastedMessage->save();
 
-            $this->getMessagesService()->setReadStatusMessagesForConversation($this->selectedChat->id, auth()->id());
+            $this->getMessagesService()->setReadStatusMessagesForConversation(
+                $this->selectedChat->id,
+                auth()->id(),
+            );
 
             $this->pushMessage($broadcastedMessage->id);
 
@@ -133,7 +157,13 @@ class ChatboxMessages extends Component
         $this->selectedChat = $selectedChat;
         $this->paginateVar = 20;
         $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
+
+        $this->messages = $this->getMessagesService()->getMessages(
+            $this->selectedChat->id,
+            $this->messagesCount,
+            $this->paginateVar,
+        );
+
         $this->dispatch('rowChatToBottom');
         $this->dispatch('chatSelectedGetHeight');
     }
@@ -148,29 +178,50 @@ class ChatboxMessages extends Component
 
         $this->paginateVar += 20;
 
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
+        $this->messages = $this->getMessagesService()->getMessages(
+            $this->selectedChat->id,
+            $this->messagesCount,
+            $this->paginateVar,
+        );
 
         $this->updatedHeight();
     }
 
-    public function customHtmlspecialcharsForImg($message)
+    public function getMessageContent(Message $message): string
     {
-        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($message);
+        $content = $message->content;
+        $lang = $this->getChatsService()->getLangForChat(
+            $this->selectedChat->id,
+            auth()->id(),
+        );
+
+        if ($lang && $message->user_id !== auth()->id()) {
+            $content = $message->translations[$lang] ?? $message->content;
+        }
+
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($content);
     }
 
-    public function mount()
+    public function getOriginMessageContent(Message $message): string
     {
-        $this->messagesCount = $this->getMessagesService()->getMessagesCount($this->selectedChat->id);
-
-        $this->messages = $this->getMessagesService()->getLastMessages($this->selectedChat->id, $this->messagesCount, $this->paginateVar);
-
-        $this->dispatch('chatSelectedGetHeight');
-        $this->dispatch('rowChatToBottom');
-        $this->dispatch('scrollEventHandle');
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($message->content);
     }
 
-    public function render()
+    public function isMessageContentTranslated(Message $message): bool
     {
-        return view('livewire.chat.chat-box.chatbox-messages');
+        $lang = $this->getChatsService()->getLangForChat(
+            $this->selectedChat->id,
+            auth()->id(),
+        );
+
+        if (! $lang) {
+            return false;
+        }
+
+        if ($message->user_id === auth()->id()) {
+            return false;
+        }
+
+        return isset($message->translations[$lang]);
     }
 }

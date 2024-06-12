@@ -11,7 +11,7 @@
     --back-search-send-form-color: #374151;
     --back-text-area-color: #1F2937;
     --hover-color: #6b7280;
-    --placeholder-color: #4b5563;
+    --placeholder-color: #353E47;
     --placeholder-search-color: #9CA3AF;
 }
 
@@ -224,6 +224,14 @@ body {
     padding: 4px 8px 0px 8px;
     border-radius: 5px;
     word-wrap: break-word;
+}
+
+.origin-message-content {
+    max-width: 340px;
+    padding: 4px 8px 0px 8px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    display: none;
 }
 
 .message-time {
@@ -548,6 +556,14 @@ body {
     color: var(--main-text-color);
 }
 
+.message-translated-info {
+    padding: 4px 8px;
+    border-radius: 5px;
+    width: fit-content;
+    color: var(--second-text-color);
+    min-width: 150px;
+}
+
 .chat-list-header {
     padding: 10px;
     text-align: center;
@@ -814,6 +830,17 @@ input:focus {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 0.8em;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.chat-settings .selected {
+    background-color: var(--placeholder-color);
+    border-radius: 0.5em;
+}
+
+.chat-settings::-webkit-scrollbar {
+    width: 0px;
 }
 
 .menu li {
@@ -835,7 +862,6 @@ input:focus {
     width: 100%;
     padding: 8px;
     user-select: none;
-    color: #ff4c4c;
 }
 
 .chat-settings li:hover {

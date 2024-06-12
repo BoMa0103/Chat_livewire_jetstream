@@ -4,8 +4,11 @@ namespace App\Livewire\Chat\ChatBox;
 
 use App\Events\MessageSent;
 use App\Models\Chat;
+use App\Models\Message;
+use App\Models\User;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
+use App\Services\Translations\TranslationsService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,9 +18,9 @@ class SendMessage extends Component
 {
     use WithFileUploads;
 
-    public $selectedChat;
+    public Chat $selectedChat;
 
-    public $createdMessage;
+    public Message $createdMessage;
 
     public $body;
 
@@ -29,6 +32,11 @@ class SendMessage extends Component
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
+    }
+
+    private function getTranslationsService(): TranslationsService
+    {
+        return app(TranslationsService::class);
     }
 
     private function getMessagesService(): MessagesService
@@ -43,15 +51,15 @@ class SendMessage extends Component
 
     public function sendMessage()
     {
-//        if ($this->file) {
-//            $filename = $this->uploadedFile->store('/', 'files');
-//        }
-
         if ($this->body === null || trim($this->body) == '') {
             return null;
         }
 
-        $this->createdMessage = $this->getMessagesService()->createFromArray(['chat_id' => $this->selectedChat->id, 'user_id' => auth()->id(), 'content' => Emoji::toImage($this->body)]);
+        $this->createdMessage = $this->getMessagesService()->createFromArray([
+            'chat_id' => $this->selectedChat->id,
+            'user_id' => auth()->id(),
+            'content' => Emoji::toImage($this->body)
+        ]);
 
         $this->selectedChat->last_time_message = $this->createdMessage->created_at;
         $this->selectedChat->save();
@@ -72,6 +80,7 @@ class SendMessage extends Component
             if (!$receiver) {
                 return;
             }
+            $this->translateMessageToReceiverLang($receiver);
             // Send Message to all connections with receiver user
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
 
@@ -82,7 +91,7 @@ class SendMessage extends Component
 
         foreach ($receivers as $receiver) {
             $receiver->messagesToMany()->attach($this->createdMessage->id, ['chat_id' => $this->selectedChat->id]);
-
+            $this->translateMessageToReceiverLang($receiver);
             // Send Message to all receivers connections
             broadcast(event: new MessageSent(auth()->user(), $this->createdMessage, $this->selectedChat, $receiver->id));
         }
@@ -93,8 +102,26 @@ class SendMessage extends Component
         $this->dispatch('send-message-loaded');
     }
 
-    public function render()
+    private function translateMessageToReceiverLang(User $receiver): void
     {
-        return view('livewire.chat.chat-box.send-message');
+        $lang = $this->getChatsService()->getLangForChat(
+            $this->selectedChat->id,
+            $receiver->id,
+        );
+
+        if (! $lang) {
+            return;
+        }
+
+        $translatedContent = $this->getTranslationsService()->translateText(
+            $this->createdMessage->content,
+            $lang,
+        );
+
+        $this->getMessagesService()->updateTranslations(
+            $this->createdMessage,
+            $translatedContent,
+            $lang,
+        );
     }
 }

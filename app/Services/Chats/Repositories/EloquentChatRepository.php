@@ -50,4 +50,20 @@ class EloquentChatRepository implements ChatRepository
 
         return $chat->delete();
     }
+
+    public function setLangForChat(int $chatId, int $userId, string $langCode): void
+    {
+        DB::table('chat_user')
+            ->where('chat_id', $chatId)
+            ->where('user_id', $userId)
+            ->update(['lang' => $langCode]);
+    }
+
+    public function getLangForChat(int $chatId, int $userId): ?string
+    {
+        return DB::table('chat_user')
+            ->where('chat_id', $chatId)
+            ->where('user_id', $userId)
+            ->first()->lang;
+    }
 }

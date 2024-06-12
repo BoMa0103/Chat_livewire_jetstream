@@ -41,4 +41,14 @@ class ChatsService
     {
         return $this->chatRepository->deleteChat($chatId);
     }
+
+    public function setLangForChat(int $chatId, int $userId, string $langCode): void
+    {
+        $this->chatRepository->setLangForChat($chatId, $userId, $langCode);
+    }
+
+    public function getLangForChat(int $chatId, int $userId): ?string
+    {
+        return $this->chatRepository->getLangForChat($chatId, $userId);
+    }
 }

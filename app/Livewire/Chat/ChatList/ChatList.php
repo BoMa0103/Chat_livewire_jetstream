@@ -9,6 +9,7 @@ use App\Events\MessageRead;
 use App\Events\ReceiveMarkAsOnline;
 use App\Livewire\Validators\HtmlValidator;
 use App\Models\Chat;
+use App\Models\Message;
 use App\Services\Chats\ChatsService;
 use App\Services\Messages\MessagesService;
 use App\Services\Users\UsersService;
@@ -247,9 +248,24 @@ class ChatList extends Component
         return null;
     }
 
-    public function customHtmlspecialcharsForImg($lastMessage)
+    public function getMessageContent(?Message $lastMessage): ?string
     {
-        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($lastMessage);
+        if (! $lastMessage) {
+            return null;
+        }
+
+        $content = $lastMessage->content;
+
+        $lang = $this->getChatsService()->getLangForChat(
+            $lastMessage->chat()->first()->id,
+            auth()->id(),
+        );
+
+        if ($lang && $lastMessage->user_id !== auth()->id()) {
+            $content = $lastMessage->translations[$lang] ?? $lastMessage->content;
+        }
+
+        return $this->getHtmlValidator()->customHtmlspecialcharsForImg($content);
     }
 
     public function mount(): void
@@ -259,10 +275,5 @@ class ChatList extends Component
         $this->chats = $this->getChatsService()->getChatsOrderByDesc($this->auth_id);
 
         broadcast(event: new MarkAsOnline($this->auth_id));
-    }
-
-    public function render()
-    {
-        return view('livewire.chat.chat-list.chat-list');
     }
 }

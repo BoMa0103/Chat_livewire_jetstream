@@ -2,33 +2,31 @@
 
 namespace App\Livewire\Validators;
 
+use App\Models\Message;
+
 class HtmlValidator
 {
-    public function customHtmlspecialcharsForImg($message)
+    public function customHtmlspecialcharsForImg(string $message): string
     {
         $imgTags = [];
 
-        if($message === null){
-            return null;
-        }
-
-        $content = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
+        $message = preg_replace_callback('/<img[^>]*>/', function($matches) use (&$imgTags) {
             if (str_contains($matches[0], 'class="joypixels"')) {
                 $imgTags[] = $matches[0];
                 return '###IMG###';
             } else {
                 return $matches[0];
             }
-        }, $message->content);
+        }, $message);
 
-        $content = htmlspecialchars($content);
+        $message = htmlspecialchars($message);
 
-        $content = nl2br($content);
+        $message = nl2br($message);
 
         foreach ($imgTags as $imgTag) {
-            $content = preg_replace('/###IMG###/', $imgTag, $content, 1);
+            $message = preg_replace('/###IMG###/', $imgTag, $message, 1);
         }
 
-        return $content;
+        return $message;
     }
 }

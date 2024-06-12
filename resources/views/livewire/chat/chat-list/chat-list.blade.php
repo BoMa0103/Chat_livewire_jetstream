@@ -106,7 +106,7 @@
                                     } @endphp
                                 </p>
                                 <p class="chat-last-message" id="chat-last-message">
-                                    {!! $this->customHtmlspecialcharsForImg($chat->messages->last()) !== null ? $this->customHtmlspecialcharsForImg($chat->messages->last()) : '' !!}
+                                    {!! $this->getMessageContent($chat->messages->last()) !== null ? $this->getMessageContent($chat->messages->last()) : '' !!}
                                 </p>
                             </div>
                             <p class="chat-last-message-data"
@@ -171,9 +171,10 @@
             let conversationName = document.getElementById('conversation-name-input');
 
             if (conversationName.value.trim() !== '') {
-            @this.dispatch('createConversation', {
-                conversationName: conversationName.value.trim()
-            })
+                @this.
+                dispatch('createConversation', {
+                    conversationName: conversationName.value.trim()
+                })
             }
         }
 
@@ -205,7 +206,8 @@
         function selectedTheme(themeId) {
             setTheme(themeId);
 
-            @this.dispatch('changeTheme', {
+            @this.
+            dispatch('changeTheme', {
                 theme: themeId
             })
         }

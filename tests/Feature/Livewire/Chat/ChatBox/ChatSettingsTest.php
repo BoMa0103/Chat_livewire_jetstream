@@ -29,7 +29,7 @@ class ChatSettingsTest extends TestCase
         $anotherChat->users()->attach($userFirst);
         $anotherChat->users()->attach($userSecond);
 
-        auth()->login($userFirst);
+        Livewire::actingAs($userFirst);
 
         Livewire::test(ChatSettings::class)
             ->set('selectedChat', $chat)

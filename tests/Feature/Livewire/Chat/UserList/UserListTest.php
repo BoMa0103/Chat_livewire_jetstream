@@ -19,7 +19,7 @@ class UserListTest extends TestCase
         $userFirst = UserGenerator::generate();
         $userSecond = UserGenerator::generate();
 
-        auth()->login($userFirst);
+        Livewire::actingAs($userFirst);
 
         Livewire::test(UserList::class)
             ->call('checkChat', $userSecond->id);
@@ -42,7 +42,7 @@ class UserListTest extends TestCase
         $chat->users()->attach($userFirst);
         $chat->users()->attach($userSecond);
 
-        auth()->login($userFirst);
+        Livewire::actingAs($userFirst);
 
         Livewire::test(UserList::class)
             ->call('checkChat', $userSecond->id);

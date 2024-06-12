@@ -24,7 +24,7 @@ class SendMessageTest extends TestCase
         $chat->users()->attach($userFirst);
         $chat->users()->attach($userSecond);
 
-        auth()->login($userFirst);
+        Livewire::actingAs($userFirst);
 
         $content = fake()->text;
 

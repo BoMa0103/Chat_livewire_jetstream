@@ -22,5 +22,7 @@ interface MessageRepository
 
     public function getMessagesCount(int $chatId): int;
 
-    public function getLastMessages(int $chatId, int $messagesCount, int $paginateVar);
+    public function getMessages(int $chatId, int $messagesCount, int $paginateVar);
+
+    public function updateTranslations(Message $message, string $translatedContent, string $lang): void;
 }

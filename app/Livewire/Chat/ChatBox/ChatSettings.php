@@ -5,16 +5,47 @@ namespace App\Livewire\Chat\ChatBox;
 use App\Events\ChatDelete;
 use App\Models\Chat;
 use App\Services\Chats\ChatsService;
-use Illuminate\Support\Facades\DB;
+use App\Services\Translations\TranslationsService;
 use Livewire\Component;
 
 class ChatSettings extends Component
 {
-    public $selectedChat;
+    public ?Chat $selectedChat = null;
+
+    public array $languages;
+
+    public ?string $selectedLangCode = null;
 
     private function getChatsService(): ChatsService
     {
         return app(ChatsService::class);
+    }
+
+    protected function getTranslationsService(): TranslationsService
+    {
+        return app(TranslationsService::class);
+    }
+
+    public function mount(): void
+    {
+        if (! $this->selectedChat) {
+            return;
+        }
+
+        $this->languages = $this->getTranslationsService()->getSupportedLanguages();
+        $this->selectedLangCode = $this->getChatsService()->getLangForChat(
+            $this->selectedChat->id,
+            auth()->id(),
+        );
+    }
+
+    public function setLanguage(string $langCode): void
+    {
+        $this->getChatsService()->setLangForChat(
+            $this->selectedChat->id,
+            auth()->id(),
+            $langCode,
+        );
     }
 
     public function deleteChat(): void
@@ -59,10 +90,5 @@ class ChatSettings extends Component
                 $receiver->id, $deletedChatId,
             ));
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.chat.chat-box.chat-settings');
     }
 }

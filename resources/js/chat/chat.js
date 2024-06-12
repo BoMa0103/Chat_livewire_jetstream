@@ -74,6 +74,23 @@ function showHideUsers() {
     }
 }
 
+function showHideOriginMessageContent(message_id) {
+    let originMessage = document.getElementById('origin-message-' + message_id);
+    let message = document.getElementById('message-' + message_id);
+
+    if (! originMessage || ! message) {
+        return;
+    }
+
+    if (originMessage.style.display === 'block') {
+        originMessage.style.display = 'none';
+        message.style.display = 'block';
+    } else {
+        originMessage.style.display = 'block';
+        message.style.display = 'none';
+    }
+}
+
 function hideUsers() {
     let users = $('.users');
     let users_header = $('.users_header');
@@ -108,6 +125,18 @@ function showHideChatSettings() {
     } else {
         overlay.style.display = 'block';
         chatSettings.style.display = 'block';
+    }
+}
+
+function showHideLanguages() {
+    let chatLanguages = document.getElementById('chat-languages');
+    let chatSettings = document.getElementById('chat-settings');
+    chatSettings.style.display = 'none';
+
+    if (chatLanguages.style.display === 'block') {
+        chatLanguages.style.display = 'none';
+    } else {
+        chatLanguages.style.display = 'block';
     }
 }
 

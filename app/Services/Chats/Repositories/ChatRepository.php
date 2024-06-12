@@ -3,6 +3,7 @@
 namespace App\Services\Chats\Repositories;
 
 use App\Models\Chat;
+use App\Models\User;
 
 interface ChatRepository
 {
@@ -17,4 +18,8 @@ interface ChatRepository
     public function getChatReceivers(int $chatId, int $senderUserId);
 
     public function deleteChat(int $chatId);
+
+    public function setLangForChat(int $chatId, int $userId, string $langCode): void;
+
+    public function getLangForChat(int $chatId, int $userId): ?string;
 }
