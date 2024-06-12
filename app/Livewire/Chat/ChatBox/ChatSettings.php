@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class ChatSettings extends Component
 {
-    public Chat $selectedChat;
+    public ?Chat $selectedChat = null;
 
     public array $languages;
 
@@ -28,6 +28,10 @@ class ChatSettings extends Component
 
     public function mount(): void
     {
+        if (! $this->selectedChat) {
+            return;
+        }
+
         $this->languages = $this->getTranslationsService()->getSupportedLanguages();
         $this->selectedLangCode = $this->getChatsService()->getLangForChat(
             $this->selectedChat->id,
