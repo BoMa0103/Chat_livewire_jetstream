@@ -20,7 +20,7 @@ class GoogleCloudTranslationsClient implements TranslationsClient
     public function getSupportedLanguages(): array
     {
         $url = 'https://translate.googleapis.com/v3/projects/35602587281/supportedLanguages';
-        $this->googleClient->setAuthConfig('/var/www/public/citric-glow-348722-63bad30fad01.json');
+        $this->googleClient->setAuthConfig(storage_path('app/citric-glow-348722-63bad30fad01.json'));
         $this->googleClient->addScope('https://www.googleapis.com/auth/cloud-translation');
         $this->httpClient= $this->googleClient->authorize($this->httpClient);
 
@@ -45,7 +45,7 @@ class GoogleCloudTranslationsClient implements TranslationsClient
     public function translateText(string $content, string $targetLanguageCode): string
     {
         $url = 'https://translate.googleapis.com/v3/projects/35602587281:translateText';
-        $this->googleClient->setAuthConfig('/var/www/public/citric-glow-348722-63bad30fad01.json');
+        $this->googleClient->setAuthConfig(storage_path('app/citric-glow-348722-63bad30fad01.json'));
         $this->googleClient->addScope('https://www.googleapis.com/auth/cloud-translation');
         $this->httpClient= $this->googleClient->authorize($this->httpClient);
 
