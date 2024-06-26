@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "citric-glow-348722",
+  "private_key_id": "63bad30fad019bd9cbf410844f425a2e428ee44e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDCRe0kjpX/OmJR\n5Mj/yf3rVC6A6o92mQ8SHXXwjyQBMavCec+T93WF2xLry54ZE2bCSkrpA77n/ll/\nGvout0MbEeWh4Xur+y3hnu4ntQMYes9U9j2c1LEOJ6yLZ4e6c9cJecU7/oumPOOR\n4ncT9ugbV1qaLPlnp6bC4oZON7eN/zHvoO+7D4s2w//iaZIqLrsbV76hBs4NaPye\n8MsB1gAgolrHk97t8Orn1J05bIUkjIsVO+UvZ5SEC3MoBoU40f/fVQtFJrFKBsw8\nSj0wsloZZKkeuBAKTSnMO6qc0C4z7ZeQiMwKIjVuKnioS9m0UbquAb4xcavuzgUb\naWoPgau/AgMBAAECggEAH/nofYLml3rhof8ZQljZ7XkOqnNxJ6ErxNyKhAzbbULi\ntYDdNMqfUmfrpln+bLwvxrz5tX7DVmYcDvq+wR+y8OqyNEHr3DPcqm1BX9HAb7AP\nHjnljEHJ3r2S/eMNiRf2Bf5AA47zJ2qQPnvbA7M5Iv7uz7+lUXVb0mn8lzU+hiV4\nbbs5A1L23vHLoPNT4FXwey3SfFEa8jyKpHA/PLs86u81IQV17VNR3k+42gHLeUGY\nCJCVEP/h1uA9DJlgF+/t6Ef+ZB/6VnsgnbzqqTieCiwmmUqXIpNcvRi94H9LsylI\nO3gUqx47qjboif4hWVMxNtc2m5YZdoSoelSOivMf8QKBgQDqk+ZkjCFUzj0YdVlZ\nVRSsPg96OPVD3jTzOqCu4/c1XFPbLmPQdRbd8beZ9FK+x4X8gKrNCDGIe1Dmfvwy\n4e1jpJe7Hs7Iw6m5+Ay5RRC/zMVmL0b26qplnx8DCe1PjbOS7f0TXzcS2sxFGiUS\nWYqryy5amQbMJ3EEZLVtc+HqeQKBgQDUA8LtX93ziG5Z6qHAnNxVs9CX5LJFr1iQ\nQ0e9cvyVmjnx3SSYVoFbyPXl62auA0rT7Bm60vZ42jAY39oOuAFCQWMLFgfTG4KE\nwRVHlvi9zsoCOwxeRoVs/yekrDpp1AfEfhXpPi34ZI3outLOTB818tW6V3IKRMMB\nEefGCQ+59wKBgGoYNIbbXiPmF3ndcWjW8z+n3gYwhrWIZbhwlsYi8uceeArU424f\n1xTQw3KNL3N7+FyosReEkiqhY4isfFJjHqQHiFyoZWwmGriyuMZ+t0GYUtuRnG4G\n2sSVgEg2kC9/7m0Q2HqPgPA1J1hFp+ixuOdUQQXW2l0xpYsQJYJ4fAA5AoGAdOHF\n+ttZH0NdotCJcAiKJ+1D2BlKdsReTNnqmPTlbwxhWYeS/zDhi9pURfbq2pASFpcY\n8DgRjTqsPWpbarXia8Zkdd4lXirSX6Gau6btZqa0E1q+TNMQB7D7B/uzEFjGF3tz\nVOzkpwW4fk9QnE62/iTr0xkWU7bo0pQudKzWMK0CgYAWQuGWP4ZxotuEQE4ww7Ty\nQU0mS6DCUjz79yb4VGqADkUDYTkhWUuORXd5qGG0VmRvf8GP880BVOfhmEgIqcQZ\natKfOOmb9QWgk9K8yUNalTTi8VeeV5Ez/sGIiy4nJzDI4AHDFeh+E+29T0dLvOqI\ntRIrMa7gm8jwpXS86C0oYg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "translation@citric-glow-348722.iam.gserviceaccount.com",
+  "client_id": "111515142665808410057",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/translation%40citric-glow-348722.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
